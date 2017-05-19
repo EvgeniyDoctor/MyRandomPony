@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name" translatable="false">My Random Pony</string>
+    <string name="settings_internet_warn">Enabled, but your network connection is unavailable</string>
+    <string name="settings_load_error">Your network connection is unavailable or \"WiFi only\" mode is enabled</string>
+    <string name="settings_progress_msg">Wait…</string>
+    <string name="settings_progress_title">Downloading</string>
+    <string name="copyright">My Little Pony © Hasbro\nAll wallpapers © to their respective artists\nAll wallpapers are located at: mylittlewallpaper.com\nThis program was developed by Evgeniy Doctor\nOfficial website: doctor-the-developer.ru\n\nThis is a third-party mobile application for accessing the images on mylittlewallpaper.com. The developer has no control over what images are available.\n\nIf you really like this application, you can say \"Thanks\" to the developer via WebMoney:\n\nZ020450459106</string>
+    <string name="settings_enable">Enabled</string>
+    <string name="settings_next_image">Next</string>
+    <string name="settings_only_mobile">Only for mobile screen resolution</string>
+    <string name="settings_radio_1">once a day</string>
+    <string name="settings_radio_2">once a week</string>
+    <string name="settings_radio_3">once a month</string>
+    <string name="settings_preview">Preview</string>
+    <string name="settings_preview_setbackground">The background was changed</string>
+    <string name="downloadurl" translatable="false">downloadurl</string>
+    <string name="enabled_pony_wallpapers" translatable="false">enabled_pony_wallpapers</string>
+    <string name="file_name" translatable="false">bg.png</string>
+    <string name="mobile_pony_wallpapers" translatable="false">mobile_pony_wallpapers</string>
+    <string name="refresh_frequency" translatable="false">refresh_frequency</string>
+    <string name="refresh_frequency_curr_month" translatable="false">refresh_frequency_curr_month</string>
+    <string name="save_path" translatable="false">My_Random_Pony</string>
+    <string name="preferences" translatable="false">settings_pony_wallpaper</string>
+    <string name="url_request_all" translatable="false"><![CDATA[https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?limit=1&search=]]></string>
+    <string name="url_request_mobile" translatable="false"><![CDATA[https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?search=platform%3AMobile&limit=1]]></string>
+    <string name="ok">OK</string>
+    <string name="about">About</string>
+    <string name="url_full_size_download" translatable="false">https://www.mylittlewallpaper.com/images/o_</string>
+    <string name="cancel">Cancel</string>
+    <string name="url_full_size_download_pref" translatable="false">url_full_size_download</string>
+    <string name="settings_alert_msg">Does need to load the previous image?</string>
+    <string name="refresh_frequency_curr_day" translatable="false">refresh_frequency_curr_day</string>
+    <string name="refresh_frequency_curr_week" translatable="false">refresh_frequency_curr_week</string>
+    <string name="settings_hint1_flag" translatable="false">settings_hint1_flag</string>
+    <string name="settings_hint1_alert_msg">If you like the picture, just click on it and your background will change!</string>
+    <string name="flag_qstn_about_load" translatable="false">flag_qstn_about_load</string>
+    <string name="settings_update_error">mylittlewallpaper.com: cannot be reached</string>
+    <string name="settings_download_error">Downloading error</string>
+    <string name="file_name_edited" translatable="false">bg_edited.png</string>
+    <string name="settings_cancel_image">Cancel</string>
+    <string name="settings_edit_image">Edit</string>
+    <string name="settings_image_cancel1">There is nothing to undo</string>
+    <string name="settings_image_cancel2">Cancel: unknown error</string>
+    <string name="settings_image_edit">Editing</string>
+    <string name="settings_wifi_only">WiFi only</string>
+    <string name="wifi_only" translatable="false">wifi_only</string>
+</resources>

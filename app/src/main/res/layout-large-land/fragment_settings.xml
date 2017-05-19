@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:divider="@drawable/separator"
+        android:showDividers="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp">
+
+            <CheckBox
+                android:layout_gravity="end"
+                android:id="@+id/enable_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="false"/>
+
+            <FrameLayout
+                android:id="@+id/enable_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"
+                    android:text="@string/settings_enable"/>
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:divider="@drawable/separator"
+        android:showDividers="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp">
+
+            <CheckBox
+                android:layout_gravity="end"
+                android:id="@+id/only_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"/>
+
+            <FrameLayout
+                android:id="@+id/mobile_only_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_marginRight="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"
+                    android:text="@string/settings_only_mobile"/>
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:divider="@drawable/separator"
+        android:showDividers="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp">
+
+            <CheckBox
+                android:layout_gravity="end"
+                android:id="@+id/only_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"/>
+
+            <FrameLayout
+                android:id="@+id/wifi_only_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_marginRight="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"
+                    android:text="@string/settings_wifi_only"/>
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <RadioButton
+                    android:id="@+id/radio_1"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <FrameLayout
+                    android:id="@+id/layout_radio_1"
+                    android:onClick="refresh_frequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="#000000"
+                        android:text="@string/settings_radio_1"/>
+                </FrameLayout>
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <RadioButton
+                    android:id="@+id/radio_2"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="true"/>
+
+                <FrameLayout
+                    android:id="@+id/layout_radio_2"
+                    android:onClick="refresh_frequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="#000000"
+                        android:text="@string/settings_radio_2"/>
+                </FrameLayout>
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <RadioButton
+                    android:id="@+id/radio_3"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <FrameLayout
+                    android:id="@+id/layout_radio_3"
+                    android:onClick="refresh_frequency"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="#000000"
+                        android:text="@string/settings_radio_3"/>
+                </FrameLayout>
+            </FrameLayout>
+        </RadioGroup>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:onClick="about"
+            android:text="@string/about"
+            android:textColor="@color/colorText"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

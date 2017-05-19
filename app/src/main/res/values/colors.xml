@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--> std style
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <-->
+
+    <!--> Spike style 1 <-->
+    <color name="colorPrimaryDark">#9a5da2</color>
+    <color name="colorPrimary">#c590c9</color>
+    <color name="colorAccent">#51c456</color>
+    <color name="colorText">#b0d95f</color>
+</resources>

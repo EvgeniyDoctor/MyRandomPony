@@ -1,0 +1,37 @@
+<resources>
+
+    <!--> Common strings <-->
+    <string name="about">О приложении</string>
+
+    <string name="ok">Да</string>
+    <string name="cancel">Отмена</string>
+
+
+
+    <!--> Main lay <-->
+    <string name="settings_enable">Включено</string>
+    <string name="settings_only_mobile">Только с разрешением для мобильных устройств</string>
+    <string name="settings_radio_1">раз в сутки</string>
+    <string name="settings_radio_2">раз в неделю</string>
+    <string name="settings_radio_3">раз в месяц</string>
+    <string name="settings_cancel_image">Отмена</string>
+    <string name="settings_edit_image">Редакт.</string>
+    <string name="settings_next_image">Дальше</string>
+    <string name="settings_preview">Предпросмотр</string>
+    <string name="copyright">My Little Pony © Hasbro\nВсе изображения © принадлежат их авторам\nВсе изображения расположены на: mylittlewallpaper.com\nПрограмму разработал Евгений Доктор\nСайт: doctor-the-developer.ru\n\nЭто мобильное приложение третьей стороны для доступа к изображениям на сайте mylittlewallpaper.com. Разработчик не несёт ответственности за содержимое изображений.\n\nЕсли Вам понравилось это приложение, Вы можете отблагодарить разработчика, переведя любую сумму на любой из счётов WebMoney:\n\nR649247938330\nZ020450459106</string>
+    <string name="settings_image_edit">Редактирование</string>
+    <string name="settings_wifi_only">Только WiFi</string>
+
+    <!--> Main java <-->
+    <string name="settings_internet_warn">Запущено, но сеть недоступна</string>
+    <string name="settings_progress_title">Загрузка</string>
+    <string name="settings_progress_msg">Подождите…</string>
+    <string name="settings_load_error">Сеть недоступна или требуется только WiFi</string>
+    <string name="settings_alert_msg">Загрузить изображение, использовавшееся ранее?</string>
+    <string name="settings_preview_setbackground">Фоновое изображение изменено</string>
+    <string name="settings_hint1_alert_msg">Если Вам понравится изображение, нажмите на него и фон изменится!</string>
+    <string name="settings_update_error">mylittlewallpaper.com: недоступен</string>
+    <string name="settings_download_error">При загрузке произошла ошибка</string>
+    <string name="settings_image_cancel1">Нечего отменять</string>
+    <string name="settings_image_cancel2">Отмена: неизвестная ошибка</string>
+</resources>
