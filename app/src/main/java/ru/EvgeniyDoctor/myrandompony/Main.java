@@ -43,6 +43,10 @@ import java.util.Calendar;
 
 public class Main extends AppCompatActivity {
 
+    // TODO: 5/20/17 Несрочно - если нажать "Дальше", затем перевернуть экран
+    // (и я не помню, то ли ещё раз надо перевернуть), то изображение пропадёт, а позже, видимо, при окончании загрузки,
+    // при новом повороте экрана появится новое, только что загруженное изображение. Подумать, нужно ли с этим что-то делать.
+
     private boolean
             flag_qstn_about_load = false;
     private static final String
@@ -56,11 +60,20 @@ public class Main extends AppCompatActivity {
     private TextView
             textview_download_url;
     private ProgressDialog
-            progressDialog;
+            progressDialog = null;
     private RadioButton
             radio_button1,
             radio_button2,
             radio_button3;
+    private AlertDialog
+        alertDialog = null;
+    /*
+        alertDialog - переменная для показа диалоговых окон.
+    Нужна, так как если делать напрямую - builder.show(); то если, например, во время показа диалога вёрстка экрана изменится
+    ориентация экрана, это вызовет Activity ... has leaked.
+    Обнуляется в onDestroy.
+    res. - http://stackoverflow.com/questions/11051172/progressdialog-and-alertdialog-cause-leaked-window
+     */
 
     static AppPreferences
             settings; // res. - https://github.com/grandcentrix/tray
@@ -191,7 +204,8 @@ public class Main extends AppCompatActivity {
                     dialog.cancel();
                 }
             });
-            builder.show();
+            alertDialog = builder.create();
+            alertDialog.show();
         }
         //<---
 
@@ -269,7 +283,8 @@ public class Main extends AppCompatActivity {
                                     settings.put(getResources().getString(R.string.settings_hint1_flag), false);
                                 }
                             });
-                            builder.show();
+                            alertDialog = builder.create();
+                            alertDialog.show();
                         }
 
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
@@ -373,10 +388,27 @@ public class Main extends AppCompatActivity {
         current_wallpaper = null;
         textview_download_url = null;
         settings = null;
-        progressDialog = null;
         radio_button1 = null;
         radio_button2 = null;
         radio_button3 = null;
+
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
+        alertDialog = null;
+
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        progressDialog = null;
+
+        if (receiver != null) {
+            try {
+                unregisterReceiver(receiver); // отмена ресивера. Может быть вызвано, например, при изменении ориентации экрана.
+            }
+            catch (IllegalArgumentException ignored) {}
+        }
+        receiver = null;
 
         System.gc();
     }
@@ -428,7 +460,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    // перегрузка без параметров. Вызывается, если прога была установлена ранее, но удалена, и нужна обоина, стоявшая ранее
+    // вызывается, если прога была установлена ранее, но удалена, и нужна обоина, стоявшая ранее
     public void next_wallpaper() {
         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
@@ -558,7 +590,8 @@ public class Main extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-        builder.show();
+        alertDialog = builder.create();
+        alertDialog.show();
     }
     //----------------------------------------------------------------------------------------------
 
@@ -589,53 +622,11 @@ public class Main extends AppCompatActivity {
         }
 
         if (f != null) {
-            /*
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(f, null, options);
-
-            options.inSampleSize = calculate_size(options, 1000, 1000);
-            options.inJustDecodeBounds = false;
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-
-            try {
-                f = new FileInputStream(background);
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            */
             return BitmapFactory.decodeStream(f);
         }
 
         return null;
     }
-    //----------------------------------------------------------------------------------------------
-
-
-
-    // вычисление размеров картинки
-    /*
-    public static int calculate_size(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height >> 1;
-            final int halfWidth = width >> 1;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize <<= 1;
-            }
-        }
-
-        return inSampleSize;
-    }*/
     //----------------------------------------------------------------------------------------------
 
 
