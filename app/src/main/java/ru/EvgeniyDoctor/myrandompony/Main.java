@@ -650,17 +650,22 @@ public class Main extends AppCompatActivity {
                             Linkify.addLinks(textview_download_url, Linkify.WEB_URLS);
                         }
 
-                        progressDialog.cancel();
+                        if (progressDialog != null)
+                            progressDialog.cancel();
                         unregisterReceiver(receiver);
                         break;
                     case 1: // url does not exist or connect timeout
                         Toast.makeText(Main.this, getResources().getString(R.string.settings_update_error), Toast.LENGTH_LONG).show();
-                        progressDialog.cancel();
+
+                        if (progressDialog != null)
+                            progressDialog.cancel();
                         unregisterReceiver(receiver);
                         break;
                     case 2: // в ответ пришёл не json
                         Toast.makeText(Main.this, getResources().getString(R.string.settings_download_error), Toast.LENGTH_LONG).show();
-                        progressDialog.cancel();
+
+                        if (progressDialog != null)
+                            progressDialog.cancel();
                         unregisterReceiver(receiver);
                         break;
                 }
