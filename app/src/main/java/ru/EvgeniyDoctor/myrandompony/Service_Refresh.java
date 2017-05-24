@@ -230,9 +230,11 @@ public class Service_Refresh extends Service {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                if (bundle.getInt(IntentService_LoadNewWallpaper.RESULT) == 0) { // resultcode
+            IntentService_LoadNewWallpaper.Codes res = (IntentService_LoadNewWallpaper.Codes)
+                    intent.getSerializableExtra(IntentService_LoadNewWallpaper.RESULT);
+
+            switch (res) {
+                case CHANGE_WALLPAPER:
                     // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
                     // установка фона
                     WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
@@ -243,7 +245,7 @@ public class Service_Refresh extends Service {
                     catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+                    break;
             }
         }
     };

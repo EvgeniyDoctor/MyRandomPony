@@ -634,41 +634,38 @@ public class Main extends AppCompatActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                //String string = bundle.getString(IntentService.FILEPATH);
-                //int resultCode = bundle.getInt(IntentService_LoadNewWallpaper.RESULT);
+            IntentService_LoadNewWallpaper.Codes res = (IntentService_LoadNewWallpaper.Codes)
+                    intent.getSerializableExtra(IntentService_LoadNewWallpaper.RESULT);
 
-                switch (bundle.getInt(IntentService_LoadNewWallpaper.RESULT)) {
-                    case -1: // ok
-                        // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
-                        // установка фона
-                        current_wallpaper.setImageBitmap(open_background());
+            switch (res) {
+                case SUCCESS:
+                    // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
+                    // установка фона
+                    current_wallpaper.setImageBitmap(open_background());
 
-                        if (settings.contains(getResources().getString(R.string.downloadurl))) {
-                            textview_download_url.setText(settings.getString(getResources().getString(R.string.downloadurl), ""));
-                            Linkify.addLinks(textview_download_url, Linkify.WEB_URLS);
-                        }
+                    if (settings.contains(getResources().getString(R.string.downloadurl))) {
+                        textview_download_url.setText(settings.getString(getResources().getString(R.string.downloadurl), ""));
+                        Linkify.addLinks(textview_download_url, Linkify.WEB_URLS);
+                    }
 
-                        if (progressDialog != null)
-                            progressDialog.cancel();
-                        unregisterReceiver(receiver);
-                        break;
-                    case 1: // url does not exist or connect timeout
-                        Toast.makeText(Main.this, getResources().getString(R.string.settings_update_error), Toast.LENGTH_LONG).show();
+                    if (progressDialog != null)
+                        progressDialog.cancel();
+                    unregisterReceiver(receiver);
+                    break;
+                case NOT_CONNECTED:
+                    Toast.makeText(Main.this, getResources().getString(R.string.settings_update_error), Toast.LENGTH_LONG).show();
 
-                        if (progressDialog != null)
-                            progressDialog.cancel();
-                        unregisterReceiver(receiver);
-                        break;
-                    case 2: // в ответ пришёл не json
-                        Toast.makeText(Main.this, getResources().getString(R.string.settings_download_error), Toast.LENGTH_LONG).show();
+                    if (progressDialog != null)
+                        progressDialog.cancel();
+                    unregisterReceiver(receiver);
+                    break;
+                case NOT_JSON:
+                    Toast.makeText(Main.this, getResources().getString(R.string.settings_download_error), Toast.LENGTH_LONG).show();
 
-                        if (progressDialog != null)
-                            progressDialog.cancel();
-                        unregisterReceiver(receiver);
-                        break;
-                }
+                    if (progressDialog != null)
+                        progressDialog.cancel();
+                    unregisterReceiver(receiver);
+                    break;
             }
         }
     };

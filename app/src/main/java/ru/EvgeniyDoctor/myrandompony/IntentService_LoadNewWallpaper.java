@@ -36,6 +36,12 @@ public class IntentService_LoadNewWallpaper extends IntentService {
             need_change_bg = "";
     private boolean
             error = false;
+    public enum Codes {
+        SUCCESS,
+        CHANGE_WALLPAPER,
+        NOT_CONNECTED, // url does not exist or connect timeout
+        NOT_JSON; // в ответ пришёл не json
+    }
 
 
 
@@ -84,7 +90,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
                 catch (IOException e) {
                     Log.e(tag, "HTTP answer != OK");
                     e.printStackTrace();
-                    send(1);
+                    send(Codes.NOT_CONNECTED);
                     error = true;
                 }
 
@@ -105,7 +111,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
                         // json structure - https://www.mylittlewallpaper.com/c/my-little-pony/api-v1
                         String server_answer = buffer.toString();
                         if (!server_answer.substring(0, 1).equals("{")) { // если первый символ buffer !={, значит, в ответ пришёл не json
-                            send(2);
+                            send(Codes.NOT_JSON);
                             error = true;
                         }
                         else { // если в ответе сервера json
@@ -203,10 +209,10 @@ public class IntentService_LoadNewWallpaper extends IntentService {
 
                             // send result
                             if (intent.getStringExtra(need_change_bg).equals("")) { // не нужно менять фон
-                                send(-1);
+                                send(Codes.SUCCESS);
                             }
                             else { // нужно изменить фон
-                                send(0);
+                                send(Codes.CHANGE_WALLPAPER);
                             }
 
                             System.gc();
@@ -252,7 +258,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
     // 0 - успех, фон будет изменён;
     // 1 - ошибка подключения к серверу;
     // 2 - в ответе сервера не json
-    private void send (int value) {
+    private void send (Codes value) {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra(RESULT, value);
         sendBroadcast(intent);
