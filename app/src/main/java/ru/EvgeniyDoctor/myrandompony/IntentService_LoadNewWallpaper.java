@@ -36,11 +36,11 @@ public class IntentService_LoadNewWallpaper extends IntentService {
             need_change_bg = "";
     private boolean
             error = false;
-    public enum Codes {
+    enum Codes {
         SUCCESS,
         CHANGE_WALLPAPER,
         NOT_CONNECTED, // url does not exist or connect timeout
-        NOT_JSON; // в ответ пришёл не json
+        NOT_JSON, // в ответ пришёл не json
     }
 
 
