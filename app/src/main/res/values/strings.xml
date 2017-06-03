@@ -44,4 +44,8 @@
     <string name="settings_image_edit">Editing</string>
     <string name="settings_wifi_only">WiFi only</string>
     <string name="wifi_only" translatable="false">wifi_only</string>
+    <string name="settings_write_about_error">Report about error</string>
+    <string name="settings_write_about_error_alert_now">Report now</string>
+    <string name="settings_write_about_error_alert_title">Report about error</string>
+    <string name="settings_write_about_error_alert_msg">If you notice any error in the program, you can help me fix it!\nTo do this, click on \"Report now\" and attach the log (or logs) to the email; they are located at: \"Device storage/My random Pony/log-….txt\". If there are no logs, please describe in detail your actions that led to the error. Thank you!\n\nP.S. Use this function only to report an error, otherwise you will be added to spam.</string>
 </resources>

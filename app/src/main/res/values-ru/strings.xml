@@ -21,6 +21,11 @@
     <string name="copyright">My Little Pony © Hasbro\nВсе изображения © принадлежат их авторам\nВсе изображения расположены на: mylittlewallpaper.com\nПрограмму разработал Евгений Доктор\nСайт: doctor-the-developer.ru\n\nЭто мобильное приложение третьей стороны для доступа к изображениям на сайте mylittlewallpaper.com. Разработчик не несёт ответственности за содержимое изображений.\n\nЕсли Вам понравилось это приложение, Вы можете отблагодарить разработчика, переведя любую сумму на любой из счётов WebMoney:\n\nR649247938330\nZ020450459106</string>
     <string name="settings_image_edit">Редактирование</string>
     <string name="settings_wifi_only">Только WiFi</string>
+    <string name="settings_write_about_error">Сообщить об ошибке</string>
+    <string name="settings_write_about_error_alert_title">Сообщить об ошибке</string>
+    <string name="settings_write_about_error_alert_msg">Если Вы заметили в работе программы какую-либо ошибку, Вы можете помочь мне исправить её!\nДля этого нажмите \"Сообщить сейчас\" и прикрепите лог (или логи) к письму; они расположены по пути: \"Память устройства/My random Pony/log-….txt\". Если логи отсутствуют, пожалуйста, подробно опишите Ваши действия, которые привели к ошибке. Спасибо!\n\nP.S. Используйте эту функцию только для того, чтобы сообщить об ошибке, иначе Вы будете добавлены в спам.</string>
+    <string name="settings_write_about_error_alert_now">Сообщить сейчас</string>
+
 
     <!--> Main java <-->
     <string name="settings_internet_warn">Запущено, но сеть недоступна</string>

@@ -14,10 +14,12 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
@@ -588,6 +590,40 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    // сообщение об ошибке
+    public void write (View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.settings_write_about_error_alert_title);
+        builder.setMessage(R.string.settings_write_about_error_alert_msg);
+        builder.setCancelable(true);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setPositiveButton(R.string.settings_write_about_error_alert_now, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String message = "Android version: %s";
+
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"evgeniy@doctor-the-developer.ru"});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Report about error");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(
+                        String.format(message, Build.VERSION.RELEASE)
+                ));
+                emailIntent.setType("application/octet-stream");
+                startActivity(Intent.createChooser(emailIntent, "Send Email"));
             }
         });
         alertDialog = builder.create();
