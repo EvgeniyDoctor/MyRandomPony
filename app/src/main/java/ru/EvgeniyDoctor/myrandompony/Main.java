@@ -14,12 +14,10 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
@@ -213,8 +211,11 @@ public class Main extends AppCompatActivity {
 
         // установка ссылки
         if (settings.contains(getResources().getString(R.string.downloadurl))) {
-            textview_download_url.setText(settings.getString(getResources().getString(R.string.downloadurl), ""));
-            Linkify.addLinks(textview_download_url, Linkify.ALL);
+            String temp = settings.getString(getResources().getString(R.string.downloadurl), "");
+            if (temp != null && !temp.isEmpty()) {
+                textview_download_url.setText(temp);
+                Linkify.addLinks(textview_download_url, Linkify.WEB_URLS);
+            }
         }
 
         // загрузка предпросмотра
