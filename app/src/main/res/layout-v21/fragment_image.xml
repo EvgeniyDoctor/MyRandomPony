@@ -76,15 +76,5 @@
             android:textColor="@color/colorText"
             android:textSize="14sp"
             android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_write_about_error"
-            android:gravity="end"
-            android:onClick="write"
-            android:textColor="@color/colorText"
-            android:textSize="14sp"
-            android:layout_weight="1"/>
     </LinearLayout>
 </LinearLayout>
