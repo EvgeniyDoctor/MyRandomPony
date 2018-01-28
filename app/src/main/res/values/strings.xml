@@ -12,7 +12,7 @@
     <string name="settings_radio_2">once a week</string>
     <string name="settings_radio_3">once a month</string>
     <string name="settings_preview">Preview</string>
-    <string name="settings_preview_setbackground">The background was changed</string>
+    <string name="settings_preview_setbackground">Background has been changed</string>
     <string name="downloadurl" translatable="false">downloadurl</string>
     <string name="enabled_pony_wallpapers" translatable="false">enabled_pony_wallpapers</string>
     <string name="file_name" translatable="false">bg.png</string>
@@ -32,6 +32,7 @@
     <string name="refresh_frequency_curr_day" translatable="false">refresh_frequency_curr_day</string>
     <string name="refresh_frequency_curr_week" translatable="false">refresh_frequency_curr_week</string>
     <string name="settings_hint1_flag" translatable="false">settings_hint1_flag</string>
+    <string name="settings_hint2_flag" translatable="false">settings_hint2_flag</string>
     <string name="settings_hint1_alert_msg">If you like the picture, just click on it and your background will change!</string>
     <string name="flag_qstn_about_load" translatable="false">flag_qstn_about_load</string>
     <string name="settings_update_error">mylittlewallpaper.com: cannot be reached</string>
@@ -44,4 +45,6 @@
     <string name="settings_image_edit">Editing</string>
     <string name="settings_wifi_only">WiFi only</string>
     <string name="wifi_only" translatable="false">wifi_only</string>
+    <string name="settings_hint2_alert_title">Hi!</string>
+    <string name="settings_hint2_alert_msg">If you want to download your first background right now, click the \"Next\" button\n\n\"Edit\" button will cut the image, and the \"Cancel\" button will return the original image</string>
 </resources>

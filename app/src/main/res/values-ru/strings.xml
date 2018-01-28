@@ -31,6 +31,8 @@
     <string name="settings_alert_msg">Загрузить изображение, использовавшееся ранее?</string>
     <string name="settings_preview_setbackground">Фоновое изображение изменено</string>
     <string name="settings_hint1_alert_msg">Если Вам понравится изображение, нажмите на него и фон изменится!</string>
+    <string name="settings_hint2_alert_title">Привет!</string>
+    <string name="settings_hint2_alert_msg">Если Вы хотите загрузить свой первый фон прямо сейчас, нажмите кнопку \"Дальше\"\n\nКнопка \"Редакт.\" позволит обрезать изображение, а кнопка \"Отмена\" вернёт первоначальный вид изображения</string>
     <string name="settings_update_error">mylittlewallpaper.com: недоступен</string>
     <string name="settings_download_error">При загрузке произошла ошибка</string>
     <string name="settings_image_cancel1">Нечего отменять</string>

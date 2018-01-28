@@ -15,7 +15,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
@@ -33,11 +32,9 @@ import com.yalantis.ucrop.UCrop;
 
 import net.grandcentrix.tray.AppPreferences;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -47,8 +44,9 @@ public class Main extends AppCompatActivity {
     // (и я не помню, то ли ещё раз надо перевернуть), то изображение пропадёт, а позже, видимо, при окончании загрузки,
     // при новом повороте экрана появится новое, только что загруженное изображение. Подумать, нужно ли с этим что-то делать.
 
-    private boolean
-            flag_qstn_about_load = false;
+    // TODO: 29.01.2018 - удалить строки из ресурсов про загрузку предыдущего изображения
+
+    //private boolean flag_qstn_about_load = false;
     private static final String
             tag = "pony";
     private CheckBox
@@ -176,6 +174,7 @@ public class Main extends AppCompatActivity {
         }
 
         // если программа была установлена до этого, но удалена --->
+        /*
         if (savedInstanceState != null) {
             flag_qstn_about_load = savedInstanceState.getBoolean(getResources().getString(R.string.flag_qstn_about_load));
         }
@@ -207,7 +206,24 @@ public class Main extends AppCompatActivity {
             alertDialog = builder.create();
             alertDialog.show();
         }
+        */
         //<---
+
+        // hint
+        if (!settings.contains(getResources().getString(R.string.settings_hint2_flag))) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+            builder.setTitle(R.string.settings_hint2_alert_title);
+            builder.setMessage(R.string.settings_hint2_alert_msg);
+            builder.setCancelable(false);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    settings.put(getResources().getString(R.string.settings_hint2_flag), false);
+                }
+            });
+            alertDialog = builder.create();
+            alertDialog.show();
+        }
 
         // установка ссылки
         if (settings.contains(getResources().getString(R.string.downloadurl))) {
@@ -372,11 +388,12 @@ public class Main extends AppCompatActivity {
 
 
 
+    /*
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(getResources().getString(R.string.flag_qstn_about_load), flag_qstn_about_load);
-    }
+    }*/
     //----------------------------------------------------------------------------------------------
 
 
@@ -464,6 +481,7 @@ public class Main extends AppCompatActivity {
 
 
     // вызывается, если прога была установлена ранее, но удалена, и нужна обоина, стоявшая ранее
+    /*
     public void next_wallpaper() {
         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
@@ -478,7 +496,7 @@ public class Main extends AppCompatActivity {
         intent.putExtra(IntentService_LoadNewWallpaper.URL_STRING, settings.getString(getResources().getString(R.string.url_full_size_download_pref), "")); // путь уже содержит id и .jpeg
         intent.putExtra(IntentService_LoadNewWallpaper.need_change_bg, ""); // "" - не нужно менять фон
         startService(intent);
-    }
+    }*/
     //----------------------------------------------------------------------------------------------
 
 
@@ -499,6 +517,7 @@ public class Main extends AppCompatActivity {
 
 
     // чтение файла со ссылками и их сохранение
+    /*
     private void load_previous_wallpaper () {
         if (check_internet_connection(settings.getBoolean(getResources().getString(R.string.wifi_only), true))) { // проверка здесь, потому что иначе если нажать "Да" при отсутствии связи, появится ссылка без изображения
             // если не существует, чтение ссылок из файла страницы загрузки и загрузки в полном размере
@@ -554,7 +573,7 @@ public class Main extends AppCompatActivity {
         else {
             Toast.makeText(Main.this, R.string.settings_load_error, Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
     //----------------------------------------------------------------------------------------------
 
 
@@ -646,6 +665,7 @@ public class Main extends AppCompatActivity {
                     // установка фона
                     current_wallpaper.setImageBitmap(open_background());
 
+                    // установка ссылки для загрузки
                     if (settings.contains(getResources().getString(R.string.downloadurl))) {
                         textview_download_url.setText(settings.getString(getResources().getString(R.string.downloadurl), ""));
                         Linkify.addLinks(textview_download_url, Linkify.WEB_URLS);
@@ -655,6 +675,7 @@ public class Main extends AppCompatActivity {
                         progressDialog.cancel();
                     unregisterReceiver(receiver);
                     break;
+
                 case NOT_CONNECTED:
                     Toast.makeText(Main.this, getResources().getString(R.string.settings_update_error), Toast.LENGTH_LONG).show();
 
@@ -662,6 +683,7 @@ public class Main extends AppCompatActivity {
                         progressDialog.cancel();
                     unregisterReceiver(receiver);
                     break;
+
                 case NOT_JSON:
                     Toast.makeText(Main.this, getResources().getString(R.string.settings_download_error), Toast.LENGTH_LONG).show();
 

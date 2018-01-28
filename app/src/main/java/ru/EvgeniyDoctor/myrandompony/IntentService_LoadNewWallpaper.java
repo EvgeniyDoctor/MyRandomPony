@@ -119,10 +119,13 @@ public class IntentService_LoadNewWallpaper extends IntentService {
                             JSONArray jsonArray = dataJsonObj.getJSONArray("result");
                             current_result = jsonArray.getJSONObject(0);
 
-                            // сохранение ссылки для загрузки
+                            // сохранение ссылки для загрузки (откроется страница с картинкой)
                             settings.put(getResources().getString(R.string.downloadurl), current_result.getString(getResources().getString(R.string.downloadurl)));
 
                             // сохранение ссылки для загрузки и ссылки на изображение в полном размере
+                            //settings.put("downloadurlfull", getResources().getString(R.string.url_full_size_download) + current_result.getString("imageid") + ".png");
+
+                            /*
                             File directory = new File(Environment.getExternalStorageDirectory() + File.separator +
                                     "/" + getResources().getString(R.string.app_name) + "/");
                             directory.mkdirs(); // создание директории, если её нет
@@ -139,7 +142,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
                             catch (IOException e) {
                                 e.printStackTrace();
                                 error = true;
-                            }
+                            }*/
                         }
                     }
                     catch (Exception e) {
@@ -200,7 +203,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
                                 bg_edited.delete();
                             }
 
-                            // сохранение ноовго изо
+                            // сохранение нового изо
                             FileOutputStream fos = new FileOutputStream(new File(
                                     new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
                                             MODE_PRIVATE), intent.getStringExtra(FILENAME))); // bg.png
