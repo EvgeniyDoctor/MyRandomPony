@@ -6,7 +6,7 @@
     <string name="settings_progress_title">Downloading</string>
     <string name="settings_enable">Enabled</string>
     <string name="settings_next_image">Next</string>
-    <string name="settings_only_mobile">Only for mobile screen resolution</string>
+    <string name="settings_only_mobile">Mobile screen resolution only</string>
     <string name="settings_radio_1">once a day</string>
     <string name="settings_radio_2">once a week</string>
     <string name="settings_radio_3">once a month</string>
@@ -27,19 +27,17 @@
     <string name="url_full_size_download" translatable="false">https://www.mylittlewallpaper.com/images/o_</string>
     <string name="cancel">Cancel</string>
     <string name="url_full_size_download_pref" translatable="false">url_full_size_download</string>
-    <string name="settings_alert_msg">Does need to load the previous image?</string>
     <string name="refresh_frequency_curr_day" translatable="false">refresh_frequency_curr_day</string>
     <string name="refresh_frequency_curr_week" translatable="false">refresh_frequency_curr_week</string>
     <string name="settings_hint1_flag" translatable="false">settings_hint1_flag</string>
     <string name="settings_hint2_flag" translatable="false">settings_hint2_flag</string>
-    <string name="settings_hint1_alert_msg">If you like the picture, just click on it and your background will change!</string>
-    <string name="flag_qstn_about_load" translatable="false">flag_qstn_about_load</string>
+    <string name="settings_hint1_alert_msg">If you like the image, click on it to set it as the background!\n\nTo resize or crop, press \"Edit\", return to the original image - press \"Cancel\".</string>
     <string name="settings_update_error">mylittlewallpaper.com: cannot be reached</string>
     <string name="settings_download_error">Downloading error</string>
     <string name="file_name_edited" translatable="false">bg_edited.png</string>
     <string name="settings_cancel_image">Cancel</string>
     <string name="settings_edit_image">Edit</string>
-    <string name="settings_image_cancel1">There is nothing to undo</string>
+    <string name="settings_image_cancel1">No edited image</string>
     <string name="settings_image_cancel2">Cancel: unknown error</string>
     <string name="settings_image_edit">Editing</string>
     <string name="settings_wifi_only">WiFi only</string>
@@ -47,8 +45,11 @@
     <string name="settings_hint2_alert_title">Hi!</string>
     <string name="settings_hint2_alert_msg">You can set a new background right now by clicking on the “Next” button, or check the box “Enabled” and wait for a new day!\n\nIf you have any questions, look in the \"Help\"!</string>
     <string name="settings_help_title">Help</string>
-    <string name="settings_help_text">You can set a new background right now by clicking on the “Next” button, or check “Enabled” and wait for a new day!\n\nIf the new image is too large and you want to crop it, click on the \"Edit\" Button, and if you want to restore the original size, click on \"Cancel\".\n\nTo set the background, click on the picture.\nAfter editing the image, you need to click it again to set it as the background.</string>
+    <string name="settings_help_text">You can set a new background right now by clicking on the “Next” button, or check “Enabled” and wait for a new day!\n\nIf the new image is too large and you want to crop it, click on the \"Edit\" Button, and if you want to restore the original size, click on \"Cancel\".\n\nTo set the background, click on the image.\nAfter editing the image, you need to click it again to set it as the background.</string>
     <string name="menu_item_help">Help</string>
     <string name="menu_item_about">About</string>
     <string name="about_text">My Little Pony © Hasbro\n\nAll images are located on mylittlewallpaper.com and belong to their authors.\nThis program was developed by Evgeniy Doctor: https://evgeniydoctor.com\n\nIf you want to support the developer:\nhttps://paypal.me/evgeniydoctor</string>
+    <string name="hint_edit_first_click">No image. To download, click \"Next\"</string>
+    <string name="settings_first_edit_hint" translatable="false">settings_first_edit_hint</string>
+    <string name="hint_first_edit_text">After editing, click on the resulting image again to set it as the background.</string>
 </resources>

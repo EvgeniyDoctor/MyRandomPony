@@ -33,13 +33,16 @@
     <string name="settings_progress_title">Загрузка</string>
     <string name="settings_progress_msg">Подождите…</string>
     <string name="settings_load_error">Сеть недоступна или требуется только WiFi</string>
-    <string name="settings_alert_msg">Загрузить изображение, использовавшееся ранее?</string>
     <string name="settings_preview_setbackground">Фоновое изображение изменено</string>
-    <string name="settings_hint1_alert_msg">Если Вам понравится изображение, нажмите на него и фон изменится!</string>
+    <string name="settings_hint1_alert_msg">Если Вам понравится изображение, нажмите на него, чтобы установить как фон!\n\nЧтобы изменить размер или обрезать, нажмите \"Редакт.\", вернуть прежний вид - \"Отмена\".</string>
     <string name="settings_hint2_alert_title">Привет!</string>
     <string name="settings_hint2_alert_msg">Вы можете установить новый фон прямо сейчас, нажав на кнопку \"Дальше\", или отметьте галочкой пункт \"Включено\" и подождите нового дня!\n\nЕсли у Вас появятся вопросы, загляните в \"Помощь\"!</string>
     <string name="settings_update_error">mylittlewallpaper.com: недоступен</string>
     <string name="settings_download_error">При загрузке произошла ошибка</string>
-    <string name="settings_image_cancel1">Нечего отменять</string>
+    <string name="settings_image_cancel1">Нет отредактированного изображения</string>
     <string name="settings_image_cancel2">Отмена: неизвестная ошибка</string>
+
+    <string name="hint_first_edit_text">После редактирования нажмите на получившееся изображение ещё раз, чтобы установить как фон.</string>
+    <string name="hint_edit_first_click">Нет изображения. Для загрузки нажмите \"Дальше\"</string>
+
 </resources>

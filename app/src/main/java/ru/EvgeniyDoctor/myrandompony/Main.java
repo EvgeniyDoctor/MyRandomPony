@@ -46,13 +46,8 @@ public class Main extends AppCompatActivity {
     // (и я не помню, то ли ещё раз надо перевернуть), то изображение пропадёт, а позже, видимо, при окончании загрузки,
     // при новом повороте экрана появится новое, только что загруженное изображение. Подумать, нужно ли с этим что-то делать.
 
-    // TODO: 29.01.2018 - удалить строки из ресурсов про загрузку предыдущего изображения
 
-    // TODO: чистая установка, при нажатии на Редакт. не выдаётся ошибка, хотя фон ещё не загружен
-    // TODO: в первый раз после редакт. нужно показать сообщение, что на картинку надо нажать
-    // TODO: сделать сброс того, что подсказки уже показаны? Или не делать?
 
-    //private boolean flag_qstn_about_load = false;
     private static final String
             tag = "pony";
     private CheckBox
@@ -69,6 +64,8 @@ public class Main extends AppCompatActivity {
             radio_button1,
             radio_button2,
             radio_button3;
+    static AppPreferences
+            settings; // res. - https://github.com/grandcentrix/tray
     private AlertDialog
         alertDialog = null;
     /*
@@ -79,8 +76,7 @@ public class Main extends AppCompatActivity {
     res. - http://stackoverflow.com/questions/11051172/progressdialog-and-alertdialog-cause-leaked-window
      */
 
-    static AppPreferences
-            settings; // res. - https://github.com/grandcentrix/tray
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,8 +223,6 @@ public class Main extends AppCompatActivity {
     // пункты меню из 3 точек
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         switch (item.getItemId()) {
             case R.id.menu_item_action_help:
                 callDialog(R.string.settings_help_title, R.string.settings_help_text);
@@ -293,6 +287,7 @@ public class Main extends AppCompatActivity {
                                     MODE_PRIVATE), getResources().getString(R.string.file_name));
 
                     if (!input.exists()) {
+                        Toast.makeText(Main.this, R.string.hint_edit_first_click, Toast.LENGTH_LONG).show();
                         return;
                     }
 
@@ -313,21 +308,6 @@ public class Main extends AppCompatActivity {
 
                 case R.id.btn_next: // кнопка "дальше"
                     if (check_internet_connection(settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
-                        // hint
-                        if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                            builder.setMessage(R.string.settings_hint1_alert_msg);
-                            builder.setCancelable(false);
-                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    settings.put(getResources().getString(R.string.settings_hint1_flag), false);
-                                }
-                            });
-                            alertDialog = builder.create();
-                            alertDialog.show();
-                        }
-
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
                         progressDialog.setCanceledOnTouchOutside(false);
@@ -584,6 +564,22 @@ public class Main extends AppCompatActivity {
                     if (progressDialog != null)
                         progressDialog.cancel();
                     unregisterReceiver(receiver);
+
+                    // подсказка после первой загрузки изображения на кнопку "Дальше"
+                    if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+                        builder.setMessage(R.string.settings_hint1_alert_msg);
+                        builder.setCancelable(false);
+                        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                settings.put(getResources().getString(R.string.settings_hint1_flag), false);
+                            }
+                        });
+                        alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+
                     break;
 
                 case NOT_CONNECTED:
@@ -613,11 +609,24 @@ public class Main extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             current_wallpaper.setImageBitmap(open_background());
-            Log.e(tag, "crop OK");
+
+            if (!settings.contains(getResources().getString(R.string.settings_first_edit_hint))) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+                builder.setMessage(R.string.hint_first_edit_text);
+                builder.setCancelable(false);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        settings.put(getResources().getString(R.string.settings_first_edit_hint), true);
+                    }
+                });
+                alertDialog = builder.create();
+                alertDialog.show();
+            }
+
+            //Log.e(tag, "crop OK");
         }
-        else if (resultCode == UCrop.RESULT_ERROR) {
-            Log.e(tag, "crop not OK");
-        }
+        //else if (resultCode == UCrop.RESULT_ERROR) {Log.e(tag, "crop not OK");}
     }
     //----------------------------------------------------------------------------------------------
 }
