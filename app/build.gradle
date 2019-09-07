@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "ru.EvgeniyDoctor.myrandompony"
+        applicationId "ru.EvgeniyDoctor.myrandompony2"
         resValue "string", "tray__authority", "${applicationId}.tray" // add this to set a unique tray authority based on your applicationId
         minSdkVersion 15
         targetSdkVersion 25

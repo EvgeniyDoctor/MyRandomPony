@@ -60,20 +60,4 @@
             android:textSize="16sp"
             android:gravity="start"/>
     </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:onClick="about"
-            android:text="@string/about"
-            android:textColor="@color/colorText"
-            android:textSize="14sp"/>
-    </LinearLayout>
 </LinearLayout>

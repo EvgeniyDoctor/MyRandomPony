@@ -1,11 +1,7 @@
 <resources>
-
     <!--> Common strings <-->
-    <string name="about">О приложении</string>
-
     <string name="ok">Да</string>
     <string name="cancel">Отмена</string>
-
 
 
     <!--> Main lay <-->
@@ -18,9 +14,18 @@
     <string name="settings_edit_image">Редакт.</string>
     <string name="settings_next_image">Дальше</string>
     <string name="settings_preview">Предпросмотр</string>
-    <string name="copyright">My Little Pony © Hasbro\nВсе изображения © принадлежат их авторам\nВсе изображения расположены на: mylittlewallpaper.com\nПрограмму разработал Евгений Доктор\nСайт: doctor-the-developer.ru\n\nЭто мобильное приложение третьей стороны для доступа к изображениям на сайте mylittlewallpaper.com. Разработчик не несёт ответственности за содержимое изображений.\n\nЕсли Вам понравилось это приложение, Вы можете отблагодарить разработчика, переведя любую сумму на любой из счётов WebMoney:\n\nR649247938330\nZ020450459106</string>
     <string name="settings_image_edit">Редактирование</string>
     <string name="settings_wifi_only">Только WiFi</string>
+
+
+    <!--menu-->
+    <string name="menu_item_about">О приложении</string>
+    <string name="about">О приложении</string>
+    <string name="about_text">My Little Pony © Hasbro\n\nВсе изображения расположены на сайте mylittlewallpaper.com и принадлежат их авторам.\nПрограмму разработал Евгений Доктор: https://evgeniydoctor.com\n\nЕсли Вы хотите поддержать разработчика:\nhttps://paypal.me/evgeniydoctor</string>
+
+    <string name="menu_item_help">Помощь</string>
+    <string name="settings_help_title">Помощь</string>
+    <string name="settings_help_text">Вы можете установить новый фон прямо сейчас, нажав на кнопку \"Дальше\", или отметьте галочкой пункт \"Включено\" и подождите нового дня!\n\nЕсли новое изображение слишком большое и Вы хотите обрезать его - нажмите на кнопку \"Редакт.\", а если хотите вернуть прежний вид - нажмите \"Отмена\".\n\nЧтобы установить фон, нажмите на картинку.\nПосле редактирования изображения на него нужно нажать ещё раз, чтобы установить как фон.\n</string>
 
 
     <!--> Main java <-->
@@ -32,7 +37,7 @@
     <string name="settings_preview_setbackground">Фоновое изображение изменено</string>
     <string name="settings_hint1_alert_msg">Если Вам понравится изображение, нажмите на него и фон изменится!</string>
     <string name="settings_hint2_alert_title">Привет!</string>
-    <string name="settings_hint2_alert_msg">Если Вы хотите загрузить свой первый фон прямо сейчас, нажмите кнопку \"Дальше\"\n\nКнопка \"Редакт.\" позволит обрезать изображение, а кнопка \"Отмена\" вернёт первоначальный вид изображения</string>
+    <string name="settings_hint2_alert_msg">Вы можете установить новый фон прямо сейчас, нажав на кнопку \"Дальше\", или отметьте галочкой пункт \"Включено\" и подождите нового дня!\n\nЕсли у Вас появятся вопросы, загляните в \"Помощь\"!</string>
     <string name="settings_update_error">mylittlewallpaper.com: недоступен</string>
     <string name="settings_download_error">При загрузке произошла ошибка</string>
     <string name="settings_image_cancel1">Нечего отменять</string>

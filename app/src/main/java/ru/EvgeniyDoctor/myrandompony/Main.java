@@ -19,6 +19,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -45,6 +47,10 @@ public class Main extends AppCompatActivity {
     // при новом повороте экрана появится новое, только что загруженное изображение. Подумать, нужно ли с этим что-то делать.
 
     // TODO: 29.01.2018 - удалить строки из ресурсов про загрузку предыдущего изображения
+
+    // TODO: чистая установка, при нажатии на Редакт. не выдаётся ошибка, хотя фон ещё не загружен
+    // TODO: в первый раз после редакт. нужно показать сообщение, что на картинку надо нажать
+    // TODO: сделать сброс того, что подсказки уже показаны? Или не делать?
 
     //private boolean flag_qstn_about_load = false;
     private static final String
@@ -173,42 +179,6 @@ public class Main extends AppCompatActivity {
             stopService(new Intent(this, Service_Refresh.class));
         }
 
-        // если программа была установлена до этого, но удалена --->
-        /*
-        if (savedInstanceState != null) {
-            flag_qstn_about_load = savedInstanceState.getBoolean(getResources().getString(R.string.flag_qstn_about_load));
-        }
-
-        if (!flag_qstn_about_load && !new File(
-                new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-                getResources().getString(R.string.file_name)).exists()
-                &&
-                new File(new File(Environment.getExternalStorageDirectory() + File.separator + "/" + getResources().getString(R.string.app_name) + "/"),
-                        "data.txt").exists()
-                ) { // если не сущесвует bg.jpeg и существует .My Random Pony/data
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.settings_alert_msg);
-            builder.setCancelable(false);
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    flag_qstn_about_load = true;
-                    load_previous_wallpaper();
-                }
-            });
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    flag_qstn_about_load = true;
-                    dialog.cancel();
-                }
-            });
-            alertDialog = builder.create();
-            alertDialog.show();
-        }
-        */
-        //<---
-
         // hint
         if (!settings.contains(getResources().getString(R.string.settings_hint2_flag))) {
             AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
@@ -238,6 +208,58 @@ public class Main extends AppCompatActivity {
         current_wallpaper.setImageBitmap(open_background());
 
         progressDialog = new ProgressDialog(Main.this);
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    // создание меню из 3 точек
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+        //return super.onCreateOptionsMenu(menu);
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    // пункты меню из 3 точек
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        switch (item.getItemId()) {
+            case R.id.menu_item_action_help:
+                callDialog(R.string.settings_help_title, R.string.settings_help_text);
+                return true;
+
+            case R.id.menu_item_action_about:
+                callDialog(R.string.about, R.string.about_text);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    // вызов диалогового окна
+    protected void callDialog(int title, int message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setCancelable(true);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.show();
     }
     //----------------------------------------------------------------------------------------------
 
@@ -388,16 +410,6 @@ public class Main extends AppCompatActivity {
 
 
 
-    /*
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(getResources().getString(R.string.flag_qstn_about_load), flag_qstn_about_load);
-    }*/
-    //----------------------------------------------------------------------------------------------
-
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -480,27 +492,6 @@ public class Main extends AppCompatActivity {
 
 
 
-    // вызывается, если прога была установлена ранее, но удалена, и нужна обоина, стоявшая ранее
-    /*
-    public void next_wallpaper() {
-        progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
-        progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-
-        registerReceiver(receiver, new IntentFilter(IntentService_LoadNewWallpaper.NOTIFICATION));
-
-        // res. - http://www.vogella.com/tutorials/AndroidServices/article.html
-        Intent intent = new Intent(Main.this, IntentService_LoadNewWallpaper.class);
-        intent.putExtra(IntentService_LoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-        intent.putExtra(IntentService_LoadNewWallpaper.URL_STRING, settings.getString(getResources().getString(R.string.url_full_size_download_pref), "")); // путь уже содержит id и .jpeg
-        intent.putExtra(IntentService_LoadNewWallpaper.need_change_bg, ""); // "" - не нужно менять фон
-        startService(intent);
-    }*/
-    //----------------------------------------------------------------------------------------------
-
-
-
     // установка фона по нажатию на preview
     public void set_background(View view) {
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
@@ -512,68 +503,6 @@ public class Main extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    //----------------------------------------------------------------------------------------------
-
-
-
-    // чтение файла со ссылками и их сохранение
-    /*
-    private void load_previous_wallpaper () {
-        if (check_internet_connection(settings.getBoolean(getResources().getString(R.string.wifi_only), true))) { // проверка здесь, потому что иначе если нажать "Да" при отсутствии связи, появится ссылка без изображения
-            // если не существует, чтение ссылок из файла страницы загрузки и загрузки в полном размере
-            //File file_path = new File(Environment.getExternalStorageDirectory() + File.separator +
-            //        "/." + getResources().getString(R.string.app_name) + "/");
-            File configuration = new File(new File(Environment.getExternalStorageDirectory() + File.separator +
-                    "/" + getResources().getString(R.string.app_name) + "/"),
-                    "data.txt");
-            StringBuilder stringBuilder = new StringBuilder();
-            String str;
-
-            // чтение файла data
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(configuration));
-
-                while ((str = br.readLine()) != null) {
-                    stringBuilder.append(str);
-                    stringBuilder.append('\n');
-                }
-                br.close();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // разделение ссылок
-            char[] _symbol = stringBuilder.toString().toCharArray();
-            stringBuilder.setLength(0);
-            boolean flag = false;
-            for (char i : _symbol) { // data содержит все ссылки в одну строку
-                switch (i) {
-                    case ';':
-                        if (!flag) {
-                            settings.put(getResources().getString(R.string.downloadurl), stringBuilder.toString());
-
-                            stringBuilder.setLength(0);
-                            flag = true;
-                        }
-                        else {
-                            settings.put(getResources().getString(R.string.url_full_size_download_pref), stringBuilder.toString());
-
-                            stringBuilder.setLength(0);
-                        }
-                        break;
-
-                    default:
-                        stringBuilder.append(i);
-                }
-            }
-
-            next_wallpaper(); // загрузка нужной обои
-        }
-        else {
-            Toast.makeText(Main.this, R.string.settings_load_error, Toast.LENGTH_LONG).show();
-        }
-    }*/
     //----------------------------------------------------------------------------------------------
 
 
@@ -595,25 +524,6 @@ public class Main extends AppCompatActivity {
         }
 
         return netInfo.isConnectedOrConnecting();
-    }
-    //----------------------------------------------------------------------------------------------
-
-
-
-    // о приложении
-    public void about(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.about);
-        builder.setMessage(R.string.copyright);
-        builder.setCancelable(true);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog = builder.create();
-        alertDialog.show();
     }
     //----------------------------------------------------------------------------------------------
 

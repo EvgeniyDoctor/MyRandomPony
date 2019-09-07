@@ -4,7 +4,6 @@
     <string name="settings_load_error">Your network connection is unavailable or \"WiFi only\" mode is enabled</string>
     <string name="settings_progress_msg">Wait…</string>
     <string name="settings_progress_title">Downloading</string>
-    <string name="copyright">My Little Pony © Hasbro\nAll wallpapers © to their respective artists\nAll wallpapers are located at: mylittlewallpaper.com\nThis program was developed by Evgeniy Doctor\nOfficial website: doctor-the-developer.ru\n\nThis is a third-party mobile application for accessing the images on mylittlewallpaper.com. The developer has no control over what images are available.\n\nIf you really like this application, you can say \"Thanks\" to the developer via WebMoney:\n\nZ020450459106</string>
     <string name="settings_enable">Enabled</string>
     <string name="settings_next_image">Next</string>
     <string name="settings_only_mobile">Only for mobile screen resolution</string>
@@ -46,5 +45,10 @@
     <string name="settings_wifi_only">WiFi only</string>
     <string name="wifi_only" translatable="false">wifi_only</string>
     <string name="settings_hint2_alert_title">Hi!</string>
-    <string name="settings_hint2_alert_msg">If you want to download your first background right now, click the \"Next\" button\n\n\"Edit\" button will cut the image, and the \"Cancel\" button will return the original image</string>
+    <string name="settings_hint2_alert_msg">You can set a new background right now by clicking on the “Next” button, or check the box “Enabled” and wait for a new day!\n\nIf you have any questions, look in the \"Help\"!</string>
+    <string name="settings_help_title">Help</string>
+    <string name="settings_help_text">You can set a new background right now by clicking on the “Next” button, or check “Enabled” and wait for a new day!\n\nIf the new image is too large and you want to crop it, click on the \"Edit\" Button, and if you want to restore the original size, click on \"Cancel\".\n\nTo set the background, click on the picture.\nAfter editing the image, you need to click it again to set it as the background.</string>
+    <string name="menu_item_help">Help</string>
+    <string name="menu_item_about">About</string>
+    <string name="about_text">My Little Pony © Hasbro\n\nAll images are located on mylittlewallpaper.com and belong to their authors.\nThis program was developed by Evgeniy Doctor: https://evgeniydoctor.com\n\nIf you want to support the developer:\nhttps://paypal.me/evgeniydoctor</string>
 </resources>
