@@ -20,44 +20,46 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
 
-        <meta-data android:name="android.max_aspect"
-            android:value="2.1"/>
-
-        <activity android:name="ru.EvgeniyDoctor.myrandompony.Main">
+        <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service
-            android:name="ru.EvgeniyDoctor.myrandompony.Service_Refresh"
-            android:process=":Refresh"
-            android:launchMode="singleInstance"
+            android:name=".Service_Refresh"
             android:enabled="true"
             android:exported="true"
+            android:launchMode="singleInstance"
             android:permission=""
+            android:process=":Refresh"
             tools:ignore="ExportedService" />
         <service
-            android:name="ru.EvgeniyDoctor.myrandompony.IntentService_LoadNewWallpaper"
+            android:name=".IntentService_LoadNewWallpaper"
+            android:exported="false"
             android:launchMode="singleInstance"
-            android:process=":Load"
-            android:exported="false" />
+            android:process=":Load" />
 
         <receiver
-            android:name="ru.EvgeniyDoctor.myrandompony.AutostartMyRandomPony"
+            android:name=".AutostartMyRandomPony"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".About"></activity>
     </application>
 
 </manifest>

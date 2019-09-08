@@ -224,12 +224,13 @@ public class Main extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_action_help:
+            case R.id.menu_item_action_help: // помощь
                 callDialog(R.string.settings_help_title, R.string.settings_help_text);
                 return true;
 
-            case R.id.menu_item_action_about:
-                callDialog(R.string.about, R.string.about_text);
+            case R.id.menu_item_action_about: // о приложении
+                Intent intent = new Intent(this, About.class);
+                startActivity(intent);
                 return true;
 
             default:
