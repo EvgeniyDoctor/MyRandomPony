@@ -21,7 +21,6 @@
     <!--menu-->
     <string name="menu_item_about">О приложении</string>
     <string name="about">О приложении</string>
-    <string name="about_text">My Little Pony © Hasbro\n\nВсе изображения расположены на сайте mylittlewallpaper.com и принадлежат их авторам.\nПрограмму разработал Евгений Доктор: https://evgeniydoctor.com\n\nЕсли Вы хотите поддержать разработчика:\nhttps://paypal.me/evgeniydoctor\n\nТакже проверьте мою музыку!\nhttps://www.youtube.com/c/evgeniydoctor</string>
 
     <string name="menu_item_help">Помощь</string>
     <string name="settings_help_title">Помощь</string>
@@ -44,5 +43,7 @@
 
     <string name="hint_first_edit_text">После редактирования нажмите на получившееся изображение ещё раз, чтобы установить как фон.\n\nВернуть прежний вид - \"Отмена\".</string>
     <string name="hint_edit_first_click">Нет изображения. Для загрузки нажмите \"Дальше\"</string>
+    <string name="about_text">My Little Pony © Hasbro\n\nВсе изображения расположены на сайте mylittlewallpaper.com и принадлежат их авторам.\n\nПрограмму разработал Евгений Доктор.\n\nПоддержать меня: https://paypal.me/evgeniydoctor\n\nТакже послушайте мою музыку и миксы! https://www.youtube.com/channel/UCvPZd3PqeTxNciigUdmgRaQ
+    </string>
 
 </resources>

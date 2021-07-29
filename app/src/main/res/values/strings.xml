@@ -48,7 +48,8 @@
     <string name="settings_help_text">You can set a new background right now by clicking on the “Next” button, or check “Enabled” and wait for a new day!\n\nIf the new image is too large and you want to crop it, click on the \"Edit\" button, and if you want to restore the original size, click on \"Cancel\".\n\nTo set the background, click on the image.\nAfter editing the image, you need to click it again to set it as the background.</string>
     <string name="menu_item_help">Help</string>
     <string name="menu_item_about">About</string>
-    <string name="about_text">My Little Pony © Hasbro\n\nAll images are located on mylittlewallpaper.com and belong to their authors.\nThis program was developed by Evgeniy Doctor: https://evgeniydoctor.com\n\nIf you want to support the developer:\nhttps://paypal.me/evgeniydoctor\n\nAlso check out my music!\nhttps://www.youtube.com/c/evgeniydoctor</string>
+    <string name="about_text">My Little Pony © Hasbro\n\nAll images are located on mylittlewallpaper.com and belong to their authors.\n\nThis app was developed by Evgeniy Doctor.\n\nSupport me: https://paypal.me/evgeniydoctor\n\nAlso listen to my music and mixes! https://www.youtube.com/channel/UCvPZd3PqeTxNciigUdmgRaQ
+    </string>
     <string name="hint_edit_first_click">No image. To download, click \"Next\"</string>
     <string name="settings_first_edit_hint" translatable="false">settings_first_edit_hint</string>
     <string name="hint_first_edit_text">After editing, click on the resulting image again to set it as the background.\n\nReturn to the original image - press \"Cancel\".</string>
