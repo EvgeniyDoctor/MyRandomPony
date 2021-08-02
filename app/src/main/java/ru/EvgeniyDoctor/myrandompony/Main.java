@@ -1,5 +1,6 @@
 package ru.EvgeniyDoctor.myrandompony;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -43,17 +44,6 @@ import java.util.Calendar;
 
 
 public class Main extends AppCompatActivity {
-
-    // TODO: 5/20/17 Несрочно - если нажать "Дальше", затем перевернуть экран
-    // (и я не помню, то ли ещё раз надо перевернуть), то изображение пропадёт, а позже, видимо, при окончании загрузки,
-    // при новом повороте экрана появится новое, только что загруженное изображение. Подумать, нужно ли с этим что-то делать.
-
-
-
-    // todo 02.08.2021: удалить в xml все onClick и перенести их сюда
-
-
-
     private CheckBox
             checkBox_enabled,
             checkBox_mobile_only,
@@ -92,28 +82,34 @@ public class Main extends AppCompatActivity {
 
         settings = new AppPreferences(getApplicationContext());
 
-        Button btn_cancel = (Button) findViewById(R.id.btn_cancel);
-        Button btn_edit = (Button) findViewById(R.id.btn_edit);
-        Button btn_next = (Button) findViewById(R.id.btn_next);
-        FrameLayout enable_layout = (FrameLayout) findViewById(R.id.enable_layout);
-        FrameLayout mobile_only_layout = (FrameLayout) findViewById(R.id.mobile_only_layout);
-        FrameLayout wifi_only_layout = (FrameLayout) findViewById(R.id.wifi_only_layout);
-        checkBox_enabled = (CheckBox) findViewById(R.id.enable_checkbox);
-        checkBox_mobile_only = (CheckBox) findViewById(R.id.only_mobile);
-        checkBox_wifi_only = (CheckBox) findViewById(R.id.only_wifi);
-        current_wallpaper = (ImageView) findViewById(R.id.current_wallpaper);
-        textview_download_url = (TextView) findViewById(R.id.download_url);
-        radio_button1 = (RadioButton) findViewById(R.id.radio_1);
-        radio_button2 = (RadioButton) findViewById(R.id.radio_2);
-        radio_button3 = (RadioButton) findViewById(R.id.radio_3);
+        Button btn_cancel               = (Button) findViewById(R.id.btn_cancel);
+        Button btn_edit                 = (Button) findViewById(R.id.btn_edit);
+        Button btn_next                 = (Button) findViewById(R.id.btn_next);
+        FrameLayout layout_enable       = (FrameLayout) findViewById(R.id.layout_enable);
+        FrameLayout layout_mobile_only  = (FrameLayout) findViewById(R.id.layout_mobile_only);
+        FrameLayout layout_wifi_only    = (FrameLayout) findViewById(R.id.layout_wifi_only);
+        checkBox_enabled                = (CheckBox) findViewById(R.id.enable_checkbox);
+        checkBox_mobile_only            = (CheckBox) findViewById(R.id.only_mobile);
+        checkBox_wifi_only              = (CheckBox) findViewById(R.id.only_wifi);
+        current_wallpaper               = (ImageView) findViewById(R.id.current_wallpaper);
+        textview_download_url           = (TextView) findViewById(R.id.download_url);
+        radio_button1                   = (RadioButton) findViewById(R.id.radio_1);
+        radio_button2                   = (RadioButton) findViewById(R.id.radio_2);
+        radio_button3                   = (RadioButton) findViewById(R.id.radio_3);
+        FrameLayout layout_radio_1      = (FrameLayout) findViewById(R.id.layout_radio_1);
+        FrameLayout layout_radio_2      = (FrameLayout) findViewById(R.id.layout_radio_2);
+        FrameLayout layout_radio_3      = (FrameLayout) findViewById(R.id.layout_radio_3);
 
         btn_cancel.setOnClickListener(click);
         btn_edit.setOnClickListener(click);
         btn_next.setOnClickListener(click);
-        enable_layout.setOnClickListener(click);
-        mobile_only_layout.setOnClickListener(click);
-        wifi_only_layout.setOnClickListener(click);
+        layout_enable.setOnClickListener(click);
+        layout_mobile_only.setOnClickListener(click);
+        layout_wifi_only.setOnClickListener(click);
         current_wallpaper.setOnClickListener(click);
+        layout_radio_1.setOnClickListener(click);
+        layout_radio_2.setOnClickListener(click);
+        layout_radio_3.setOnClickListener(click);
 
         // частота обновления
         if (settings.contains(getResources().getString(R.string.refresh_frequency))) {
@@ -226,6 +222,7 @@ public class Main extends AppCompatActivity {
 
 
     // пункты меню из 3 точек
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -266,6 +263,9 @@ public class Main extends AppCompatActivity {
 
 
     View.OnClickListener click = new View.OnClickListener() {
+        final Calendar calendar = Calendar.getInstance();
+
+        @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -335,7 +335,7 @@ public class Main extends AppCompatActivity {
                 // <--- buttons
 
                 // layers --->git
-                case R.id.enable_layout:
+                case R.id.layout_enable:
                     if (checkBox_enabled.isChecked()) {
                         checkBox_enabled.setChecked(false);
                         stopService(new Intent(Main.this, Service_Refresh.class));
@@ -355,7 +355,7 @@ public class Main extends AppCompatActivity {
                     settings.put(getResources().getString(R.string.enabled_pony_wallpapers), checkBox_enabled.isChecked());
                     break;
 
-                case R.id.mobile_only_layout:
+                case R.id.layout_mobile_only:
                     if (checkBox_mobile_only.isChecked()) {
                         checkBox_mobile_only.setChecked(false);
 
@@ -379,7 +379,7 @@ public class Main extends AppCompatActivity {
                     }
                     break;
 
-                case R.id.wifi_only_layout:
+                case R.id.layout_wifi_only:
                     if (checkBox_wifi_only.isChecked()) {
                         checkBox_wifi_only.setChecked(false);
                         settings.put(getResources().getString(R.string.wifi_only), checkBox_wifi_only.isChecked());
@@ -409,53 +409,46 @@ public class Main extends AppCompatActivity {
                     thread.start();
 
                     break;
+
+                // частота обновления обоев
+                case R.id.layout_radio_1:
+                    radio_button1.setChecked(true);
+                    radio_button2.setChecked(false);
+                    radio_button3.setChecked(false);
+                    settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
+                    settings.put(getResources().getString(R.string.refresh_frequency), 1);
+                    if (checkBox_enabled.isChecked()) {
+                        stopService(new Intent(Main.this, Service_Refresh.class));
+                        Helper.startService(Main.this);
+                    }
+                    break;
+
+                case R.id.layout_radio_2:
+                    radio_button1.setChecked(false);
+                    radio_button2.setChecked(true);
+                    radio_button3.setChecked(false);
+                    settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
+                    settings.put(getResources().getString(R.string.refresh_frequency), 2);
+                    if (checkBox_enabled.isChecked()) {
+                        stopService(new Intent(Main.this, Service_Refresh.class));
+                        Helper.startService(Main.this);
+                    }
+                    break;
+
+                case R.id.layout_radio_3:
+                    radio_button1.setChecked(false);
+                    radio_button2.setChecked(false);
+                    radio_button3.setChecked(true);
+                    settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH)); // current month
+                    settings.put(getResources().getString(R.string.refresh_frequency), 3);
+                    if (checkBox_enabled.isChecked()) {
+                        stopService(new Intent(Main.this, Service_Refresh.class));
+                        Helper.startService(Main.this);
+                    }
+                    break;
             }
         }
     };
-    //----------------------------------------------------------------------------------------------
-
-
-
-    // частота обновления обоев
-    public void refresh_frequency(View view) {
-        Calendar calendar = Calendar.getInstance();
-
-        switch (view.getId()) {
-            case R.id.layout_radio_1:
-                radio_button1.setChecked(true);
-                radio_button2.setChecked(false);
-                radio_button3.setChecked(false);
-                settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
-                settings.put(getResources().getString(R.string.refresh_frequency), 1);
-                if (checkBox_enabled.isChecked()) {
-                    stopService(new Intent(this, Service_Refresh.class));
-                    Helper.startService(Main.this);
-                }
-                break;
-            case R.id.layout_radio_2:
-                radio_button1.setChecked(false);
-                radio_button2.setChecked(true);
-                radio_button3.setChecked(false);
-                settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
-                settings.put(getResources().getString(R.string.refresh_frequency), 2);
-                if (checkBox_enabled.isChecked()) {
-                    stopService(new Intent(this, Service_Refresh.class));
-                    Helper.startService(Main.this);
-                }
-                break;
-            case R.id.layout_radio_3:
-                radio_button1.setChecked(false);
-                radio_button2.setChecked(false);
-                radio_button3.setChecked(true);
-                settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH)); // current month
-                settings.put(getResources().getString(R.string.refresh_frequency), 3);
-                if (checkBox_enabled.isChecked()) {
-                    stopService(new Intent(this, Service_Refresh.class));
-                    Helper.startService(Main.this);
-                }
-                break;
-        }
-    }
     //----------------------------------------------------------------------------------------------
 
 

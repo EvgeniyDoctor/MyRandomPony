@@ -23,7 +23,7 @@
                 android:checked="false"/>
 
             <FrameLayout
-                android:id="@+id/enable_layout"
+                android:id="@+id/layout_enable"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -58,7 +58,7 @@
                 android:checked="true"/>
 
             <FrameLayout
-                android:id="@+id/mobile_only_layout"
+                android:id="@+id/layout_mobile_only"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -94,7 +94,7 @@
                 android:checked="true"/>
 
             <FrameLayout
-                android:id="@+id/wifi_only_layout"
+                android:id="@+id/layout_wifi_only"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -131,7 +131,6 @@
 
                 <FrameLayout
                     android:id="@+id/layout_radio_1"
-                    android:onClick="refresh_frequency"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -158,7 +157,6 @@
 
                 <FrameLayout
                     android:id="@+id/layout_radio_2"
-                    android:onClick="refresh_frequency"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -184,7 +182,6 @@
 
                 <FrameLayout
                     android:id="@+id/layout_radio_3"
-                    android:onClick="refresh_frequency"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
