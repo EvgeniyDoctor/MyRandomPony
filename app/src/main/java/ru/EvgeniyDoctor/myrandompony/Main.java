@@ -18,6 +18,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,10 @@ public class Main extends AppCompatActivity {
     // TODO: 5/20/17 Несрочно - если нажать "Дальше", затем перевернуть экран
     // (и я не помню, то ли ещё раз надо перевернуть), то изображение пропадёт, а позже, видимо, при окончании загрузки,
     // при новом повороте экрана появится новое, только что загруженное изображение. Подумать, нужно ли с этим что-то делать.
+
+
+
+    // todo 02.08.2021: удалить в xml все onClick и перенести их сюда
 
 
 
@@ -108,6 +113,7 @@ public class Main extends AppCompatActivity {
         enable_layout.setOnClickListener(click);
         mobile_only_layout.setOnClickListener(click);
         wifi_only_layout.setOnClickListener(click);
+        current_wallpaper.setOnClickListener(click);
 
         // частота обновления
         if (settings.contains(getResources().getString(R.string.refresh_frequency))) {
@@ -383,47 +389,28 @@ public class Main extends AppCompatActivity {
                     }
                     break;
                 // <--- layers
+
+                case R.id.current_wallpaper: // press on the image
+                    ProgressDialog pd = new ProgressDialog(Main.this);
+                    pd.setTitle("Changing…");
+                    pd.setMessage(getResources().getString(R.string.settings_progress_msg));
+                    pd.setCanceledOnTouchOutside(false);
+                    pd.setCancelable(false); // back btn
+                    pd.show();
+
+                    Thread thread = new Thread() {
+                        @Override
+                        public void run() {
+                            set_background();
+                            pd.dismiss();
+                        }
+                    };
+                    thread.start();
+
+                    break;
             }
         }
     };
-    //----------------------------------------------------------------------------------------------
-
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        checkBox_enabled = null;
-        checkBox_mobile_only = null;
-        checkBox_wifi_only = null;
-        current_wallpaper = null;
-        textview_download_url = null;
-        settings = null;
-        radio_button1 = null;
-        radio_button2 = null;
-        radio_button3 = null;
-
-        if (alertDialog != null) {
-            alertDialog.dismiss();
-        }
-        alertDialog = null;
-
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-        progressDialog = null;
-
-        if (receiver != null) {
-            try {
-                unregisterReceiver(receiver); // отмена ресивера. Может быть вызвано, например, при изменении ориентации экрана.
-            }
-            catch (IllegalArgumentException ignored) {}
-        }
-        receiver = null;
-
-        System.gc();
-    }
     //----------------------------------------------------------------------------------------------
 
 
@@ -473,37 +460,15 @@ public class Main extends AppCompatActivity {
 
 
     // установка фона по нажатию на preview
-    public void set_background(View view) {
+    public void set_background() {
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
         try {
             myWallpaperManager.setBitmap(open_background()); // установка фона
-            Toast.makeText(this, R.string.settings_preview_setbackground, Toast.LENGTH_LONG).show();
+            //Toast.makeText(Main.this, R.string.settings_preview_setbackground, Toast.LENGTH_LONG).show(); // don't work in thread
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    //----------------------------------------------------------------------------------------------
-
-
-
-    // проверка, доступна ли сеть
-    private boolean check_internet_connection(boolean need_type) {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo == null) {
-            return false;
-        }
-
-        if (need_type) { // если важен тип подключения
-            if (netInfo.isConnectedOrConnecting()) {
-                if (settings.getBoolean(getResources().getString(R.string.wifi_only), true)) { // если нужен только wifi
-                    return netInfo.getTypeName().equals("WIFI");
-                }
-            }
-        }
-
-        return netInfo.isConnectedOrConnecting();
     }
     //----------------------------------------------------------------------------------------------
 
@@ -538,6 +503,28 @@ public class Main extends AppCompatActivity {
         }
 
         return null;
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    // проверка, доступна ли сеть
+    private boolean check_internet_connection(boolean need_type) {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo == null) {
+            return false;
+        }
+
+        if (need_type) { // если важен тип подключения
+            if (netInfo.isConnectedOrConnecting()) {
+                if (settings.getBoolean(getResources().getString(R.string.wifi_only), true)) { // если нужен только wifi
+                    return netInfo.getTypeName().equals("WIFI");
+                }
+            }
+        }
+
+        return netInfo.isConnectedOrConnecting();
     }
     //----------------------------------------------------------------------------------------------
 
@@ -627,6 +614,44 @@ public class Main extends AppCompatActivity {
             //Log.e(tag, "crop OK");
         }
         //else if (resultCode == UCrop.RESULT_ERROR) {Log.e(tag, "crop not OK");}
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        checkBox_enabled = null;
+        checkBox_mobile_only = null;
+        checkBox_wifi_only = null;
+        current_wallpaper = null;
+        textview_download_url = null;
+        settings = null;
+        radio_button1 = null;
+        radio_button2 = null;
+        radio_button3 = null;
+
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
+        alertDialog = null;
+
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        progressDialog = null;
+
+        if (receiver != null) {
+            try {
+                unregisterReceiver(receiver); // отмена ресивера. Может быть вызвано, например, при изменении ориентации экрана.
+            }
+            catch (IllegalArgumentException ignored) {}
+        }
+        receiver = null;
+
+        System.gc();
     }
     //----------------------------------------------------------------------------------------------
 }

@@ -27,6 +27,8 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+
 public class Service_Refresh extends Service {
 
     private int
