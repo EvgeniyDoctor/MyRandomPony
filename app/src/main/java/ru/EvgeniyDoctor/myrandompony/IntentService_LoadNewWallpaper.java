@@ -5,7 +5,6 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.util.Log;
 
 import net.grandcentrix.tray.AppPreferences;
@@ -17,18 +16,18 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+
+
 public class IntentService_LoadNewWallpaper extends IntentService {
     // res. - http://www.vogella.com/tutorials/AndroidServices/article.html
 
     public static final String
-            tag = "pony",
             URL_STRING = "urlpath",
             FILENAME = "filename",
             RESULT = "result",
@@ -57,12 +56,12 @@ public class IntentService_LoadNewWallpaper extends IntentService {
         JSONObject current_result = null;
         final boolean URL_STRING_is_empty = intent.getStringExtra(URL_STRING).equals("");
 
-        Log.e (tag, "URL_STRING 1 = " + intent.getStringExtra(URL_STRING));
+        Log.d(Helper.tag, "URL_STRING 1 = " + intent.getStringExtra(URL_STRING));
 
         // получаем данные с внешнего ресурса
         if (URL_STRING_is_empty) { // если надо загрузить новую картинку
             try { // функции нынче удалённого ParseTask
-                Log.e (tag, "ParseTask execute");
+                Log.d(Helper.tag, "ParseTask execute");
 
                 URL url;
                 final AppPreferences settings = new AppPreferences(getApplicationContext());
@@ -83,12 +82,12 @@ public class IntentService_LoadNewWallpaper extends IntentService {
                 // подключение к серверу
                 try {
                     if (urlConnection.getResponseCode() == 200) { // любой код restful, кроме 200 (OK)
-                        Log.e(tag, "Connect OK");
+                        Log.d(Helper.tag, "Connect OK");
                         urlConnection.connect();
                     }
                 }
                 catch (IOException e) {
-                    Log.e(tag, "HTTP answer != OK");
+                    Log.d(Helper.tag, "HTTP answer != OK");
                     e.printStackTrace();
                     send(Codes.NOT_CONNECTED);
                     error = true;
@@ -110,7 +109,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
                     try {
                         // json structure - https://www.mylittlewallpaper.com/c/my-little-pony/api-v1
                         String server_answer = buffer.toString();
-                        if (!server_answer.substring(0, 1).equals("{")) { // если первый символ buffer !={, значит, в ответ пришёл не json
+                        if (server_answer.charAt(0) != '{') { // если первый символ buffer !={, значит, в ответ пришёл не json
                             send(Codes.NOT_JSON);
                             error = true;
                         }
@@ -121,28 +120,6 @@ public class IntentService_LoadNewWallpaper extends IntentService {
 
                             // сохранение ссылки для загрузки (откроется страница с картинкой)
                             settings.put(getResources().getString(R.string.downloadurl), current_result.getString(getResources().getString(R.string.downloadurl)));
-
-                            // сохранение ссылки для загрузки и ссылки на изображение в полном размере
-                            //settings.put("downloadurlfull", getResources().getString(R.string.url_full_size_download) + current_result.getString("imageid") + ".png");
-
-                            /*
-                            File directory = new File(Environment.getExternalStorageDirectory() + File.separator +
-                                    "/" + getResources().getString(R.string.app_name) + "/");
-                            directory.mkdirs(); // создание директории, если её нет
-                            File configuration = new File(directory, "data.txt"); // создание файла с указанным названием
-                            FileWriter writer;
-                            try {
-                                writer = new FileWriter(configuration, false);
-                                writer.write(current_result.getString(getResources().getString(R.string.downloadurl)) +
-                                        ";" + getResources().getString(R.string.url_full_size_download) + current_result.getString("imageid") + ".png;");
-                                writer.close();
-
-                                Log.e(tag, "FileWriter");
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                                error = true;
-                            }*/
                         }
                     }
                     catch (Exception e) {
@@ -160,10 +137,10 @@ public class IntentService_LoadNewWallpaper extends IntentService {
 
         if (!error) {
             try { // функции IntentService_LoadNewWallpaper
-                Log.e(tag, "IntentService_LoadNewWallpaper execute");
+                Log.d(Helper.tag, "IntentService_LoadNewWallpaper execute");
 
                 if (current_result != null || !URL_STRING_is_empty) {
-                    Log.e(tag, "IntentService_LoadNewWallpaper TRUE current_result != null || !intent.getStringExtra(URL_STRING).equals(\"\")");
+                    Log.d(Helper.tag, "IntentService_LoadNewWallpaper TRUE current_result != null || !intent.getStringExtra(URL_STRING).equals(\"\")");
 
                     InputStream in;
 
@@ -199,7 +176,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
                                     new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
                                             MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
                             if (bg_edited.exists()) {
-                                Log.e (tag, "IntentService delete_bg_edited OK");
+                                Log.d(Helper.tag, "IntentService delete_bg_edited OK");
                                 bg_edited.delete();
                             }
 
@@ -266,7 +243,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
         intent.putExtra(RESULT, value);
         sendBroadcast(intent);
 
-        Log.e(tag, "IntentService sendBroadcast = " + value);
+        Log.d(Helper.tag, "IntentService sendBroadcast = " + value);
     }
     //----------------------------------------------------------------------------------------------
 }
