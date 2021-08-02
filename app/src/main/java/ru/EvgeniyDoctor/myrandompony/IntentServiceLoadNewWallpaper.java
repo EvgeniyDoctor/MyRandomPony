@@ -157,7 +157,7 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeStream(in, null, options);
 
-                        options.inSampleSize = calculate_size(options, 1000, 1000);
+                        options.inSampleSize = calculateSize(options, 1000, 1000);
                         options.inJustDecodeBounds = false;
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
 
@@ -210,7 +210,7 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
 
 
     // вычисление размеров картинки
-    public static int calculate_size(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    public static int calculateSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;

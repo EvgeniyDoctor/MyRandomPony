@@ -7,10 +7,6 @@ import android.util.Log;
 
 
 
-// todo 02.08.2021: Сервис стартовал, хотя он был выключен
-
-
-
 public class AutostartMyRandomPony extends BroadcastReceiver {
     public AutostartMyRandomPony() {
     }

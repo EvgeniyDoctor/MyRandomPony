@@ -4,8 +4,13 @@ package ru.EvgeniyDoctor.myrandompony;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
+
+import net.grandcentrix.tray.AppPreferences;
+
 import static androidx.core.content.ContextCompat.startForegroundService;
 
 
@@ -13,6 +18,29 @@ import static androidx.core.content.ContextCompat.startForegroundService;
 public class Helper {
     static final String tag = "edoctor"; // tag for logs
     static final String ACTION_NEXT_BUTTON = "ACTION_NEXT_BUTTON"; // действие для Intent, указывающее, что запуск состоялся при нажатии на кнопку "Дальше"
+
+
+
+    // проверка, доступна ли сеть
+    public static boolean checkInternetConnection(Context context, boolean need_type) {
+        AppPreferences settings = new AppPreferences(context);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo == null) {
+            return false;
+        }
+
+        if (need_type) { // если важен тип подключения
+            if (netInfo.isConnectedOrConnecting()) {
+                if (settings.getBoolean(context.getResources().getString(R.string.wifi_only), true)) { // если нужен только wifi
+                    return netInfo.getTypeName().equals("WIFI");
+                }
+            }
+        }
+
+        return netInfo.isConnectedOrConnecting();
+    }
+    //----------------------------------------------------------------------------------------------
 
 
 

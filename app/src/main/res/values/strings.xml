@@ -60,4 +60,5 @@
     <string name="hint_edit_first_click">No image. To download, click \"Next\"</string>
     <string name="settings_first_edit_hint" translatable="false">settings_first_edit_hint</string>
     <string name="hint_first_edit_text">After editing, click on the resulting image again to set it as the background.\n\nReturn to the original image - press \"Cancel\".</string>
+    <string name="changing_wallpaper_progress_title">Changing</string>
 </resources>

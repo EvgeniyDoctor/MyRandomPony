@@ -12,8 +12,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
@@ -71,6 +69,10 @@ public class Main extends AppCompatActivity {
 
 
 
+    // todo 03.08.2021: themes; disable 2 btns when no image
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,23 +83,23 @@ public class Main extends AppCompatActivity {
 
         settings = new AppPreferences(getApplicationContext());
 
-        Button btn_cancel               = (Button) findViewById(R.id.btn_cancel);
-        Button btn_edit                 = (Button) findViewById(R.id.btn_edit);
-        Button btn_next                 = (Button) findViewById(R.id.btn_next);
-        FrameLayout layout_enable       = (FrameLayout) findViewById(R.id.layout_enable);
-        FrameLayout layout_mobile_only  = (FrameLayout) findViewById(R.id.layout_mobile_only);
-        FrameLayout layout_wifi_only    = (FrameLayout) findViewById(R.id.layout_wifi_only);
-        checkBox_enabled                = (CheckBox) findViewById(R.id.enable_checkbox);
-        checkBox_mobile_only            = (CheckBox) findViewById(R.id.only_mobile);
-        checkBox_wifi_only              = (CheckBox) findViewById(R.id.only_wifi);
-        current_wallpaper               = (ImageView) findViewById(R.id.current_wallpaper);
-        textview_download_url           = (TextView) findViewById(R.id.download_url);
-        radio_button1                   = (RadioButton) findViewById(R.id.radio_1);
-        radio_button2                   = (RadioButton) findViewById(R.id.radio_2);
-        radio_button3                   = (RadioButton) findViewById(R.id.radio_3);
-        FrameLayout layout_radio_1      = (FrameLayout) findViewById(R.id.layout_radio_1);
-        FrameLayout layout_radio_2      = (FrameLayout) findViewById(R.id.layout_radio_2);
-        FrameLayout layout_radio_3      = (FrameLayout) findViewById(R.id.layout_radio_3);
+        Button btn_cancel               = findViewById(R.id.btn_cancel);
+        Button btn_edit                 = findViewById(R.id.btn_edit);
+        Button btn_next                 = findViewById(R.id.btn_next);
+        FrameLayout layout_enable       = findViewById(R.id.layout_enable);
+        FrameLayout layout_mobile_only  = findViewById(R.id.layout_mobile_only);
+        FrameLayout layout_wifi_only    = findViewById(R.id.layout_wifi_only);
+        checkBox_enabled                = findViewById(R.id.enable_checkbox);
+        checkBox_mobile_only            = findViewById(R.id.only_mobile);
+        checkBox_wifi_only              = findViewById(R.id.only_wifi);
+        current_wallpaper               = findViewById(R.id.current_wallpaper);
+        textview_download_url           = findViewById(R.id.download_url);
+        radio_button1                   = findViewById(R.id.radio_1);
+        radio_button2                   = findViewById(R.id.radio_2);
+        radio_button3                   = findViewById(R.id.radio_3);
+        FrameLayout layout_radio_1      = findViewById(R.id.layout_radio_1);
+        FrameLayout layout_radio_2      = findViewById(R.id.layout_radio_2);
+        FrameLayout layout_radio_3      = findViewById(R.id.layout_radio_3);
 
         btn_cancel.setOnClickListener(click);
         btn_edit.setOnClickListener(click);
@@ -201,7 +203,7 @@ public class Main extends AppCompatActivity {
         }
 
         // загрузка предпросмотра
-        current_wallpaper.setImageBitmap(open_background());
+        current_wallpaper.setImageBitmap(openBackground());
 
         progressDialog = new ProgressDialog(Main.this);
     }
@@ -275,7 +277,7 @@ public class Main extends AppCompatActivity {
                                     MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
-                            current_wallpaper.setImageBitmap(open_background());
+                            current_wallpaper.setImageBitmap(openBackground());
                         }
                         else {
                             Toast.makeText(Main.this, getResources().getString(R.string.settings_image_cancel2), Toast.LENGTH_LONG).show();
@@ -312,7 +314,7 @@ public class Main extends AppCompatActivity {
                     break;
 
                 case R.id.btn_next: // кнопка "дальше"
-                    if (check_internet_connection(settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
+                    if (Helper.checkInternetConnection(Main.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
                         progressDialog.setCanceledOnTouchOutside(false);
@@ -341,7 +343,7 @@ public class Main extends AppCompatActivity {
                     }
                     else { // чекбокс был ВЫключен при нажатии
                         checkBox_enabled.setChecked(true);
-                        if (!check_internet_connection(false)) {
+                        if (!Helper.checkInternetConnection(Main.this, false)) {
                             Toast.makeText(Main.this, R.string.settings_internet_warn, Toast.LENGTH_LONG).show();
                         }
                         Calendar calendar = Calendar.getInstance();
@@ -392,7 +394,7 @@ public class Main extends AppCompatActivity {
 
                 case R.id.current_wallpaper: // press on the image
                     ProgressDialog pd = new ProgressDialog(Main.this);
-                    pd.setTitle("Changing…");
+                    pd.setTitle(getResources().getString(R.string.changing_wallpaper_progress_title));
                     pd.setMessage(getResources().getString(R.string.settings_progress_msg));
                     pd.setCanceledOnTouchOutside(false);
                     pd.setCancelable(false); // back btn
@@ -401,7 +403,7 @@ public class Main extends AppCompatActivity {
                     Thread thread = new Thread() {
                         @Override
                         public void run() {
-                            set_background();
+                            setBackground();
                             pd.dismiss();
                         }
                     };
@@ -453,10 +455,10 @@ public class Main extends AppCompatActivity {
 
 
     // установка фона по нажатию на preview
-    public void set_background() {
+    public void setBackground() {
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
         try {
-            myWallpaperManager.setBitmap(open_background()); // установка фона
+            myWallpaperManager.setBitmap(openBackground()); // установка фона
             //Toast.makeText(Main.this, R.string.settings_preview_setbackground, Toast.LENGTH_LONG).show(); // don't work in thread
         }
         catch (IOException e) {
@@ -468,7 +470,7 @@ public class Main extends AppCompatActivity {
 
 
     // открытие фона
-    private Bitmap open_background() {
+    private Bitmap openBackground() {
         // res. - http://www.vogella.com/tutorials/AndroidApplicationOptimization/article.html#handling-bitmaps
         // https://habrahabr.ru/post/161027/
 
@@ -507,28 +509,6 @@ public class Main extends AppCompatActivity {
 
 
 
-    // проверка, доступна ли сеть
-    private boolean check_internet_connection(boolean need_type) {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo == null) {
-            return false;
-        }
-
-        if (need_type) { // если важен тип подключения
-            if (netInfo.isConnectedOrConnecting()) {
-                if (settings.getBoolean(getResources().getString(R.string.wifi_only), true)) { // если нужен только wifi
-                    return netInfo.getTypeName().equals("WIFI");
-                }
-            }
-        }
-
-        return netInfo.isConnectedOrConnecting();
-    }
-    //----------------------------------------------------------------------------------------------
-
-
-
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -539,7 +519,7 @@ public class Main extends AppCompatActivity {
                 case SUCCESS:
                     // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
                     // установка фона
-                    current_wallpaper.setImageBitmap(open_background());
+                    current_wallpaper.setImageBitmap(openBackground());
 
                     // установка ссылки для загрузки
                     if (settings.contains(getResources().getString(R.string.downloadurl))) {
@@ -595,7 +575,7 @@ public class Main extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            current_wallpaper.setImageBitmap(open_background());
+            current_wallpaper.setImageBitmap(openBackground());
 
             if (!settings.contains(getResources().getString(R.string.settings_first_edit_hint))) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);

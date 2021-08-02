@@ -14,8 +14,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -141,35 +139,13 @@ public class ServiceRefresh extends Service {
 
 
 
-    // проверка, доступна ли сеть
-    private boolean check_internet_connection(boolean need_type) {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo == null) {
-            return false;
-        }
-
-        if (need_type) { // если важен тип подключения
-            if (netInfo.isConnectedOrConnecting()) {
-                if (settings.getBoolean(getResources().getString(R.string.wifi_only), true)) { // если нужен только wifi
-                    return netInfo.getTypeName().equals("WIFI");
-                }
-            }
-        }
-
-        return netInfo.isConnectedOrConnecting();
-    }
-    //----------------------------------------------------------------------------------------------
-
-
-
     public void check_time() {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 // проверка, доступна ли сеть
-                if (! check_internet_connection(settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
+                if (!Helper.checkInternetConnection(ServiceRefresh.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
                     Log.d (Helper.tag, "No network connection or not WIFI, return");
                     return;
                 }
