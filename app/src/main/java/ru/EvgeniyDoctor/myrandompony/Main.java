@@ -18,6 +18,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +40,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 
+
+
 public class Main extends AppCompatActivity {
 
     // TODO: 5/20/17 Несрочно - если нажать "Дальше", затем перевернуть экран
@@ -47,8 +50,10 @@ public class Main extends AppCompatActivity {
 
 
 
-    private static final String
-            tag = "pony";
+    // todo 02.08.2021: После нажатия на картинку делать её неактивной, чтобы пользователь не мог тыкать много раз
+
+
+
     private CheckBox
             checkBox_enabled,
             checkBox_mobile_only,
@@ -168,7 +173,7 @@ public class Main extends AppCompatActivity {
 
         // запуск сервиса, если надо
         if (checkBox_enabled.isChecked()) {
-            startService(new Intent(this, Service_Refresh.class));
+            Helper.startService(Main.this);
         }
         else {
             stopService(new Intent(this, Service_Refresh.class));
@@ -319,7 +324,8 @@ public class Main extends AppCompatActivity {
                         intent.putExtra(IntentService_LoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
                         intent.putExtra(IntentService_LoadNewWallpaper.URL_STRING, "");
                         intent.putExtra(IntentService_LoadNewWallpaper.need_change_bg, ""); // "" - не нужно менять фон
-                        startService(intent);
+                        intent.setAction(Helper.ACTION_NEXT_BUTTON); // была нажата кнопка "Дальше", запустится обычный сервис, не ForegroundService
+                        Helper.startService(Main.this, intent);
                     }
                     else {
                         Toast.makeText(Main.this, R.string.settings_load_error, Toast.LENGTH_LONG).show();
@@ -343,7 +349,7 @@ public class Main extends AppCompatActivity {
                         settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
                         settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH));
 
-                        startService(new Intent(Main.this, Service_Refresh.class));
+                        Helper.startService(Main.this);
                     }
                     settings.put(getResources().getString(R.string.enabled_pony_wallpapers), checkBox_enabled.isChecked());
                     break;
@@ -357,7 +363,7 @@ public class Main extends AppCompatActivity {
                         // restart
                         if (checkBox_enabled.isChecked()) {
                             stopService(new Intent(Main.this, Service_Refresh.class));
-                            startService(new Intent(Main.this, Service_Refresh.class));
+                            Helper.startService(Main.this);
                         }
                     }
                     else { // чекбокс был ВЫключен при нажатии
@@ -367,7 +373,7 @@ public class Main extends AppCompatActivity {
 
                         if (checkBox_enabled.isChecked()) {
                             stopService(new Intent(Main.this, Service_Refresh.class));
-                            startService(new Intent(Main.this, Service_Refresh.class));
+                            Helper.startService(Main.this);
                         }
                     }
                     break;
@@ -441,7 +447,7 @@ public class Main extends AppCompatActivity {
                 settings.put(getResources().getString(R.string.refresh_frequency), 1);
                 if (checkBox_enabled.isChecked()) {
                     stopService(new Intent(this, Service_Refresh.class));
-                    startService(new Intent(this, Service_Refresh.class));
+                    Helper.startService(Main.this);
                 }
                 break;
             case R.id.layout_radio_2:
@@ -452,7 +458,7 @@ public class Main extends AppCompatActivity {
                 settings.put(getResources().getString(R.string.refresh_frequency), 2);
                 if (checkBox_enabled.isChecked()) {
                     stopService(new Intent(this, Service_Refresh.class));
-                    startService(new Intent(this, Service_Refresh.class));
+                    Helper.startService(Main.this);
                 }
                 break;
             case R.id.layout_radio_3:
@@ -463,7 +469,7 @@ public class Main extends AppCompatActivity {
                 settings.put(getResources().getString(R.string.refresh_frequency), 3);
                 if (checkBox_enabled.isChecked()) {
                     stopService(new Intent(this, Service_Refresh.class));
-                    startService(new Intent(this, Service_Refresh.class));
+                    Helper.startService(Main.this);
                 }
                 break;
         }
@@ -515,26 +521,32 @@ public class Main extends AppCompatActivity {
         // https://habrahabr.ru/post/161027/
 
         File background = new File(
-                new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-                getResources().getString(R.string.file_name_edited));
+            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
+            getResources().getString(R.string.file_name_edited)
+        );
 
         // если существует bg_edited.jpeg, то он и будет открыт, иначе - откроется исходное изо
-        if (! background.exists()) {
+        if (!background.exists()) {
             background = new File( // bg.jpeg
-                    new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-                    getResources().getString(R.string.file_name));
+                new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
+                getResources().getString(R.string.file_name)
+            );
         }
-        FileInputStream f = null;
+        FileInputStream fileInputStream = null;
 
-        try {
-            f = new FileInputStream(background);
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if(background.exists()) {
+            try {
+                //Log.d(Helper.tag, "background exists: " + background.exists());
+                fileInputStream = new FileInputStream(background);
+            }
+            catch (FileNotFoundException e) {
+                //Log.d(Helper.tag, "open_background catch");
+                e.printStackTrace();
+            }
         }
 
-        if (f != null) {
-            return BitmapFactory.decodeStream(f);
+        if (fileInputStream != null) {
+            return BitmapFactory.decodeStream(fileInputStream);
         }
 
         return null;
@@ -607,6 +619,7 @@ public class Main extends AppCompatActivity {
     // результат активити редактирования изо
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             current_wallpaper.setImageBitmap(open_background());
 
@@ -623,10 +636,6 @@ public class Main extends AppCompatActivity {
                 alertDialog = builder.create();
                 alertDialog.show();
             }
-
-            //Log.e(tag, "crop OK");
         }
-        //else if (resultCode == UCrop.RESULT_ERROR) {Log.e(tag, "crop not OK");}
     }
-    //----------------------------------------------------------------------------------------------
 }

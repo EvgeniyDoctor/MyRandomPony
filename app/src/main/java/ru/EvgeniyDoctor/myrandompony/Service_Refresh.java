@@ -1,6 +1,9 @@
 package ru.EvgeniyDoctor.myrandompony;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -10,10 +13,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import net.grandcentrix.tray.AppPreferences;
 import net.grandcentrix.tray.core.ItemNotFoundException;
@@ -27,22 +35,21 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Service_Refresh extends Service {
 
+
+public class Service_Refresh extends Service {
     private int
             type_refresh_frequency;
-    private static final String
-        tag = "pony";
     private Timer
             timer;
     private Calendar
             calendar;
     static AppPreferences
             settings;
+
     @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH"); // задание формата для получения часов
 
-
-
+    
 
     public Service_Refresh() {
     }
@@ -68,12 +75,18 @@ public class Service_Refresh extends Service {
 
     @Override
     public void onCreate() {
+        Log.d(Helper.tag, "onCreate");
         super.onCreate();
 
         settings = new AppPreferences(getApplicationContext());
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService();
+        }
+
         // завершение работы, если сервис был запущен при автостарте
         if (!settings.contains(getResources().getString(R.string.enabled_pony_wallpapers)) || !settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false)) {
+            Log.d(Helper.tag, "onCreate - stopSelf");
             stopSelf();
         }
 
@@ -86,8 +99,35 @@ public class Service_Refresh extends Service {
 
 
 
+    // res - https://stackoverflow.com/questions/47531742/startforeground-fail-after-upgrade-to-android-8-1
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startForegroundService(){
+        Log.d(Helper.tag, "startForegroundService started");
+        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+        String channelName = "My Background Service";
+        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+        channel.setLightColor(Color.BLUE);
+        channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
+        manager.createNotificationChannel(channel);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("App is running in background")
+            .setPriority(NotificationManager.IMPORTANCE_MIN)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .build();
+        startForeground(1, notification);
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
     @Override
     public void onDestroy() {
+        Log.d(Helper.tag, "Service - onDestroy");
         super.onDestroy();
 
         if (timer != null) {
@@ -130,28 +170,28 @@ public class Service_Refresh extends Service {
             public void run() {
                 // проверка, доступна ли сеть
                 if (! check_internet_connection(settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
-                    Log.e (tag, "No network connection or not WIFI, return");
+                    Log.d (Helper.tag, "No network connection or not WIFI, return");
                     return;
                 }
 
                 calendar = Calendar.getInstance();
-                Log.e (tag, dateFormat.format(calendar.getTime()) + ":" + calendar.get(Calendar.MINUTE));
+                Log.d (Helper.tag, dateFormat.format(calendar.getTime()) + ":" + calendar.get(Calendar.MINUTE));
 
                 switch (type_refresh_frequency) {
                     case 1:
-                        Log.e (tag, "case 1");
+                        Log.d (Helper.tag, "case 1");
                         int day = calendar.get(Calendar.DATE);
 
-                        Log.e (tag, "current day = " + day);
+                        Log.d (Helper.tag, "current day = " + day);
                         try {
-                            Log.e (tag, "saved day = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_day)));
+                            Log.d (Helper.tag, "saved day = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_day)));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
                         if (day != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_day), 0)) {
-                            Log.e(tag, "true, change began");
+                            Log.d(Helper.tag, "true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_day), day); // текущее число
 
@@ -162,23 +202,23 @@ public class Service_Refresh extends Service {
                             startService(intent);
                             System.gc();
                         }
-                        Log.e (tag, "-----------------------------------------");
+                        Log.d (Helper.tag, "-----------------------------------------");
                         break;
 
                     case 2:
-                        Log.e (tag, "case 2");
+                        Log.d (Helper.tag, "case 2");
                         int week = calendar.get(Calendar.WEEK_OF_YEAR);
 
-                        Log.e (tag, "current week = " + week);
+                        Log.d (Helper.tag, "current week = " + week);
                         try {
-                            Log.e (tag, "saved week = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_week)));
+                            Log.d (Helper.tag, "saved week = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_week)));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
                         if (week != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_week), 0)) {
-                            Log.e(tag, "true, change began");
+                            Log.d(Helper.tag, "true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_week), week); // номер текущей недели
 
@@ -189,23 +229,23 @@ public class Service_Refresh extends Service {
                             startService(intent);
                             System.gc();
                         }
-                        Log.e (tag, "-----------------------------------------");
+                        Log.d (Helper.tag, "-----------------------------------------");
                         break;
 
                     case 3:
-                        Log.e (tag, "case 3");
+                        Log.d (Helper.tag, "case 3");
                         int month = calendar.get(Calendar.MONTH);
 
-                        Log.e (tag, "current month = " + month);
+                        Log.d (Helper.tag, "current month = " + month);
                         try {
-                            Log.e (tag, "saved month = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_month)));
+                            Log.d (Helper.tag, "saved month = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_month)));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
                         if (month != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_month), 0)) { // текущий месяц != сохранённому
-                            Log.e(tag, "true, change began");
+                            Log.d(Helper.tag, "true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_month), month); // текущий месяц
 
@@ -216,7 +256,7 @@ public class Service_Refresh extends Service {
                             startService(intent);
                             System.gc();
                         }
-                        Log.e (tag, "-----------------------------------------");
+                        Log.d (Helper.tag, "-----------------------------------------");
                         break;
                 } //switch
             } // run
@@ -226,26 +266,22 @@ public class Service_Refresh extends Service {
 
 
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            IntentService_LoadNewWallpaper.Codes res = (IntentService_LoadNewWallpaper.Codes)
-                    intent.getSerializableExtra(IntentService_LoadNewWallpaper.RESULT);
+        IntentService_LoadNewWallpaper.Codes res = (IntentService_LoadNewWallpaper.Codes)
+                intent.getSerializableExtra(IntentService_LoadNewWallpaper.RESULT);
 
-            switch (res) {
-                case CHANGE_WALLPAPER:
-                    // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
-                    // установка фона
-                    WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-                    try {
-                        myWallpaperManager.setBitmap(open_background()); // установка фона
-                        System.gc();
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
+        if (res == IntentService_LoadNewWallpaper.Codes.CHANGE_WALLPAPER) {// res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
+            // установка фона
+            WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
+            try {
+                myWallpaperManager.setBitmap(open_background()); // установка фона
+                System.gc();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
         }
     };
     //----------------------------------------------------------------------------------------------
