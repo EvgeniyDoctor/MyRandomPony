@@ -3,7 +3,6 @@ package ru.EvgeniyDoctor.myrandompony;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
 
@@ -26,7 +25,7 @@ public class AutostartMyRandomPony extends BroadcastReceiver {
 
             Helper.startService(
                 context,
-                new Intent(context, Service_Refresh.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                new Intent(context, ServiceRefresh.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             );
         }
     }

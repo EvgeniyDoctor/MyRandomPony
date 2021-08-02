@@ -33,7 +33,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service
-            android:name=".Service_Refresh"
+            android:name=".ServiceRefresh"
             android:enabled="true"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -41,7 +41,7 @@
             android:process=":Refresh"
             tools:ignore="ExportedService" />
         <service
-            android:name=".IntentService_LoadNewWallpaper"
+            android:name=".IntentServiceLoadNewWallpaper"
             android:exported="false"
             android:launchMode="singleInstance"
             android:process=":Load" />

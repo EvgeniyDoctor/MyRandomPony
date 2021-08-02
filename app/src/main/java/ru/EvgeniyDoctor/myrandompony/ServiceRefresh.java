@@ -37,7 +37,7 @@ import java.util.TimerTask;
 
 
 
-public class Service_Refresh extends Service {
+public class ServiceRefresh extends Service {
     private int
             type_refresh_frequency;
     private Timer
@@ -51,7 +51,7 @@ public class Service_Refresh extends Service {
 
     
 
-    public Service_Refresh() {
+    public ServiceRefresh() {
     }
     //----------------------------------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ public class Service_Refresh extends Service {
         }
 
         type_refresh_frequency = settings.getInt(getResources().getString(R.string.refresh_frequency), 2);
-        registerReceiver(receiver, new IntentFilter(IntentService_LoadNewWallpaper.NOTIFICATION));
+        registerReceiver(receiver, new IntentFilter(IntentServiceLoadNewWallpaper.NOTIFICATION_LOAD_NEW_WALLPAPER));
 
         check_time();
     }
@@ -195,10 +195,10 @@ public class Service_Refresh extends Service {
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_day), day); // текущее число
 
-                            Intent intent = new Intent(Service_Refresh.this, IntentService_LoadNewWallpaper.class);
-                            intent.putExtra(IntentService_LoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-                            intent.putExtra(IntentService_LoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
-                            intent.putExtra(IntentService_LoadNewWallpaper.need_change_bg, "1");
+                            Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
+                            intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
+                            intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
+                            intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, "1");
                             startService(intent);
                             System.gc();
                         }
@@ -222,10 +222,10 @@ public class Service_Refresh extends Service {
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_week), week); // номер текущей недели
 
-                            Intent intent = new Intent(Service_Refresh.this, IntentService_LoadNewWallpaper.class);
-                            intent.putExtra(IntentService_LoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-                            intent.putExtra(IntentService_LoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
-                            intent.putExtra(IntentService_LoadNewWallpaper.need_change_bg, "1");
+                            Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
+                            intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
+                            intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
+                            intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, "1");
                             startService(intent);
                             System.gc();
                         }
@@ -249,10 +249,10 @@ public class Service_Refresh extends Service {
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_month), month); // текущий месяц
 
-                            Intent intent = new Intent(Service_Refresh.this, IntentService_LoadNewWallpaper.class);
-                            intent.putExtra(IntentService_LoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-                            intent.putExtra(IntentService_LoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
-                            intent.putExtra(IntentService_LoadNewWallpaper.need_change_bg, "1");
+                            Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
+                            intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
+                            intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
+                            intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, "1");
                             startService(intent);
                             System.gc();
                         }
@@ -269,10 +269,10 @@ public class Service_Refresh extends Service {
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        IntentService_LoadNewWallpaper.Codes res = (IntentService_LoadNewWallpaper.Codes)
-                intent.getSerializableExtra(IntentService_LoadNewWallpaper.RESULT);
+        IntentServiceLoadNewWallpaper.Codes res = (IntentServiceLoadNewWallpaper.Codes)
+                intent.getSerializableExtra(IntentServiceLoadNewWallpaper.RESULT);
 
-        if (res == IntentService_LoadNewWallpaper.Codes.CHANGE_WALLPAPER) {// res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
+        if (res == IntentServiceLoadNewWallpaper.Codes.CHANGE_WALLPAPER) {// res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
             // установка фона
             WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
             try {

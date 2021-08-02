@@ -24,14 +24,14 @@ import java.net.URL;
 
 
 
-public class IntentService_LoadNewWallpaper extends IntentService {
+public class IntentServiceLoadNewWallpaper extends IntentService {
     // res. - http://www.vogella.com/tutorials/AndroidServices/article.html
 
     public static final String
             URL_STRING = "urlpath",
             FILENAME = "filename",
             RESULT = "result",
-            NOTIFICATION = "ru.EvgeniyDoctor.service.IntentService_LoadNewWallpaper",
+            NOTIFICATION_LOAD_NEW_WALLPAPER = "ru.EvgeniyDoctor.service.IntentServiceLoadNewWallpaper",
             need_change_bg = "";
     private boolean
             error = false;
@@ -44,7 +44,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
 
 
 
-    public IntentService_LoadNewWallpaper() {
+    public IntentServiceLoadNewWallpaper() {
         super("IntentService");
     }
     //----------------------------------------------------------------------------------------------
@@ -239,7 +239,7 @@ public class IntentService_LoadNewWallpaper extends IntentService {
     // 1 - ошибка подключения к серверу;
     // 2 - в ответе сервера не json
     private void send (Codes value) {
-        Intent intent = new Intent(NOTIFICATION);
+        Intent intent = new Intent(NOTIFICATION_LOAD_NEW_WALLPAPER);
         intent.putExtra(RESULT, value);
         sendBroadcast(intent);
 

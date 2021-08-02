@@ -19,7 +19,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -173,7 +172,7 @@ public class Main extends AppCompatActivity {
             Helper.startService(Main.this);
         }
         else {
-            stopService(new Intent(this, Service_Refresh.class));
+            stopService(new Intent(this, ServiceRefresh.class));
         }
 
         // hint
@@ -319,12 +318,12 @@ public class Main extends AppCompatActivity {
                         progressDialog.setCanceledOnTouchOutside(false);
                         progressDialog.show();
 
-                        registerReceiver(receiver, new IntentFilter(IntentService_LoadNewWallpaper.NOTIFICATION));
+                        registerReceiver(receiver, new IntentFilter(IntentServiceLoadNewWallpaper.NOTIFICATION_LOAD_NEW_WALLPAPER));
 
-                        Intent intent = new Intent(Main.this, IntentService_LoadNewWallpaper.class);
-                        intent.putExtra(IntentService_LoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-                        intent.putExtra(IntentService_LoadNewWallpaper.URL_STRING, "");
-                        intent.putExtra(IntentService_LoadNewWallpaper.need_change_bg, ""); // "" - не нужно менять фон
+                        Intent intent = new Intent(Main.this, IntentServiceLoadNewWallpaper.class);
+                        intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
+                        intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, "");
+                        intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, ""); // "" - не нужно менять фон
                         intent.setAction(Helper.ACTION_NEXT_BUTTON); // была нажата кнопка "Дальше", запустится обычный сервис, не ForegroundService
                         Helper.startService(Main.this, intent);
                     }
@@ -338,7 +337,7 @@ public class Main extends AppCompatActivity {
                 case R.id.layout_enable:
                     if (checkBox_enabled.isChecked()) {
                         checkBox_enabled.setChecked(false);
-                        stopService(new Intent(Main.this, Service_Refresh.class));
+                        stopService(new Intent(Main.this, ServiceRefresh.class));
                     }
                     else { // чекбокс был ВЫключен при нажатии
                         checkBox_enabled.setChecked(true);
@@ -363,7 +362,7 @@ public class Main extends AppCompatActivity {
 
                         // restart
                         if (checkBox_enabled.isChecked()) {
-                            stopService(new Intent(Main.this, Service_Refresh.class));
+                            stopService(new Intent(Main.this, ServiceRefresh.class));
                             Helper.startService(Main.this);
                         }
                     }
@@ -373,7 +372,7 @@ public class Main extends AppCompatActivity {
                         settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBox_mobile_only.isChecked());
 
                         if (checkBox_enabled.isChecked()) {
-                            stopService(new Intent(Main.this, Service_Refresh.class));
+                            stopService(new Intent(Main.this, ServiceRefresh.class));
                             Helper.startService(Main.this);
                         }
                     }
@@ -418,7 +417,7 @@ public class Main extends AppCompatActivity {
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
                     settings.put(getResources().getString(R.string.refresh_frequency), 1);
                     if (checkBox_enabled.isChecked()) {
-                        stopService(new Intent(Main.this, Service_Refresh.class));
+                        stopService(new Intent(Main.this, ServiceRefresh.class));
                         Helper.startService(Main.this);
                     }
                     break;
@@ -430,7 +429,7 @@ public class Main extends AppCompatActivity {
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
                     settings.put(getResources().getString(R.string.refresh_frequency), 2);
                     if (checkBox_enabled.isChecked()) {
-                        stopService(new Intent(Main.this, Service_Refresh.class));
+                        stopService(new Intent(Main.this, ServiceRefresh.class));
                         Helper.startService(Main.this);
                     }
                     break;
@@ -442,7 +441,7 @@ public class Main extends AppCompatActivity {
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH)); // current month
                     settings.put(getResources().getString(R.string.refresh_frequency), 3);
                     if (checkBox_enabled.isChecked()) {
-                        stopService(new Intent(Main.this, Service_Refresh.class));
+                        stopService(new Intent(Main.this, ServiceRefresh.class));
                         Helper.startService(Main.this);
                     }
                     break;
@@ -533,8 +532,8 @@ public class Main extends AppCompatActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            IntentService_LoadNewWallpaper.Codes res = (IntentService_LoadNewWallpaper.Codes)
-                    intent.getSerializableExtra(IntentService_LoadNewWallpaper.RESULT);
+            IntentServiceLoadNewWallpaper.Codes res = (IntentServiceLoadNewWallpaper.Codes)
+                    intent.getSerializableExtra(IntentServiceLoadNewWallpaper.RESULT);
 
             switch (res) {
                 case SUCCESS:

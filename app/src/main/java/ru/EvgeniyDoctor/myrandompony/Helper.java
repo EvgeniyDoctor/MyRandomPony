@@ -23,13 +23,13 @@ public class Helper {
             startForegroundService(
                 context,
                 new Intent(
-                    context, Service_Refresh.class
+                    context, ServiceRefresh.class
                 )
             );
         }
         else { // normal version of android
             Log.d(Helper.tag, "Helper - startService - startService");
-            context.startService(new Intent(context, Service_Refresh.class)); // no action
+            context.startService(new Intent(context, ServiceRefresh.class)); // no action
         }
     }
     //--------------------------------------------------------------------------------------------------
