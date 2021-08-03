@@ -16,6 +16,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -195,10 +198,16 @@ public class Main extends AppCompatActivity {
 
         // установка ссылки
         if (settings.contains(getResources().getString(R.string.downloadurl))) {
-            String temp = settings.getString(getResources().getString(R.string.downloadurl), "");
-            if (temp != null && !temp.isEmpty()) {
-                textview_download_url.setText(temp);
-                Linkify.addLinks(textview_download_url, Linkify.WEB_URLS);
+            String link = settings.getString(getResources().getString(R.string.downloadurl), "");
+            if (link != null && !link.isEmpty()) {
+                String text = String.format(
+                    "<a href='%s'>%s</a>",
+                    link,
+                    getResources().getString(R.string.open_image_on_site)
+                );
+
+                textview_download_url.setText(Html.fromHtml(text));
+                textview_download_url.setMovementMethod(LinkMovementMethod.getInstance());
             }
         }
 
@@ -206,7 +215,7 @@ public class Main extends AppCompatActivity {
         current_wallpaper.setImageBitmap(openBackground());
 
         progressDialog = new ProgressDialog(Main.this);
-    }
+    } // onCreate
     //----------------------------------------------------------------------------------------------
 
 
