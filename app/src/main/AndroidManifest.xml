@@ -21,7 +21,9 @@
             android:name="android.max_aspect"
             android:value="2.1" />
 
-        <activity android:name=".Main">
+        <activity android:name=".Main"
+            android:configChanges="orientation|screenSize"
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

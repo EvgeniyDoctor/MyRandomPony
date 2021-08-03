@@ -27,5 +27,6 @@ dependencies {
     implementation 'net.grandcentrix.tray:tray:0.11.0'
     implementation 'com.yalantis:ucrop:2.2.0'
     implementation 'com.android.support.constraint:constraint-layout'
+    implementation 'org.jetbrains:annotations:15.0'
     testImplementation 'junit:junit:4.13.2'
 }

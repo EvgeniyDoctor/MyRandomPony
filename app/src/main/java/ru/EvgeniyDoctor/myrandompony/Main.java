@@ -9,6 +9,7 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -35,6 +36,8 @@ import com.yalantis.ucrop.UCrop;
 
 import net.grandcentrix.tray.AppPreferences;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -58,6 +61,10 @@ public class Main extends AppCompatActivity {
             radio_button1,
             radio_button2,
             radio_button3;
+    private Button
+            btn_cancel,
+            btn_edit,
+            btn_next;
     static AppPreferences
             settings; // res. - https://github.com/grandcentrix/tray
     private AlertDialog
@@ -72,7 +79,8 @@ public class Main extends AppCompatActivity {
 
 
 
-    // todo 03.08.2021: themes; disable 2 btns when no image
+    // todo 03.08.2021: themes
+    // todo 03.08.2021: в сервисе вместо надписи устанавливается опять ссылка
 
 
 
@@ -86,9 +94,9 @@ public class Main extends AppCompatActivity {
 
         settings = new AppPreferences(getApplicationContext());
 
-        Button btn_cancel               = findViewById(R.id.btn_cancel);
-        Button btn_edit                 = findViewById(R.id.btn_edit);
-        Button btn_next                 = findViewById(R.id.btn_next);
+        btn_cancel                      = findViewById(R.id.btn_cancel);
+        btn_edit                        = findViewById(R.id.btn_edit);
+        btn_next                        = findViewById(R.id.btn_next);
         FrameLayout layout_enable       = findViewById(R.id.layout_enable);
         FrameLayout layout_mobile_only  = findViewById(R.id.layout_mobile_only);
         FrameLayout layout_wifi_only    = findViewById(R.id.layout_wifi_only);
@@ -208,15 +216,38 @@ public class Main extends AppCompatActivity {
 
                 textview_download_url.setText(Html.fromHtml(text));
                 textview_download_url.setMovementMethod(LinkMovementMethod.getInstance());
+
+                // загрузка предпросмотра
+                current_wallpaper.setImageBitmap(openBackground());
             }
         }
 
-        // загрузка предпросмотра
-        current_wallpaper.setImageBitmap(openBackground());
+        setBtnsState();
 
         progressDialog = new ProgressDialog(Main.this);
     } // onCreate
     //----------------------------------------------------------------------------------------------
+
+
+
+    // Изменение ориентации экрана
+    @Override
+    public void onConfigurationChanged(@NotNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        setBtnsState();
+
+        // Checks the orientation of the screen
+        /*
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) { // album
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        }
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) { // normal
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
+         */
+    }
+    //-----------------------------------------------------------------------------------------------
 
 
 
@@ -225,7 +256,6 @@ public class Main extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
-        //return super.onCreateOptionsMenu(menu);
     }
     //----------------------------------------------------------------------------------------------
 
@@ -287,6 +317,7 @@ public class Main extends AppCompatActivity {
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
                             current_wallpaper.setImageBitmap(openBackground());
+                            setCancelBtn(false);
                         }
                         else {
                             Toast.makeText(Main.this, getResources().getString(R.string.settings_image_cancel2), Toast.LENGTH_LONG).show();
@@ -540,6 +571,9 @@ public class Main extends AppCompatActivity {
                         progressDialog.cancel();
                     unregisterReceiver(receiver);
 
+                    setCancelBtn(false);
+                    setEditBtn(true);
+
                     // подсказка после первой загрузки изображения на кнопку "Дальше"
                     if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
@@ -581,10 +615,12 @@ public class Main extends AppCompatActivity {
 
     // результат активити редактирования изо
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             current_wallpaper.setImageBitmap(openBackground());
+
+            setCancelBtn(true);
 
             if (!settings.contains(getResources().getString(R.string.settings_first_edit_hint))) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
@@ -602,6 +638,66 @@ public class Main extends AppCompatActivity {
         }
     }
     //----------------------------------------------------------------------------------------------
+
+
+
+    // enable or disable Cancel and Edit buttons; depends on existing respectful images
+    public void setBtnsState() {
+        setCancelBtn(editedImageExists());
+        setEditBtn  (originalImageExists());
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // set Cancel btn
+    public void setCancelBtn (boolean state){
+        if (state) {
+            btn_cancel.setEnabled(true);
+            btn_cancel.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else {
+            btn_cancel.setEnabled(false);
+            btn_cancel.setBackgroundColor(getResources().getColor(R.color.colorPrimarySemitransparent));
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // set Edit btn
+    public void setEditBtn (boolean state){
+        if (state) {
+            btn_edit.setEnabled(true);
+            btn_edit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else {
+            btn_edit.setEnabled(false);
+            btn_edit.setBackgroundColor(getResources().getColor(R.color.colorPrimarySemitransparent));
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    public boolean originalImageExists(){
+        File input = new File(
+                new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
+                        MODE_PRIVATE), getResources().getString(R.string.file_name));
+
+        return input.exists();
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    public boolean editedImageExists(){
+        File bg_edited = new File(
+                new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
+                        MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
+        return bg_edited.exists();
+    }
+    //-----------------------------------------------------------------------------------------------
 
 
 
