@@ -170,13 +170,7 @@ public class ServiceRefresh extends Service {
                             Log.d(Helper.tag, "true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_day), day); // текущее число
-
-                            Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
-                            intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-                            intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
-                            intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, "1");
-                            startService(intent);
-                            System.gc();
+                            startLoad();
                         }
                         Log.d (Helper.tag, "-----------------------------------------");
                         break;
@@ -197,13 +191,7 @@ public class ServiceRefresh extends Service {
                             Log.d(Helper.tag, "true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_week), week); // номер текущей недели
-
-                            Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
-                            intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-                            intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
-                            intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, "1");
-                            startService(intent);
-                            System.gc();
+                            startLoad();
                         }
                         Log.d (Helper.tag, "-----------------------------------------");
                         break;
@@ -224,13 +212,7 @@ public class ServiceRefresh extends Service {
                             Log.d(Helper.tag, "true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_month), month); // текущий месяц
-
-                            Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
-                            intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-                            intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
-                            intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, "1");
-                            startService(intent);
-                            System.gc();
+                            startLoad();
                         }
                         Log.d (Helper.tag, "-----------------------------------------");
                         break;
@@ -239,6 +221,18 @@ public class ServiceRefresh extends Service {
         }, 0, 60000); // 60000 - раз в минуту
     }
     //----------------------------------------------------------------------------------------------
+
+
+
+    private void startLoad() {
+        Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
+        intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
+        intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
+        intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, "1");
+        startService(intent);
+        System.gc();
+    }
+    //-----------------------------------------------------------------------------------------------
 
 
 
@@ -254,7 +248,8 @@ public class ServiceRefresh extends Service {
             try {
                 myWallpaperManager.setBitmap(open_background()); // установка фона
                 System.gc();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }
