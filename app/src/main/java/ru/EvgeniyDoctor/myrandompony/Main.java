@@ -90,6 +90,7 @@ public class Main extends AppCompatActivity {
     // todo optimize oncreate
     // todo 04.08.2021: проверить, есть ли отступы на планшете
     // todo 04.08.2021: менять заголовок на разных активти
+    // todo 04.08.2021: move Fragments to new dir
 
 
 
@@ -369,9 +370,9 @@ public class Main extends AppCompatActivity {
                     UCrop.Options options = new UCrop.Options();
                     options.setCompressionFormat(Bitmap.CompressFormat.PNG);
 
-                    options.setStatusBarColor(getThemeColorById(R.attr.colorPrimaryDark));
-                    options.setToolbarColor(getThemeColorById(R.attr.colorPrimary));
-                    options.setActiveWidgetColor(getThemeColorById(R.attr.colorAccent)); // текст снизу
+                    options.setStatusBarColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimaryDark));
+                    options.setToolbarColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimary));
+                    options.setActiveWidgetColor(Themes.getThemeColorById(Main.this, R.attr.colorAccent)); // текст снизу
 
                     options.setShowCropGrid(false); // вид матрицы
                     options.setToolbarTitle(getResources().getString(R.string.settings_image_edit));
@@ -379,11 +380,6 @@ public class Main extends AppCompatActivity {
                     break;
 
                 case R.id.btn_next: // кнопка "дальше"
-                    settings.remove("theme_changed");
-                    break;
-                    // todo
-
-                    /*
                     if (Helper.checkInternetConnection(Main.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
@@ -403,8 +399,6 @@ public class Main extends AppCompatActivity {
                         Toast.makeText(Main.this, R.string.settings_load_error, Toast.LENGTH_LONG).show();
                     }
                     break;
-
-                     */
                 // <--- buttons
 
                 // layers --->
@@ -683,17 +677,7 @@ public class Main extends AppCompatActivity {
     }
     //----------------------------------------------------------------------------------------------
 
-
-
-    private int getThemeColorById (int id){
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = Main.this.getTheme();
-        theme.resolveAttribute(id, typedValue, true);
-        return typedValue.data;
-    }
-    //-----------------------------------------------------------------------------------------------
-
-
+    
 
     // enable or disable Cancel and Edit buttons; depends on existing respectful images
     public void setBtnsState() {
@@ -708,11 +692,11 @@ public class Main extends AppCompatActivity {
     public void setCancelBtn (boolean state){
         if (state) {
             btn_cancel.setEnabled(true);
-            btn_cancel.setBackgroundColor(getThemeColorById(R.attr.colorPrimary));
+            btn_cancel.setBackgroundColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimary));
         }
         else {
             btn_cancel.setEnabled(false);
-            btn_cancel.setBackgroundColor(getThemeColorById(R.attr.colorPrimarySemitransparent));
+            btn_cancel.setBackgroundColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimarySemitransparent));
         }
     }
     //-----------------------------------------------------------------------------------------------
@@ -723,11 +707,11 @@ public class Main extends AppCompatActivity {
     public void setEditBtn (boolean state){
         if (state) {
             btn_edit.setEnabled(true);
-            btn_edit.setBackgroundColor(getThemeColorById(R.attr.colorPrimary));
+            btn_edit.setBackgroundColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimary));
         }
         else {
             btn_edit.setEnabled(false);
-            btn_edit.setBackgroundColor(getThemeColorById(R.attr.colorPrimarySemitransparent));
+            btn_edit.setBackgroundColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimarySemitransparent));
         }
     }
     //-----------------------------------------------------------------------------------------------

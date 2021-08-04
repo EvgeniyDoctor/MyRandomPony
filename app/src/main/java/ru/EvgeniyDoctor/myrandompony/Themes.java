@@ -1,8 +1,11 @@
 package ru.EvgeniyDoctor.myrandompony;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -44,9 +47,14 @@ enum eThemes {
 
 
 
+// todo 04.08.2021: если тема не изменилась, ничего не делать; или просто не включать кнопку
+
+
+
 public class Themes extends AppCompatActivity {
     static AppPreferences settings;
     RadioGroup radioGroup;
+    Button btn_theme_save;
     ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
 
     static final String THEME_INTENT_FLAG = "keep"; // intent extra name to restart Main activity
@@ -62,7 +70,8 @@ public class Themes extends AppCompatActivity {
         setTheme(loadTheme());
         setContentView(R.layout.themes);
 
-        radioGroup = findViewById(R.id.radio_group_themes);
+        btn_theme_save  = findViewById(R.id.btn_theme_save);
+        radioGroup      = findViewById(R.id.radio_group_themes);
 
         // get all radio buttons with themes into listOfRadioButtons
         getRadioButtons();
@@ -80,6 +89,9 @@ public class Themes extends AppCompatActivity {
 
     // Save button press
     public void themeApply(View view) {
+        btn_theme_save.setEnabled(false);
+        btn_theme_save.setBackgroundColor(getThemeColorById(Themes.this, R.attr.colorPrimarySemitransparent));
+
         // RadioButton and FrameLayout tags must be equal to the name in eThemes
         for (RadioButton btn : listOfRadioButtons) {
             if (btn.isChecked()) {
@@ -88,6 +100,16 @@ public class Themes extends AppCompatActivity {
                 );
             }
         }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    public static int getThemeColorById (Context context, int id){
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(id, typedValue, true);
+        return typedValue.data;
     }
     //-----------------------------------------------------------------------------------------------
 

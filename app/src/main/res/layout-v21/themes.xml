@@ -1,12 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <LinearLayout
+        android:layout_gravity="center"
+        android:id="@+id/layout_theme_preview"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/current_wallpaper"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ava"
+            android:contentDescription="@string/settings_preview" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/layout_theme_preview"
+        android:layout_above="@+id/layout_btn_theme_save"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/borders"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/radio_group_themes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/radio_theme_chrysalis"
+                        android:layout_gravity="end|center"
+                        android:tag="Chrysalis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <FrameLayout
+                        android:id="@+id/layout_radio_theme_chrysalis"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:onClick="setCheckedFromLayout"
+                        android:tag="Chrysalis"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start|center"
+                            android:textColor="?attr/colorText"
+                            android:text="Chrysalis"/>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/radio_theme_spike"
+                        android:layout_gravity="end|center"
+                        android:checked="true"
+                        android:tag="Spike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <FrameLayout
+                        android:id="@+id/layout_radio_theme_spike"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:onClick="setCheckedFromLayout"
+                        android:tag="Spike"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start|center"
+                            android:textColor="?attr/colorText"
+                            android:text="Spike"/>
+                    </FrameLayout>
+                </FrameLayout>
+
+            </RadioGroup>
+        </ScrollView>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_btn_theme_save"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
         android:layout_height="75dp"
         android:gravity="center_vertical">
 
@@ -21,83 +118,4 @@
             android:textColor="?attr/colorTextElement"
             android:text="save" />
     </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/current_wallpaper"
-            android:adjustViewBounds="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ava"
-            android:contentDescription="@string/settings_preview" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp">
-
-        <RadioGroup
-            android:id="@+id/radio_group_themes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <RadioButton
-                    android:id="@+id/radio_theme_chrysalis"
-                    android:layout_gravity="end|center"
-                    android:tag="Chrysalis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <FrameLayout
-                    android:id="@+id/layout_radio_theme_chrysalis"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:onClick="setCheckedFromLayout"
-                    android:tag="Chrysalis"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="start|center"
-                        android:textColor="?attr/colorText"
-                        android:text="radio_theme_chrysalis"/>
-                </FrameLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <RadioButton
-                    android:id="@+id/radio_theme_spike"
-                    android:layout_gravity="end|center"
-                    android:checked="true"
-                    android:tag="Spike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <FrameLayout
-                    android:id="@+id/layout_radio_theme_spike"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:onClick="setCheckedFromLayout"
-                    android:tag="Spike"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="start|center"
-                        android:textColor="?attr/colorText"
-                        android:text="radio_theme_spike"/>
-                </FrameLayout>
-            </FrameLayout>
-        </RadioGroup>
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

@@ -8,4 +8,5 @@
     <attr name="colorAccent" format="color" />
     <attr name="colorText" format="color" />
     <attr name="separator" format="color" />
+    <attr name="themeScrollviewBorder" format="color" />
 </resources>

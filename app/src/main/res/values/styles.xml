@@ -10,6 +10,7 @@
         <item name="colorText">#000</item> <!-- text -->
         <item name="colorTextElement">#000</item> <!-- text -->
         <item name="separator">#9a5da2</item> <!-- separator -->
+        <item name="themeScrollviewBorder">#c590c9</item> <!--  -->
         <item name="colorButtonNormal" tools:targetApi="lollipop">#c590c9</item> <!-- чёрт знает, что такое -->
     </style>
 
@@ -21,5 +22,6 @@
         <item name="colorText">#000</item> <!-- text -->
         <item name="colorTextElement">#fff</item> <!-- text -->
         <item name="separator">#1f5873</item> <!-- separator -->
+        <item name="themeScrollviewBorder">#2c2c2c</item> <!--  -->
     </style>
 </resources>
