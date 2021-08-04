@@ -73,8 +73,7 @@ public class Main extends AppCompatActivity {
             btn_cancel,
             btn_edit,
             btn_next;
-    static AppPreferences
-            settings; // res. - https://github.com/grandcentrix/tray
+    static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private AlertDialog
         alertDialog = null;
     /*
@@ -99,20 +98,7 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         settings = new AppPreferences(getApplicationContext());
-
-        // todo
-        if (settings.contains("theme")) {
-            switch (settings.getString("theme", "Spike")) {
-                case "Chrysalis":
-                    setTheme(R.style.Chrysalis);
-                    break;
-                case "Spike":
-                    setTheme(R.style.Spike);
-                    break;
-                default:
-                    setTheme(R.style.Spike);
-            }
-        }
+        setTheme(Themes.loadTheme(settings));
 
         setContentView(R.layout.main);
 
@@ -268,11 +254,11 @@ public class Main extends AppCompatActivity {
 
 
 
-    // todo
+    // при изменении темы, после нажатия на кнопку Принять это активити останавливается для перезапуска
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        boolean keep = intent.getExtras().getBoolean("keep");
+        boolean keep = intent.getExtras().getBoolean(Themes.THEME_INTENT_FLAG);
         if (!keep) {
             Main.this.finish();
         }

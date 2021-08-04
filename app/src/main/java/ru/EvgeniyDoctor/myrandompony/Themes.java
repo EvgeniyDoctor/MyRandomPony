@@ -2,21 +2,44 @@ package ru.EvgeniyDoctor.myrandompony;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.grandcentrix.tray.AppPreferences;
+
+
+
+enum eThemes {
+    Chrysalis(R.style.Chrysalis, "Chrysalis"),
+    Spike(R.style.Spike, "Spike")
+    ;
+
+    private final int themeId;
+    private final String themeName;
+
+    // constructor
+    eThemes(int id, String name) {
+        this.themeId = id;
+        this.themeName = name;
+    }
+
+    public int getId(){
+        return themeId;
+    }
+    //---
+
+    public String getName(){
+        return themeName;
+    }
+    //---
+}
 
 
 
@@ -28,13 +51,17 @@ public class Themes extends AppCompatActivity {
     RadioGroup radioGroup;
     Button button;
 
+    static final String THEME_INTENT_FLAG = "keep"; //
+    static final String THEME_NAME_APP_SETTINGS = "theme"; // tag for app settings
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        if (settings.contains("theme_changed") && settings.getBoolean("theme_changed", false)) {
-//            setTheme(R.style.Chrysalis);
-//        }
+        settings = new AppPreferences(getApplicationContext());
+        setTheme(loadTheme());
 
         setContentView(R.layout.themes);
 
@@ -46,15 +73,9 @@ public class Themes extends AppCompatActivity {
         radio_theme_spike = findViewById(R.id.radio_theme_spike);
         radioGroup = findViewById(R.id.radio_group_themes);
 
-
-
         layout_theme_radio_chrysalis.setOnClickListener(click);
         layout_theme_radio_spike.setOnClickListener(click);
         button.setOnClickListener(click);
-
-
-
-        //LinearLayout layout_theme_preview = findViewById(R.id.layout_theme_preview);
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -68,12 +89,11 @@ public class Themes extends AppCompatActivity {
                 case R.id.btn_theme_save:
 
                     if (radio_theme_spike.isChecked()) {
-                        changeTheme(R.style.Spike);
+                        changeTheme(eThemes.Spike.getId());
                     }
                     else if (radio_theme_chrysalis.isChecked()) {
-                        changeTheme(R.style.Chrysalis);
+                        changeTheme(eThemes.Chrysalis.getId());
                     }
-
                     break;
 
                 case R.id.layout_radio_theme_chrysalis:
@@ -94,33 +114,64 @@ public class Themes extends AppCompatActivity {
 
     @SuppressLint("NonConstantResourceId")
     public void changeTheme(int themeId) {
-        settings = new AppPreferences(getApplicationContext());
-
-        //settings.remove("theme_changed");
-//        if (settings.contains("theme") && settings.getBoolean("theme", false)) {
-//            setTheme(R.style.Chrysalis);
-//        }
-
-        setTheme(themeId);
-
-        switch (themeId) {
-            case R.style.Chrysalis:
-                settings.put("theme", "Chrysalis");
-                break;
-            case R.style.Spike:
-                settings.put("theme", "Spike");
-                break;
-        }
+        //setTheme(themeId); // std Android method
+        saveTheme(themeId);
 
         Intent intent = new Intent(this, Main.class);
 
+        // disable animation
         //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("keep", false); // todo
         //overridePendingTransition(0, 0);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(THEME_INTENT_FLAG, false);
 
         finish();
         startActivity(intent);
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    public void saveTheme (int themeId) {
+        for (eThemes theme : eThemes.values()) {
+            if (themeId == theme.getId()) {
+                settings.put(THEME_NAME_APP_SETTINGS, theme.getName());
+                break;
+            }
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    public static int loadTheme (AppPreferences settings){
+        if (settings.contains(THEME_NAME_APP_SETTINGS)) {
+            String currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
+
+            for (eThemes theme : eThemes.values()) {
+                if (currentTheme.equals(theme.getName())) {
+                    return theme.getId();
+                }
+            }
+        }
+        return eThemes.Spike.getId();
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    public static int loadTheme (){
+        if (settings.contains(THEME_NAME_APP_SETTINGS)) {
+            String currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
+
+            for (eThemes theme : eThemes.values()) {
+                if (currentTheme.equals(theme.getName())) {
+                    return theme.getId();
+                }
+            }
+        }
+        return eThemes.Spike.getId();
     }
     //-----------------------------------------------------------------------------------------------
 }
