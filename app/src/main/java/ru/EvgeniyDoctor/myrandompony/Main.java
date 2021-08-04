@@ -1,6 +1,8 @@
 package ru.EvgeniyDoctor.myrandompony;
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -10,24 +12,30 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,18 +88,36 @@ public class Main extends AppCompatActivity {
 
 
     // todo 03.08.2021: themes
+    // todo optimize oncreate
+    // todo 04.08.2021: проверить, есть ли отступы на планшете
+    // todo 04.08.2021: менять заголовок на разных активти
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        settings = new AppPreferences(getApplicationContext());
+
+        // todo
+        if (settings.contains("theme")) {
+            switch (settings.getString("theme", "Spike")) {
+                case "Chrysalis":
+                    setTheme(R.style.Chrysalis);
+                    break;
+                case "Spike":
+                    setTheme(R.style.Spike);
+                    break;
+                default:
+                    setTheme(R.style.Spike);
+            }
+        }
+
         setContentView(R.layout.main);
 
         // логи при ошибке
-        RoboErrorReporter.bindReporter(this.getApplicationContext());
-
-        settings = new AppPreferences(getApplicationContext());
+        //RoboErrorReporter.bindReporter(this.getApplicationContext());
 
         btn_cancel                      = findViewById(R.id.btn_cancel);
         btn_edit                        = findViewById(R.id.btn_edit);
@@ -209,7 +235,6 @@ public class Main extends AppCompatActivity {
             if (link != null && !link.isEmpty()) {
                 setLink(link);
 
-                // загрузка предпросмотра
                 current_wallpaper.setImageBitmap(openBackground());
             }
         }
@@ -243,6 +268,19 @@ public class Main extends AppCompatActivity {
 
 
 
+    // todo
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        boolean keep = intent.getExtras().getBoolean("keep");
+        if (!keep) {
+            Main.this.finish();
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
     // создание меню из 3 точек
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -257,13 +295,20 @@ public class Main extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+
         switch (item.getItemId()) {
+            case R.id.menu_item_action_themes:
+                intent = new Intent(this, Themes.class);
+                startActivity(intent);
+                return true;
+
             case R.id.menu_item_action_help: // помощь
                 callDialog(R.string.settings_help_title, R.string.settings_help_text);
                 return true;
 
             case R.id.menu_item_action_about: // о приложении
-                Intent intent = new Intent(this, About.class);
+                intent = new Intent(this, About.class);
                 startActivity(intent);
                 return true;
 
@@ -337,15 +382,22 @@ public class Main extends AppCompatActivity {
                     // res - https://github.com/Yalantis/uCrop
                     UCrop.Options options = new UCrop.Options();
                     options.setCompressionFormat(Bitmap.CompressFormat.PNG);
-                    options.setStatusBarColor(Color.parseColor("#9a5da2"));
-                    options.setToolbarColor(Color.parseColor("#c590c9"));
-                    options.setActiveWidgetColor(Color.parseColor("#51c456")); // текст снизу
+
+                    options.setStatusBarColor(getThemeColorById(R.attr.colorPrimaryDark));
+                    options.setToolbarColor(getThemeColorById(R.attr.colorPrimary));
+                    options.setActiveWidgetColor(getThemeColorById(R.attr.colorAccent)); // текст снизу
+
                     options.setShowCropGrid(false); // вид матрицы
                     options.setToolbarTitle(getResources().getString(R.string.settings_image_edit));
                     UCrop.of(Uri.fromFile(input), Uri.fromFile(output)).withOptions(options).start(Main.this);
                     break;
 
                 case R.id.btn_next: // кнопка "дальше"
+                    settings.remove("theme_changed");
+                    break;
+                    // todo
+
+                    /*
                     if (Helper.checkInternetConnection(Main.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
@@ -365,9 +417,11 @@ public class Main extends AppCompatActivity {
                         Toast.makeText(Main.this, R.string.settings_load_error, Toast.LENGTH_LONG).show();
                     }
                     break;
+
+                     */
                 // <--- buttons
 
-                // layers --->git
+                // layers --->
                 case R.id.layout_enable:
                     if (checkBox_enabled.isChecked()) {
                         checkBox_enabled.setChecked(false);
@@ -522,11 +576,9 @@ public class Main extends AppCompatActivity {
 
         if(background.exists()) {
             try {
-                //Log.d(Helper.tag, "background exists: " + background.exists());
                 fileInputStream = new FileInputStream(background);
             }
             catch (FileNotFoundException e) {
-                //Log.d(Helper.tag, "open_background catch");
                 e.printStackTrace();
             }
         }
@@ -647,6 +699,16 @@ public class Main extends AppCompatActivity {
 
 
 
+    private int getThemeColorById (int id){
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = Main.this.getTheme();
+        theme.resolveAttribute(id, typedValue, true);
+        return typedValue.data;
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
     // enable or disable Cancel and Edit buttons; depends on existing respectful images
     public void setBtnsState() {
         setCancelBtn(editedImageExists());
@@ -660,11 +722,11 @@ public class Main extends AppCompatActivity {
     public void setCancelBtn (boolean state){
         if (state) {
             btn_cancel.setEnabled(true);
-            btn_cancel.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            btn_cancel.setBackgroundColor(getThemeColorById(R.attr.colorPrimary));
         }
         else {
             btn_cancel.setEnabled(false);
-            btn_cancel.setBackgroundColor(getResources().getColor(R.color.colorPrimarySemitransparent));
+            btn_cancel.setBackgroundColor(getThemeColorById(R.attr.colorPrimarySemitransparent));
         }
     }
     //-----------------------------------------------------------------------------------------------
@@ -675,11 +737,11 @@ public class Main extends AppCompatActivity {
     public void setEditBtn (boolean state){
         if (state) {
             btn_edit.setEnabled(true);
-            btn_edit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            btn_edit.setBackgroundColor(getThemeColorById(R.attr.colorPrimary));
         }
         else {
             btn_edit.setEnabled(false);
-            btn_edit.setBackgroundColor(getResources().getColor(R.color.colorPrimarySemitransparent));
+            btn_edit.setBackgroundColor(getThemeColorById(R.attr.colorPrimarySemitransparent));
         }
     }
     //-----------------------------------------------------------------------------------------------

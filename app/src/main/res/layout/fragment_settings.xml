@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorText"
                     android:text="@string/settings_enable"/>
             </FrameLayout>
         </FrameLayout>
@@ -66,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorText"
                     android:text="@string/settings_only_mobile"/>
             </FrameLayout>
         </FrameLayout>
@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorText"
                     android:text="@string/settings_wifi_only"/>
             </FrameLayout>
         </FrameLayout>
@@ -137,7 +137,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:textColor="#000000"
+                        android:textColor="?attr/colorText"
                         android:text="@string/settings_radio_1"/>
                 </FrameLayout>
             </FrameLayout>
@@ -163,7 +163,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:textColor="#000000"
+                        android:textColor="?attr/colorText"
                         android:text="@string/settings_radio_2"/>
                 </FrameLayout>
             </FrameLayout>
@@ -188,7 +188,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:textColor="#000000"
+                        android:textColor="?attr/colorText"
                         android:text="@string/settings_radio_3"/>
                 </FrameLayout>
             </FrameLayout>

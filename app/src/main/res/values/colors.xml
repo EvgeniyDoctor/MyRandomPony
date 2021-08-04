@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!--> Spike style 1 <-->
-    <color name="colorPrimaryDark">#9a5da2</color>
-    <color name="colorPrimary">#c590c9</color>
-    <color name="colorPrimarySemitransparent">#60c590c9</color>
-    <color name="colorAccent">#51c456</color>
-    <color name="colorText">#b0d95f</color>
-</resources>

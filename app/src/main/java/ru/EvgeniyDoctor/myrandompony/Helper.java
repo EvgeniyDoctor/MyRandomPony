@@ -88,5 +88,8 @@ public class Helper {
     public static void d (String text){
         Log.d(tag, text);
     }
+    public static void d (int text){
+        Log.d(tag, "" + text);
+    }
     //-----------------------------------------------------------------------------------------------
 }

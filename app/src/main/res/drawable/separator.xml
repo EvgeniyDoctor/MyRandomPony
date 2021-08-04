@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-
     <size android:height="1dp"/>
 
+<!--    <gradient-->
+<!--        android:startColor="#00c590c9"-->
+<!--        android:centerColor="#9a5da2"-->
+<!--        android:endColor="#00c590c9"-->
+<!--    />-->
+
     <gradient
-        android:startColor="#00c590c9"
-        android:centerColor="#9a5da2"
-        android:endColor="#00c590c9" />
+        android:centerColor="?attr/separator"
+        />
 </shape>
