@@ -3,7 +3,6 @@ package ru.EvgeniyDoctor.myrandompony;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -13,6 +12,8 @@ import android.widget.RadioGroup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.grandcentrix.tray.AppPreferences;
+
+import java.util.ArrayList;
 
 
 
@@ -45,13 +46,10 @@ enum eThemes {
 
 public class Themes extends AppCompatActivity {
     static AppPreferences settings;
-    RadioButton
-        radio_theme_chrysalis,
-        radio_theme_spike;
     RadioGroup radioGroup;
-    Button button;
+    ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
 
-    static final String THEME_INTENT_FLAG = "keep"; //
+    static final String THEME_INTENT_FLAG = "keep"; // intent extra name to restart Main activity
     static final String THEME_NAME_APP_SETTINGS = "theme"; // tag for app settings
 
 
@@ -62,52 +60,111 @@ public class Themes extends AppCompatActivity {
 
         settings = new AppPreferences(getApplicationContext());
         setTheme(loadTheme());
-
         setContentView(R.layout.themes);
 
-        FrameLayout layout_theme_radio_chrysalis      = findViewById(R.id.layout_radio_theme_chrysalis);
-        FrameLayout layout_theme_radio_spike      = findViewById(R.id.layout_radio_theme_spike);
-        button = findViewById(R.id.btn_theme_save);
-
-        radio_theme_chrysalis = findViewById(R.id.radio_theme_chrysalis);
-        radio_theme_spike = findViewById(R.id.radio_theme_spike);
         radioGroup = findViewById(R.id.radio_group_themes);
 
-        layout_theme_radio_chrysalis.setOnClickListener(click);
-        layout_theme_radio_spike.setOnClickListener(click);
-        button.setOnClickListener(click);
+        // get all radio buttons with themes into listOfRadioButtons
+        getRadioButtons();
+
+        // load
+        uncheckAllRadioButtons();
+        if (settings.contains(THEME_NAME_APP_SETTINGS)) {
+            String currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
+            setRadioButtonCheckedByTag(currentTheme);
+        }
     }
     //-----------------------------------------------------------------------------------------------
 
 
 
-    View.OnClickListener click = new View.OnClickListener() {
-        @SuppressLint("NonConstantResourceId")
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.btn_theme_save:
-
-                    if (radio_theme_spike.isChecked()) {
-                        changeTheme(eThemes.Spike.getId());
-                    }
-                    else if (radio_theme_chrysalis.isChecked()) {
-                        changeTheme(eThemes.Chrysalis.getId());
-                    }
-                    break;
-
-                case R.id.layout_radio_theme_chrysalis:
-                    radio_theme_spike.setChecked(false);
-                    radio_theme_chrysalis.setChecked(true);
-                    break;
-
-                case R.id.layout_radio_theme_spike:
-                    radio_theme_spike.setChecked(true);
-                    radio_theme_chrysalis.setChecked(false);
-                    break;
+    // Save button press
+    public void themeApply(View view) {
+        // RadioButton and FrameLayout tags must be equal to the name in eThemes
+        for (RadioButton btn : listOfRadioButtons) {
+            if (btn.isChecked()) {
+                changeTheme(
+                    getThemeIdByName(btn.getTag().toString())
+                );
             }
         }
-    };
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // click on FrameLayout near RadioButton
+    public void setCheckedFromLayout(View view) {
+        uncheckAllRadioButtons();
+        setRadioButtonCheckedByTag(view.getTag().toString());
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    //
+    private void uncheckAllRadioButtons() {
+        for (RadioButton btn : listOfRadioButtons) {
+            btn.setChecked(false);
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    //
+    private void setRadioButtonCheckedByTag (String name){
+        for (RadioButton btn : listOfRadioButtons) {
+            if (btn.getTag().equals(name)) {
+                btn.setChecked(true);
+                break;
+            }
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    //
+    private int getThemeIdByName(String name){
+        for (eThemes theme : eThemes.values()) {
+            if (name.equals(theme.getName())) {
+                return theme.getId();
+            }
+        }
+        return eThemes.Spike.getId();
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    private void getRadioButtons(){
+        int count = radioGroup.getChildCount();
+        //ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
+
+        for (int i=0; i<count; ++i) {
+            View view1 = radioGroup.getChildAt(i);
+
+            if (view1 instanceof FrameLayout) {
+                //Helper.d("FrameLayout");
+
+                for (int index = 0; index < ((FrameLayout) view1).getChildCount(); index++) {
+                    View nextChild = ((FrameLayout) view1).getChildAt(index);
+                    //Helper.d("nextChild - " + nextChild);
+
+                    try {
+                        if (nextChild instanceof RadioButton) {
+                            listOfRadioButtons.add((RadioButton) nextChild);
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        //Helper.d("you have "+listOfRadioButtons.size()+" radio buttons");
+    }
     //-----------------------------------------------------------------------------------------------
 
 
@@ -133,6 +190,7 @@ public class Themes extends AppCompatActivity {
 
 
 
+    // save theme to the app preferences
     public void saveTheme (int themeId) {
         for (eThemes theme : eThemes.values()) {
             if (themeId == theme.getId()) {

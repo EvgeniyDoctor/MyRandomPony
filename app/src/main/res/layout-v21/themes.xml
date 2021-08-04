@@ -15,6 +15,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="themeApply"
             android:layout_margin="6dp"
             android:background="?attr/colorPrimary"
             android:textColor="?attr/colorTextElement"
@@ -38,55 +39,65 @@
     </LinearLayout>
 
 
-    <RadioGroup
-        android:id="@+id/radio_group_themes"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="150dp">
 
-        <FrameLayout
+        <RadioGroup
+            android:id="@+id/radio_group_themes"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RadioButton
-                android:id="@+id/radio_theme_chrysalis"
-                android:layout_gravity="end"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-            <FrameLayout
-                android:id="@+id/layout_radio_theme_chrysalis"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="theme_chrysalis"/>
-            </FrameLayout>
-        </FrameLayout>
+            android:layout_height="match_parent">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RadioButton
-                android:id="@+id/radio_theme_spike"
-                android:layout_gravity="end"
-                android:checked="true"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
             <FrameLayout
-                android:id="@+id/layout_radio_theme_spike"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/radio_theme_chrysalis"
+                    android:layout_gravity="end|center"
+                    android:tag="Chrysalis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:id="@+id/layout_radio_theme_chrysalis"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:onClick="setCheckedFromLayout"
+                    android:tag="Chrysalis"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="theme_spike"/>
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:textColor="?attr/colorText"
+                        android:text="radio_theme_chrysalis"/>
+                </FrameLayout>
             </FrameLayout>
-        </FrameLayout>
 
-    </RadioGroup>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/radio_theme_spike"
+                    android:layout_gravity="end|center"
+                    android:checked="true"
+                    android:tag="Spike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:id="@+id/layout_radio_theme_spike"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:onClick="setCheckedFromLayout"
+                    android:tag="Spike"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:textColor="?attr/colorText"
+                        android:text="radio_theme_spike"/>
+                </FrameLayout>
+            </FrameLayout>
+        </RadioGroup>
+    </LinearLayout>
 </LinearLayout>
