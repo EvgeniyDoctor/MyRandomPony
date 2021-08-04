@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 
 import net.grandcentrix.tray.AppPreferences;
 
@@ -41,6 +42,21 @@ public class Helper {
         return netInfo.isConnectedOrConnecting();
     }
     //----------------------------------------------------------------------------------------------
+
+
+
+    // включение или отключение кнопок
+    public static void toggleViewState (Context context, View view, boolean state){
+        if (state) {
+            view.setEnabled(true);
+            view.setBackgroundColor(Themes.getThemeColorById(context, R.attr.colorPrimary));
+        }
+        else {
+            view.setEnabled(false);
+            view.setBackgroundColor(Themes.getThemeColorById(context, R.attr.colorPrimarySemitransparent));
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
 
 
 

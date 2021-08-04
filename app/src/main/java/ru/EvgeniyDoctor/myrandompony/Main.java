@@ -1,8 +1,6 @@
 package ru.EvgeniyDoctor.myrandompony;
 
-import android.animation.Animator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -12,11 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -25,17 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -226,7 +217,7 @@ public class Main extends AppCompatActivity {
             }
         }
 
-        setBtnsState();
+        setButtonsState();
 
         progressDialog = new ProgressDialog(Main.this);
     } // onCreate
@@ -239,7 +230,7 @@ public class Main extends AppCompatActivity {
     public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        setBtnsState();
+        setButtonsState();
 
         // Checks the orientation of the screen
         /*
@@ -341,7 +332,7 @@ public class Main extends AppCompatActivity {
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
                             current_wallpaper.setImageBitmap(openBackground());
-                            setCancelBtn(false);
+                            Helper.toggleViewState(Main.this, btn_cancel, false);
                         }
                         else {
                             Toast.makeText(Main.this, getResources().getString(R.string.settings_image_cancel2), Toast.LENGTH_LONG).show();
@@ -594,8 +585,8 @@ public class Main extends AppCompatActivity {
                         progressDialog.cancel();
                     unregisterReceiver(receiver);
 
-                    setCancelBtn(false);
-                    setEditBtn(true);
+                    Helper.toggleViewState(Main.this, btn_cancel, false);
+                    Helper.toggleViewState(Main.this, btn_edit,   true);
 
                     // подсказка после первой загрузки изображения на кнопку "Дальше"
                     if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
@@ -658,7 +649,7 @@ public class Main extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             current_wallpaper.setImageBitmap(openBackground());
 
-            setCancelBtn(true);
+            Helper.toggleViewState(Main.this, btn_cancel, true);
 
             if (!settings.contains(getResources().getString(R.string.settings_first_edit_hint))) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
@@ -680,39 +671,9 @@ public class Main extends AppCompatActivity {
     
 
     // enable or disable Cancel and Edit buttons; depends on existing respectful images
-    public void setBtnsState() {
-        setCancelBtn(editedImageExists());
-        setEditBtn  (originalImageExists());
-    }
-    //-----------------------------------------------------------------------------------------------
-
-
-
-    // set Cancel btn
-    public void setCancelBtn (boolean state){
-        if (state) {
-            btn_cancel.setEnabled(true);
-            btn_cancel.setBackgroundColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimary));
-        }
-        else {
-            btn_cancel.setEnabled(false);
-            btn_cancel.setBackgroundColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimarySemitransparent));
-        }
-    }
-    //-----------------------------------------------------------------------------------------------
-
-
-
-    // set Edit btn
-    public void setEditBtn (boolean state){
-        if (state) {
-            btn_edit.setEnabled(true);
-            btn_edit.setBackgroundColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimary));
-        }
-        else {
-            btn_edit.setEnabled(false);
-            btn_edit.setBackgroundColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimarySemitransparent));
-        }
+    public void setButtonsState () {
+        Helper.toggleViewState(Main.this, btn_cancel, editedImageExists());
+        Helper.toggleViewState(Main.this, btn_edit,   originalImageExists());
     }
     //-----------------------------------------------------------------------------------------------
 

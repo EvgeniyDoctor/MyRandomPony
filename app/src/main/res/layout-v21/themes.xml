@@ -110,11 +110,12 @@
         <Button
             android:id="@+id/btn_theme_save"
             android:layout_weight="1"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="themeApply"
             android:layout_margin="6dp"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorPrimarySemitransparent"
             android:textColor="?attr/colorTextElement"
             android:text="save" />
     </LinearLayout>

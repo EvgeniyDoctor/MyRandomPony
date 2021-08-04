@@ -47,15 +47,12 @@ enum eThemes {
 
 
 
-// todo 04.08.2021: если тема не изменилась, ничего не делать; или просто не включать кнопку
-
-
-
 public class Themes extends AppCompatActivity {
     static AppPreferences settings;
     RadioGroup radioGroup;
     Button btn_theme_save;
     ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
+    String currentTheme; // name of the current theme, "Chrysalis", "Spike", etc.
 
     static final String THEME_INTENT_FLAG = "keep"; // intent extra name to restart Main activity
     static final String THEME_NAME_APP_SETTINGS = "theme"; // tag for app settings
@@ -79,7 +76,7 @@ public class Themes extends AppCompatActivity {
         // load
         uncheckAllRadioButtons();
         if (settings.contains(THEME_NAME_APP_SETTINGS)) {
-            String currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
+            currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
             setRadioButtonCheckedByTag(currentTheme);
         }
     }
@@ -117,14 +114,18 @@ public class Themes extends AppCompatActivity {
 
     // click on FrameLayout near RadioButton
     public void setCheckedFromLayout(View view) {
+        String tag = view.getTag().toString();
+
+        Helper.toggleViewState(Themes.this, btn_theme_save, !currentTheme.equals(tag)); // disable Save btn if current theme selected
+
         uncheckAllRadioButtons();
-        setRadioButtonCheckedByTag(view.getTag().toString());
+        setRadioButtonCheckedByTag(tag);
     }
     //-----------------------------------------------------------------------------------------------
 
 
 
-    //
+    // отменить выбор со всех RadioButtons
     private void uncheckAllRadioButtons() {
         for (RadioButton btn : listOfRadioButtons) {
             btn.setChecked(false);
@@ -134,7 +135,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    //
+    // выбор RadioButton по заданному тегу
     private void setRadioButtonCheckedByTag (String name){
         for (RadioButton btn : listOfRadioButtons) {
             if (btn.getTag().equals(name)) {
@@ -147,7 +148,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    //
+    // получение ид темы по её названию
     private int getThemeIdByName(String name){
         for (eThemes theme : eThemes.values()) {
             if (name.equals(theme.getName())) {
@@ -160,19 +161,16 @@ public class Themes extends AppCompatActivity {
 
 
 
+    // формирование массива со всеми RadioButtons в группе
     private void getRadioButtons(){
         int count = radioGroup.getChildCount();
-        //ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
 
         for (int i=0; i<count; ++i) {
             View view1 = radioGroup.getChildAt(i);
 
             if (view1 instanceof FrameLayout) {
-                //Helper.d("FrameLayout");
-
                 for (int index = 0; index < ((FrameLayout) view1).getChildCount(); index++) {
                     View nextChild = ((FrameLayout) view1).getChildAt(index);
-                    //Helper.d("nextChild - " + nextChild);
 
                     try {
                         if (nextChild instanceof RadioButton) {
@@ -185,12 +183,12 @@ public class Themes extends AppCompatActivity {
                 }
             }
         }
-        //Helper.d("you have "+listOfRadioButtons.size()+" radio buttons");
     }
     //-----------------------------------------------------------------------------------------------
 
 
 
+    // сохранение выбранной темы и перезапуск Main activity
     @SuppressLint("NonConstantResourceId")
     public void changeTheme(int themeId) {
         //setTheme(themeId); // std Android method
@@ -225,6 +223,7 @@ public class Themes extends AppCompatActivity {
 
 
 
+    // загрузка текущей темы из настроек
     public static int loadTheme (AppPreferences settings){
         if (settings.contains(THEME_NAME_APP_SETTINGS)) {
             String currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
@@ -241,6 +240,7 @@ public class Themes extends AppCompatActivity {
 
 
 
+    // загрузка текущей темы из настроек
     public static int loadTheme (){
         if (settings.contains(THEME_NAME_APP_SETTINGS)) {
             String currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
