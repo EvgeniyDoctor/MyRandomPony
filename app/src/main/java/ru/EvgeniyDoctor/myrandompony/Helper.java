@@ -49,11 +49,11 @@ public class Helper {
     public static void toggleViewState (Context context, View view, boolean state){
         if (state) {
             view.setEnabled(true);
-            view.setBackgroundColor(Themes.getThemeColorById(context, R.attr.colorPrimary));
+            view.setBackgroundColor(Themes.getThemeColorById(context, R.attr.colorButton));
         }
         else {
             view.setEnabled(false);
-            view.setBackgroundColor(Themes.getThemeColorById(context, R.attr.colorPrimarySemitransparent));
+            view.setBackgroundColor(Themes.getThemeColorById(context, R.attr.colorButtonSemitransparent));
         }
     }
     //-----------------------------------------------------------------------------------------------

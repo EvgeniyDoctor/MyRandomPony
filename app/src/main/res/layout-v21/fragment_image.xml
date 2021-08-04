@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorButton"
             android:textColor="?attr/colorTextElement"
             android:text="@string/settings_cancel_image" />
 
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorButton"
             android:textColor="?attr/colorTextElement"
             android:text="@string/settings_edit_image" />
 
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorButton"
             android:textColor="?attr/colorTextElement"
             android:text="@string/settings_next_image" />
     </LinearLayout>

@@ -3,25 +3,31 @@
     <!-- Base application theme. -->
     <style name="Spike" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#c590c9</item>
-        <item name="colorPrimaryDark">#9a5da2</item>
-        <item name="colorPrimarySemitransparent">#60c590c9</item> <!-- disabled buttons -->
-        <item name="colorAccent">#51c456</item>
+        <item name="colorPrimaryDark">#9a5da2</item> <!-- top bar -->
+        <item name="colorPrimary">#c590c9</item> <!-- app bar -->
+        <item name="colorButton">#c590c9</item> <!-- buttons -->
+        <item name="colorButtonSemitransparent">#60c590c9</item> <!-- disabled buttons -->
+        <item name="colorAccent">#51c456</item> <!-- links, checkboxes, radios -->
         <item name="colorText">#000</item> <!-- text -->
-        <item name="colorTextElement">#000</item> <!-- text -->
+        <item name="colorTextElement">#000</item> <!-- text on elements-->
         <item name="separator">#9a5da2</item> <!-- separator -->
-        <item name="themeScrollviewBorder">#c590c9</item> <!--  -->
-        <item name="colorButtonNormal" tools:targetApi="lollipop">#c590c9</item> <!-- чёрт знает, что такое -->
+        <item name="themeScrollviewBorder">#c590c9</item> <!-- themes scrollview -->
+        <item name="commonBackground">#fff</item>
+        <item name="colorRadioCheckbox">#51c456</item> <!-- цвет кружка Radio и квадрата Checkbox -->
+<!--        <item name="colorButtonNormal" tools:targetApi="lollipop">#c590c9</item> &lt;!&ndash; чёрт знает, что такое &ndash;&gt;-->
     </style>
 
     <style name="Chrysalis" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#2c2c2c</item> <!-- app bar, buttons -->
         <item name="colorPrimaryDark">#161616</item> <!-- top bar -->
-        <item name="colorPrimarySemitransparent">#602c2c2c</item> <!-- disabled buttons -->
-        <item name="colorAccent">#3089b1</item> <!-- links, checkboxes, radios -->
-        <item name="colorText">#000</item> <!-- text -->
-        <item name="colorTextElement">#fff</item> <!-- text -->
-        <item name="separator">#1f5873</item> <!-- separator -->
-        <item name="themeScrollviewBorder">#2c2c2c</item> <!--  -->
+        <item name="colorPrimary">#414141</item> <!-- app bar -->
+        <item name="colorButton">#447C50</item> <!-- buttons -->
+        <item name="colorButtonSemitransparent">#60447C50</item> <!-- disabled buttons -->
+        <item name="colorAccent">#3ca8d9</item> <!-- links, checkboxes, radios -->
+        <item name="colorText">#fff</item> <!-- text -->
+        <item name="colorTextElement">#fff</item> <!-- text on elements-->
+        <item name="separator">#47c4ca</item> <!-- separator -->
+        <item name="themeScrollviewBorder">#3287AE</item> <!-- themes scrollview -->
+        <item name="commonBackground">#2c2c2c</item>
+        <item name="colorRadioCheckbox">#3ca8d9</item> <!-- цвет кружка Radio и квадрата Checkbox -->
     </style>
 </resources>

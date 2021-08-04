@@ -47,6 +47,13 @@ enum eThemes {
 
 
 
+// todo 04.08.2021: посмотреть на планшете
+// todo 04.08.2021: добавить тем
+// todo 04.08.2021: картинки тем
+// todo 04.08.2021: change color vars in xml
+
+
+
 public class Themes extends AppCompatActivity {
     static AppPreferences settings;
     RadioGroup radioGroup;
@@ -87,7 +94,7 @@ public class Themes extends AppCompatActivity {
     // Save button press
     public void themeApply(View view) {
         btn_theme_save.setEnabled(false);
-        btn_theme_save.setBackgroundColor(getThemeColorById(Themes.this, R.attr.colorPrimarySemitransparent));
+        btn_theme_save.setBackgroundColor(getThemeColorById(Themes.this, R.attr.colorButtonSemitransparent));
 
         // RadioButton and FrameLayout tags must be equal to the name in eThemes
         for (RadioButton btn : listOfRadioButtons) {

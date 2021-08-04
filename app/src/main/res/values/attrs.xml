@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <attr name="colorPrimarySemitransparent" format="color" />
+    <attr name="colorButton" format="color" />
+    <attr name="colorButtonSemitransparent" format="color" />
     <attr name="colorTextElement" format="color" /> <!-- цвет на элементах, например, на кнопках -->
     <attr name="colorPrimary" format="color" />
     <attr name="colorPrimaryDark" format="color" />
@@ -9,4 +10,6 @@
     <attr name="colorText" format="color" />
     <attr name="separator" format="color" />
     <attr name="themeScrollviewBorder" format="color" />
+    <attr name="commonBackground" format="color" />
+    <attr name="colorRadioCheckbox" format="color" /> <!-- цвет кружка Radio и квадрата Checkbox -->
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="?attr/commonBackground"
     android:layout_height="match_parent">
 
 
@@ -29,17 +30,18 @@
         android:background="@drawable/borders"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:paddingRight="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <RadioGroup
                 android:id="@+id/radio_group_themes"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -48,6 +50,7 @@
                         android:id="@+id/radio_theme_chrysalis"
                         android:layout_gravity="end|center"
                         android:tag="Chrysalis"
+                        android:buttonTint="?attr/colorRadioCheckbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <FrameLayout
@@ -74,6 +77,7 @@
                         android:layout_gravity="end|center"
                         android:checked="true"
                         android:tag="Spike"
+                        android:buttonTint="?attr/colorRadioCheckbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <FrameLayout
@@ -115,7 +119,7 @@
             android:layout_height="match_parent"
             android:onClick="themeApply"
             android:layout_margin="6dp"
-            android:background="?attr/colorPrimarySemitransparent"
+            android:background="?attr/colorButtonSemitransparent"
             android:textColor="?attr/colorTextElement"
             android:text="save" />
     </LinearLayout>

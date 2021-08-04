@@ -18,6 +18,7 @@
             <CheckBox
                 android:layout_gravity="end"
                 android:id="@+id/enable_checkbox"
+                android:buttonTint="?attr/colorRadioCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="false"/>
@@ -54,6 +55,7 @@
             <CheckBox
                 android:layout_gravity="end"
                 android:id="@+id/only_mobile"
+                android:buttonTint="?attr/colorRadioCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="true"/>
@@ -91,6 +93,7 @@
             <CheckBox
                 android:layout_gravity="end"
                 android:id="@+id/only_wifi"
+                android:buttonTint="?attr/colorRadioCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="true"/>
@@ -129,6 +132,7 @@
                 <RadioButton
                     android:id="@+id/radio_1"
                     android:layout_gravity="end"
+                    android:buttonTint="?attr/colorRadioCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
@@ -155,6 +159,7 @@
                 <RadioButton
                     android:id="@+id/radio_2"
                     android:layout_gravity="end"
+                    android:buttonTint="?attr/colorRadioCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:checked="true"
@@ -183,6 +188,7 @@
                 <RadioButton
                     android:id="@+id/radio_3"
                     android:layout_gravity="end"
+                    android:buttonTint="?attr/colorRadioCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
