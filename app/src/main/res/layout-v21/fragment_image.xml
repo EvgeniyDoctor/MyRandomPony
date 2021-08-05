@@ -49,7 +49,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/current_wallpaper"
+            android:id="@+id/theme_preview"
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

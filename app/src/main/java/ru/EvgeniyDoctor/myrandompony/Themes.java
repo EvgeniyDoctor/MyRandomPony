@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -39,20 +40,23 @@ import java.util.ArrayList;
 
 
 enum eThemes {
-    Chrysalis   (R.style.Chrysalis, "Chrysalis"),
-    Spike       (R.style.Spike, "Spike"),
-    Luna        (R.style.Luna, "Luna"),
-    Celestia    (R.style.Celestia, "Celestia"),
-    Tirek       (R.style.Tirek, "Tirek"),
+    // name (theme name in styles.xml, name in app preferences and tags, id of the preview image)
+    Chrysalis   (R.style.Chrysalis, "Chrysalis",    R.drawable.theme_preview_chrysalis),
+    Spike       (R.style.Spike,     "Spike",        R.drawable.theme_preview_spike),
+    Luna        (R.style.Luna,      "Luna",         R.drawable.theme_preview_luna),
+    Celestia    (R.style.Celestia,  "Celestia",     R.drawable.theme_preview_celestia),
+    Tirek       (R.style.Tirek,     "Tirek",        R.drawable.theme_preview_tirek),
     ;
 
     private final int themeId;
     private final String themeName;
+    private final int themePreview;
 
     // constructor
-    eThemes(int id, String name) {
+    eThemes(int id, String name, int preview) {
         this.themeId = id;
         this.themeName = name;
+        this.themePreview = preview;
     }
 
     public int getId(){
@@ -64,13 +68,16 @@ enum eThemes {
         return themeName;
     }
     //---
+
+    public int getPreview(){
+        return themePreview;
+    }
+    //---
 }
 
 
 
 // todo 04.08.2021: посмотреть на планшете
-// todo 04.08.2021: добавить тем
-// todo 04.08.2021: картинки тем
 // todo 04.08.2021: change color vars in xml
 
 
@@ -81,6 +88,7 @@ public class Themes extends AppCompatActivity {
     Button btn_theme_save;
     ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
     String currentTheme; // name of the current theme, "Chrysalis", "Spike", etc.
+    ImageView imageView;
 
     static final String THEME_INTENT_FLAG = "keep"; // intent extra name to restart Main activity
     static final String THEME_NAME_APP_SETTINGS = "theme"; // tag for app settings
@@ -97,6 +105,7 @@ public class Themes extends AppCompatActivity {
 
         btn_theme_save  = findViewById(R.id.btn_theme_save);
         radioGroup      = findViewById(R.id.radio_group_themes);
+        imageView       = findViewById(R.id.theme_preview);
 
         // get all radio buttons with themes into listOfRadioButtons
         getRadioButtons();
@@ -107,10 +116,12 @@ public class Themes extends AppCompatActivity {
         if (settings.contains(THEME_NAME_APP_SETTINGS)) { // load earlier selected theme
             currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
             setRadioButtonCheckedByTag(currentTheme);
+            imageView.setImageResource(getThemePreviewByName(currentTheme)); // load preview image
         }
         else { // if this is the first launch
             currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
             setRadioButtonCheckedByTag(currentTheme);
+            imageView.setImageResource(getThemePreviewByName(currentTheme)); // load preview image
         }
     }
     //-----------------------------------------------------------------------------------------------
@@ -135,6 +146,7 @@ public class Themes extends AppCompatActivity {
 
 
 
+    // получение указанного цвета текущей темы
     public static int getThemeColorById (Context context, int id){
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
@@ -153,6 +165,8 @@ public class Themes extends AppCompatActivity {
 
         uncheckAllRadioButtons();
         setRadioButtonCheckedByTag(tag);
+
+        imageView.setImageResource(getThemePreviewByName(tag)); // load preview image
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -189,6 +203,19 @@ public class Themes extends AppCompatActivity {
             }
         }
         return eThemes.Spike.getId();
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // получение превью темы по её названию
+    private int getThemePreviewByName(String name){
+        for (eThemes theme : eThemes.values()) {
+            if (name.equals(theme.getName())) {
+                return theme.getPreview();
+            }
+        }
+        return eThemes.Spike.getPreview();
     }
     //-----------------------------------------------------------------------------------------------
 

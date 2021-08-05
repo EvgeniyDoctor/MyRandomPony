@@ -106,7 +106,7 @@ public class Main extends AppCompatActivity {
         checkBox_enabled                = findViewById(R.id.enable_checkbox);
         checkBox_mobile_only            = findViewById(R.id.only_mobile);
         checkBox_wifi_only              = findViewById(R.id.only_wifi);
-        current_wallpaper               = findViewById(R.id.current_wallpaper);
+        current_wallpaper               = findViewById(R.id.theme_preview);
         textview_download_url           = findViewById(R.id.download_url);
         radio_button1                   = findViewById(R.id.radio_1);
         radio_button2                   = findViewById(R.id.radio_2);
@@ -449,7 +449,7 @@ public class Main extends AppCompatActivity {
                     break;
                 // <--- layers
 
-                case R.id.current_wallpaper: // press on the image
+                case R.id.theme_preview: // press on the image
                     ProgressDialog pd = new ProgressDialog(Main.this);
                     pd.setTitle(getResources().getString(R.string.changing_wallpaper_progress_title));
                     pd.setMessage(getResources().getString(R.string.settings_progress_msg));
