@@ -22,19 +22,28 @@
             android:name="android.max_aspect"
             android:value="2.1" />
 
+<!--        android:configChanges="orientation|screenSize"-->
         <activity
             android:name=".Main"
-            android:configChanges="orientation|screenSize">
+            android:screenOrientation="portrait"
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- android:screenOrientation="portrait" -->
+        </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        />
+        <activity
+            android:name=".About"
+            android:screenOrientation="portrait"
+        />
+        <activity
+            android:name=".Themes"
+            android:screenOrientation="portrait"
         />
 
         <service
@@ -59,12 +68,5 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".About" />
-        <activity
-            android:name=".Themes"
-            android:screenOrientation="fullSensor"
-            />
     </application>
-
 </manifest>

@@ -103,7 +103,12 @@ public class Themes extends AppCompatActivity {
 
         // load
         uncheckAllRadioButtons();
-        if (settings.contains(THEME_NAME_APP_SETTINGS)) {
+
+        if (settings.contains(THEME_NAME_APP_SETTINGS)) { // load earlier selected theme
+            currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
+            setRadioButtonCheckedByTag(currentTheme);
+        }
+        else { // if this is the first launch
             currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
             setRadioButtonCheckedByTag(currentTheme);
         }
