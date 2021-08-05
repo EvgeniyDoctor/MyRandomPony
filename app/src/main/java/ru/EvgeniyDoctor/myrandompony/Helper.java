@@ -101,6 +101,14 @@ public class Helper {
 
 
 
+    // make the first char Big
+    public static String ucfirst (String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
     public static void d (String text){
         Log.d(tag, text);
     }

@@ -37,13 +37,16 @@ import java.util.TimerTask;
 
 public class ServiceRefresh extends Service {
     private int
-            type_refresh_frequency;
+            typeRefreshFrequency;
     private Timer
             timer;
     private Calendar
             calendar;
     static AppPreferences
             settings;
+    NotificationCompat.Builder notificationBuilder;
+    NotificationManager manager;
+    int notificationid = 1;
 
     @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH"); // задание формата для получения часов
 
@@ -73,7 +76,7 @@ public class ServiceRefresh extends Service {
 
     @Override
     public void onCreate() {
-        Log.d(Helper.tag, "onCreate");
+        //Log.d(Helper.tag, "onCreate");
         super.onCreate();
 
         settings = new AppPreferences(getApplicationContext());
@@ -84,11 +87,11 @@ public class ServiceRefresh extends Service {
 
         // завершение работы, если сервис был запущен при автостарте
         if (!settings.contains(getResources().getString(R.string.enabled_pony_wallpapers)) || !settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false)) {
-            Log.d(Helper.tag, "onCreate - stopSelf");
+            //Log.d(Helper.tag, "onCreate - stopSelf");
             stopSelf();
         }
 
-        type_refresh_frequency = settings.getInt(getResources().getString(R.string.refresh_frequency), 2);
+        typeRefreshFrequency = settings.getInt(getResources().getString(R.string.refresh_frequency), 2);
         registerReceiver(receiver, new IntentFilter(IntentServiceLoadNewWallpaper.NOTIFICATION_LOAD_NEW_WALLPAPER));
 
         check_time();
@@ -100,24 +103,26 @@ public class ServiceRefresh extends Service {
     // res - https://stackoverflow.com/questions/47531742/startforeground-fail-after-upgrade-to-android-8-1
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startForegroundService(){
-        Log.d(Helper.tag, "startForegroundService started");
-        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+        //Log.d(Helper.tag, "startForegroundService started");
+        String NOTIFICATION_CHANNEL_ID = "ru.EvgeniyDoctor.myrandompony";
         String channelName = "My Background Service";
+
         NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         channel.setLightColor(Color.BLUE);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        assert manager != null;
+
+        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null; // I was so assertive
         manager.createNotificationChannel(channel);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("App is running in background")
+            //.setContentTitle("App is running")
             .setPriority(NotificationManager.IMPORTANCE_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build();
-        startForeground(1, notification);
+        startForeground(notificationid, notification);
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -125,7 +130,7 @@ public class ServiceRefresh extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(Helper.tag, "Service - onDestroy");
+        //Log.d(Helper.tag, "Service - onDestroy");
         super.onDestroy();
 
         if (timer != null) {
@@ -153,7 +158,7 @@ public class ServiceRefresh extends Service {
                 calendar = Calendar.getInstance();
                 Log.d (Helper.tag, dateFormat.format(calendar.getTime()) + ":" + calendar.get(Calendar.MINUTE));
 
-                switch (type_refresh_frequency) {
+                switch (typeRefreshFrequency) {
                     case 1:
                         Log.d (Helper.tag, "case 1");
                         int day = calendar.get(Calendar.DATE);
@@ -173,6 +178,9 @@ public class ServiceRefresh extends Service {
                             startLoad();
                         }
                         Log.d (Helper.tag, "-----------------------------------------");
+
+                        updateNotification(typeRefreshFrequency);
+
                         break;
 
                     case 2:
@@ -194,6 +202,9 @@ public class ServiceRefresh extends Service {
                             startLoad();
                         }
                         Log.d (Helper.tag, "-----------------------------------------");
+
+                        updateNotification(typeRefreshFrequency);
+
                         break;
 
                     case 3:
@@ -215,12 +226,39 @@ public class ServiceRefresh extends Service {
                             startLoad();
                         }
                         Log.d (Helper.tag, "-----------------------------------------");
+
+                        updateNotification(typeRefreshFrequency);
+
                         break;
                 } //switch
             } // run
         }, 0, 60000); // 60000 - раз в минуту
     }
     //----------------------------------------------------------------------------------------------
+
+
+
+    private void updateNotification (int frequency){
+        String text = "";
+
+        switch (frequency) {
+            case 1:
+                text = getResources().getString(R.string.settings_radio_1);
+                break;
+            case 2:
+                text = getResources().getString(R.string.settings_radio_2);
+                break;
+            case 3:
+                text = getResources().getString(R.string.settings_radio_3);
+                break;
+        }
+
+        text = Helper.ucfirst(text);
+        notificationBuilder.setContentText(text); // 61 char max
+        manager.notify(notificationid, notificationBuilder.build());
+
+    }
+    //-----------------------------------------------------------------------------------------------
 
 
 

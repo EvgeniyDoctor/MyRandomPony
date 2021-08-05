@@ -1,6 +1,9 @@
 package ru.EvgeniyDoctor.myrandompony;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -12,11 +15,14 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -78,6 +84,8 @@ public class Main extends AppCompatActivity {
 
 
     // todo 04.08.2021: проверить, есть ли отступы на планшете
+    // todo 05.08.2021: notf: show WIFI and Mobile state info?
+    // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
 
 
 
@@ -417,8 +425,7 @@ public class Main extends AppCompatActivity {
 
                         // restart
                         if (checkBox_enabled.isChecked()) {
-                            stopService(new Intent(Main.this, ServiceRefresh.class));
-                            Helper.startService(Main.this);
+                            restartService();
                         }
                     }
                     else { // чекбокс был ВЫключен при нажатии
@@ -427,8 +434,7 @@ public class Main extends AppCompatActivity {
                         settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBox_mobile_only.isChecked());
 
                         if (checkBox_enabled.isChecked()) {
-                            stopService(new Intent(Main.this, ServiceRefresh.class));
-                            Helper.startService(Main.this);
+                            restartService();
                         }
                     }
                     break;
@@ -442,6 +448,7 @@ public class Main extends AppCompatActivity {
                         checkBox_wifi_only.setChecked(true);
                         settings.put(getResources().getString(R.string.wifi_only), checkBox_wifi_only.isChecked());
                     }
+
                     break;
                 // <--- layers
 
@@ -472,8 +479,7 @@ public class Main extends AppCompatActivity {
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
                     settings.put(getResources().getString(R.string.refresh_frequency), 1);
                     if (checkBox_enabled.isChecked()) {
-                        stopService(new Intent(Main.this, ServiceRefresh.class));
-                        Helper.startService(Main.this);
+                        restartService();
                     }
                     break;
 
@@ -484,8 +490,7 @@ public class Main extends AppCompatActivity {
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
                     settings.put(getResources().getString(R.string.refresh_frequency), 2);
                     if (checkBox_enabled.isChecked()) {
-                        stopService(new Intent(Main.this, ServiceRefresh.class));
-                        Helper.startService(Main.this);
+                        restartService();
                     }
                     break;
 
@@ -496,14 +501,21 @@ public class Main extends AppCompatActivity {
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH)); // current month
                     settings.put(getResources().getString(R.string.refresh_frequency), 3);
                     if (checkBox_enabled.isChecked()) {
-                        stopService(new Intent(Main.this, ServiceRefresh.class));
-                        Helper.startService(Main.this);
+                        restartService();
                     }
                     break;
             }
         }
     };
     //----------------------------------------------------------------------------------------------
+
+
+
+    private void restartService(){
+        stopService(new Intent(Main.this, ServiceRefresh.class));
+        Helper.startService(Main.this);
+    }
+    //-----------------------------------------------------------------------------------------------
 
 
 
