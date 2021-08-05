@@ -85,7 +85,7 @@ enum eThemes {
 public class Themes extends AppCompatActivity {
     static AppPreferences settings;
     RadioGroup radioGroup;
-    Button btn_theme_save;
+    Button btn_theme_apply;
     ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
     String currentTheme; // name of the current theme, "Chrysalis", "Spike", etc.
     ImageView imageView;
@@ -103,7 +103,7 @@ public class Themes extends AppCompatActivity {
         setTheme(loadTheme());
         setContentView(R.layout.themes);
 
-        btn_theme_save  = findViewById(R.id.btn_theme_save);
+        btn_theme_apply = findViewById(R.id.btn_theme_apply);
         radioGroup      = findViewById(R.id.radio_group_themes);
         imageView       = findViewById(R.id.theme_preview);
 
@@ -130,8 +130,8 @@ public class Themes extends AppCompatActivity {
 
     // Save button press
     public void themeApply(View view) {
-        btn_theme_save.setEnabled(false);
-        btn_theme_save.setBackgroundColor(getThemeColorById(Themes.this, R.attr.colorButtonSemitransparent));
+        btn_theme_apply.setEnabled(false);
+        btn_theme_apply.setBackgroundColor(getThemeColorById(Themes.this, R.attr.colorButtonSemitransparent));
 
         // RadioButton and FrameLayout tags must be equal to the name in eThemes
         for (RadioButton btn : listOfRadioButtons) {
@@ -161,7 +161,7 @@ public class Themes extends AppCompatActivity {
     public void setCheckedFromLayout(View view) {
         String tag = view.getTag().toString();
 
-        Helper.toggleViewState(Themes.this, btn_theme_save, !currentTheme.equals(tag)); // disable Save btn if current theme selected
+        Helper.toggleViewState(Themes.this, btn_theme_apply, !currentTheme.equals(tag)); // disable Save btn if current theme selected
 
         uncheckAllRadioButtons();
         setRadioButtonCheckedByTag(tag);

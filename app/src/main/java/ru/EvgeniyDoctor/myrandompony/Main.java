@@ -77,11 +77,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    // todo 03.08.2021: themes
-    // todo optimize oncreate
     // todo 04.08.2021: проверить, есть ли отступы на планшете
-    // todo 04.08.2021: менять заголовок на разных активти
-    // todo 04.08.2021: move Fragments to new dir
 
 
 
@@ -668,7 +664,7 @@ public class Main extends AppCompatActivity {
     }
     //----------------------------------------------------------------------------------------------
 
-    
+
 
     // enable or disable Cancel and Edit buttons; depends on existing respectful images
     public void setButtonsState () {

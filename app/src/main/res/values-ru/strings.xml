@@ -54,4 +54,7 @@
     </string>
     <string name="changing_wallpaper_progress_title">Изменение</string>
     <string name="open_image_on_site">Открыть картинку на сайте</string>
+    <string name="activity_about_title">О приложении</string>
+    <string name="activity_themes_title">Темы</string>
+    <string name="theme_apply">Применить</string>
 </resources>
