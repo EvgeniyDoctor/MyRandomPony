@@ -12,6 +12,7 @@
         <item name="colorText">#000</item> <!-- text -->
         <item name="colorTextElement">#000</item> <!-- text on elements-->
         <item name="separator">#9a5da2</item> <!-- separator -->
+        <item name="themePreviewBorder">#000</item> <!-- theme preview image border -->
         <item name="themeScrollviewBorder">#c590c9</item> <!-- themes scrollview -->
         <item name="themeScrollviewBackground">#FFFAFF</item>
         <item name="colorRadioCheckbox">@drawable/selector_spike</item> <!-- цвет кружка Radio и квадрата Checkbox -->
@@ -24,10 +25,11 @@
         <item name="commonBackground">#2c2c2c</item>
         <item name="colorButton">#4093AF</item> <!-- buttons -->
         <item name="colorButtonSemitransparent">#604d96ad</item> <!-- disabled buttons -->
-        <item name="colorAccent">#9CE0FF</item> <!-- links -->
+        <item name="colorAccent">#89CBEA</item> <!-- links -->
         <item name="colorText">#fff</item> <!-- text -->
         <item name="colorTextElement">#fff</item> <!-- text on elements-->
-        <item name="separator">#2c4e4d</item> <!-- separator -->
+        <item name="separator">#539593</item> <!-- separator -->
+        <item name="themePreviewBorder">#fff</item> <!-- theme preview image border -->
         <item name="themeScrollviewBorder">#71C8EF</item> <!-- themes scrollview -->
         <item name="themeScrollviewBackground">#202020</item>
         <item name="colorRadioCheckbox">@drawable/selector_chrysalis</item> <!-- цвет кружка Radio и квадрата Checkbox -->
@@ -43,13 +45,14 @@
         <item name="colorText">#fff</item> <!-- text -->
         <item name="colorTextElement">#fff</item> <!-- text on elements-->
         <item name="separator">#AFACCA</item> <!-- separator -->
+        <item name="themePreviewBorder">#fff</item> <!-- theme preview image border -->
         <item name="themeScrollviewBorder">#AFACCA</item> <!-- themes scrollview -->
         <item name="themeScrollviewBackground">#262C55</item>
         <item name="colorRadioCheckbox">@drawable/selector_luna</item> <!-- цвет кружка Radio и квадрата Checkbox -->
     </style>
 
     <style name="Celestia" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimaryDark">#80a4ee</item> <!-- top bar -->
+        <item name="colorPrimaryDark">#3D6FD5</item> <!-- top bar -->
         <item name="colorPrimary">#51cda5</item> <!-- app bar -->
         <item name="commonBackground">#fff</item>
         <item name="colorButton">#f2c4fd</item> <!-- buttons -->
@@ -58,6 +61,7 @@
         <item name="colorText">#000</item> <!-- text -->
         <item name="colorTextElement">#000</item> <!-- text on elements-->
         <item name="separator">#eecfe1</item> <!-- separator -->
+        <item name="themePreviewBorder">#000</item> <!-- theme preview image border -->
         <item name="themeScrollviewBorder">#eecfe1</item> <!-- themes scrollview -->
         <item name="themeScrollviewBackground">#FFFAFD</item>
         <item name="colorRadioCheckbox">@drawable/selector_celestia</item> <!-- цвет кружка Radio и квадрата Checkbox -->
@@ -73,6 +77,7 @@
         <item name="colorText">#000</item> <!-- text -->
         <item name="colorTextElement">#fff</item> <!-- text on elements-->
         <item name="separator">#36393e</item> <!-- separator -->
+        <item name="themePreviewBorder">#000</item> <!-- theme preview image border -->
         <item name="themeScrollviewBorder">#36393e</item> <!-- themes scrollview -->
         <item name="themeScrollviewBackground">#F7F7FA</item>
         <item name="colorRadioCheckbox">@drawable/selector_tirek</item> <!-- цвет кружка Radio и квадрата Checkbox -->

@@ -9,6 +9,7 @@
     <attr name="colorAccent" format="color" />
     <attr name="colorText" format="color" />
     <attr name="separator" format="color" />
+    <attr name="themePreviewBorder" format="color" />
     <attr name="themeScrollviewBorder" format="color" />
     <attr name="themeScrollviewBackground" format="color" />
     <attr name="commonBackground" format="color" />

@@ -8,12 +8,13 @@
     android:layout_height="match_parent">
 
 
+    <!-- android:padding="1dp" - for background -->
     <LinearLayout
         android:layout_gravity="center"
         android:id="@+id/layout_theme_preview"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:layout_width="150dp"
+        android:layout_width="125dp"
         android:padding="1dp"
         android:background="@drawable/theme_preview_borders"
         android:layout_height="wrap_content">
@@ -37,7 +38,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- android:scrollbarFadeDuration="0" - always show scrollbar -->
         <ScrollView
+            android:scrollbarFadeDuration="0"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
