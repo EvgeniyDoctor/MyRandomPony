@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- Chrysalis -->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -69,6 +70,7 @@
                     </FrameLayout>
                 </FrameLayout>
 
+                <!-- Spike -->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -93,6 +95,87 @@
                             android:layout_gravity="start|center"
                             android:textColor="?attr/colorText"
                             android:text="Spike"/>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- Luna -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/radio_theme_luna"
+                        android:layout_gravity="end|center"
+                        android:tag="Luna"
+                        android:buttonTint="?attr/colorRadioCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <FrameLayout
+                        android:id="@+id/layout_radio_theme_luna"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:onClick="setCheckedFromLayout"
+                        android:tag="Luna"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start|center"
+                            android:textColor="?attr/colorText"
+                            android:text="Luna"/>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- Celestia -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/radio_theme_celestia"
+                        android:layout_gravity="end|center"
+                        android:tag="Celestia"
+                        android:buttonTint="?attr/colorRadioCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <FrameLayout
+                        android:id="@+id/layout_radio_theme_celestia"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:onClick="setCheckedFromLayout"
+                        android:tag="Celestia"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start|center"
+                            android:textColor="?attr/colorText"
+                            android:text="Celestia"/>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <!-- Tirek -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/radio_theme_tirek"
+                        android:layout_gravity="end|center"
+                        android:tag="Tirek"
+                        android:buttonTint="?attr/colorRadioCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <FrameLayout
+                        android:id="@+id/layout_radio_theme_tirek"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:onClick="setCheckedFromLayout"
+                        android:tag="Tirek"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start|center"
+                            android:textColor="?attr/colorText"
+                            android:text="Tirek"/>
                     </FrameLayout>
                 </FrameLayout>
 

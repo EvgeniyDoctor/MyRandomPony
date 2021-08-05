@@ -20,9 +20,30 @@ import java.util.ArrayList;
 
 
 
+/*
+Для создания новой темы нужно:
+1) добавить её параметры в eThemes ниже;
+2) добавить новый radiobutton и в нём изменить:
+    - RadioButton:
+        - android:id
+        - android:tag
+    - FrameLayout (ниже RadioButton):
+        - android:id
+        - android:tag
+    - TextView:
+        android:text
+3) в drawable создать новый файл selector_<theme_name>. Этот файл отвечает за цвета выбранного/невыбранного radiobutton и чекбокса
+4) описать тему в файле values/styles.xml. Новые item в тему добавляются в файле values/attrs.xml.
+*/
+
+
+
 enum eThemes {
-    Chrysalis(R.style.Chrysalis, "Chrysalis"),
-    Spike(R.style.Spike, "Spike")
+    Chrysalis   (R.style.Chrysalis, "Chrysalis"),
+    Spike       (R.style.Spike, "Spike"),
+    Luna        (R.style.Luna, "Luna"),
+    Celestia    (R.style.Celestia, "Celestia"),
+    Tirek       (R.style.Tirek, "Tirek"),
     ;
 
     private final int themeId;

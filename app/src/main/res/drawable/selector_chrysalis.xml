@@ -1,0 +1,5 @@
+<!-- цвета для RadioButtons и Checkbox -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="#acd264" android:state_checked="true"/>
+    <item android:color="#1EA182"/>
+</selector>

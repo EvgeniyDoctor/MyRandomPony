@@ -10,6 +10,7 @@
     <attr name="colorText" format="color" />
     <attr name="separator" format="color" />
     <attr name="themeScrollviewBorder" format="color" />
+    <attr name="themeScrollviewBackground" format="color" />
     <attr name="commonBackground" format="color" />
     <attr name="colorRadioCheckbox" format="color" /> <!-- цвет кружка Radio и квадрата Checkbox -->
 </resources>
