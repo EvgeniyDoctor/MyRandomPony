@@ -39,6 +39,7 @@ import java.util.ArrayList;
 
 
 
+// all themes and its attrs
 enum eThemes {
     // name (theme name in styles.xml, name in app preferences and tags, id of the preview image)
     Chrysalis   (R.style.Chrysalis, "Chrysalis",    R.drawable.theme_preview_chrysalis),
@@ -74,6 +75,7 @@ enum eThemes {
     }
     //---
 }
+//-----------------------------------------------------------------------------------------------
 
 
 
