@@ -46,7 +46,7 @@ public class ServiceRefresh extends Service {
             settings;
     NotificationCompat.Builder notificationBuilder;
     NotificationManager manager;
-    int notificationid = 1;
+    final int notificationId = 1;
 
     @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH"); // задание формата для получения часов
 
@@ -122,7 +122,7 @@ public class ServiceRefresh extends Service {
             .setPriority(NotificationManager.IMPORTANCE_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build();
-        startForeground(notificationid, notification);
+        startForeground(notificationId, notification);
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -255,7 +255,7 @@ public class ServiceRefresh extends Service {
 
         text = Helper.ucfirst(text);
         notificationBuilder.setContentText(text); // 61 char max
-        manager.notify(notificationid, notificationBuilder.build());
+        manager.notify(notificationId, notificationBuilder.build());
 
     }
     //-----------------------------------------------------------------------------------------------

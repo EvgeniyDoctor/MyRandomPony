@@ -83,7 +83,6 @@ public class Main extends AppCompatActivity {
 
 
 
-    // todo 04.08.2021: проверить, есть ли отступы на планшете
     // todo 05.08.2021: notf: show WIFI and Mobile state info?
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
 
@@ -286,7 +285,9 @@ public class Main extends AppCompatActivity {
                 return true;
 
             case R.id.menu_item_action_help: // помощь
-                callDialog(R.string.settings_help_title, R.string.settings_help_text);
+                String text = getResources().getString(R.string.settings_help_text);
+                text = Helper.removeSpacesFromStringStart(text);
+                callDialog(R.string.settings_help_title, text);
                 return true;
 
             case R.id.menu_item_action_about: // о приложении
@@ -303,7 +304,7 @@ public class Main extends AppCompatActivity {
 
 
     // вызов диалогового окна
-    protected void callDialog(int title, int message) {
+    protected void callDialog(int title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         builder.setMessage(message);

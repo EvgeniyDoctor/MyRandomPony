@@ -3,10 +3,9 @@ package ru.EvgeniyDoctor.myrandompony;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import net.grandcentrix.tray.AppPreferences;
-
-import static ru.EvgeniyDoctor.myrandompony.Themes.loadTheme;
 
 
 
@@ -21,5 +20,9 @@ public class About extends AppCompatActivity {
         setTheme(Themes.loadTheme(settings));
 
         setContentView(R.layout.activity_about);
+
+        TextView textView = findViewById(R.id.textView1);
+        String text = getResources().getString(R.string.about_text);
+        textView.setText(Helper.removeSpacesFromStringStart(text));
     }
 }
