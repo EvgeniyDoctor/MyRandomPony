@@ -45,7 +45,7 @@
     <string name="settings_hint2_alert_title">Hi!</string>
     <string name="settings_hint2_alert_msg">You can set a new background right now by clicking on the \"Next\" button, or check the box \"Enabled\" and wait for a new day!\n\nIf you have any questions, look in the \"Help\"!</string>
     <string name="settings_help_title">Help</string>
-    <string name="settings_help_text">
+    <string name="help_text">
         You can set a new background right now by clicking on the \"Next\" button, or check \"Enabled\" and wait for a new day!\n\n
         If the new image is too large and you want to crop it, click on the \"Edit\" button, and if you want to restore the original size, click on \"Cancel\".\n\n
         To set the background, click on the image.\nAfter editing the image, you need to click it again to set it as the background.\n\n

@@ -16,7 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="125dp"
         android:padding="1dp"
-        android:background="@drawable/theme_preview_borders"
+        android:background="@drawable/image_borders"
         android:layout_height="wrap_content">
 
         <ImageView

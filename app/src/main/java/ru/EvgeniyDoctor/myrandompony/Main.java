@@ -276,23 +276,17 @@ public class Main extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-
         switch (item.getItemId()) {
             case R.id.menu_item_action_themes:
-                intent = new Intent(this, Themes.class);
-                startActivity(intent);
+                menuShowActivity(Themes.class);
                 return true;
 
             case R.id.menu_item_action_help: // помощь
-                String text = getResources().getString(R.string.settings_help_text);
-                text = Helper.removeSpacesFromStringStart(text);
-                callDialog(R.string.settings_help_title, text);
+                menuShowActivity(Help.class);
                 return true;
 
             case R.id.menu_item_action_about: // о приложении
-                intent = new Intent(this, About.class);
-                startActivity(intent);
+                menuShowActivity(About.class);
                 return true;
 
             default:
@@ -303,7 +297,16 @@ public class Main extends AppCompatActivity {
 
 
 
+    private void menuShowActivity(Class param){
+        Intent intent = new Intent(this, param);
+        startActivity(intent);
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
     // вызов диалогового окна
+    /*
     protected void callDialog(int title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
@@ -318,7 +321,7 @@ public class Main extends AppCompatActivity {
         alertDialog = builder.create();
         alertDialog.show();
     }
-    //----------------------------------------------------------------------------------------------
+     */
 
 
 

@@ -9,7 +9,7 @@ import net.grandcentrix.tray.AppPreferences;
 
 
 
-public class About extends AppCompatActivity {
+public class Help extends AppCompatActivity {
     static AppPreferences settings;
 
     @Override
@@ -19,10 +19,10 @@ public class About extends AppCompatActivity {
         settings = new AppPreferences(getApplicationContext());
         setTheme(Themes.loadTheme(settings));
 
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.help);
 
-        TextView textView = findViewById(R.id.textViewAbout);
-        String text = getResources().getString(R.string.about_text);
+        TextView textView = findViewById(R.id.textViewHelp);
+        String text = getResources().getString(R.string.help_text);
         textView.setText(Helper.removeSpacesFromStringStart(text));
     }
 }

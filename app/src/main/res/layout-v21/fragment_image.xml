@@ -51,6 +51,8 @@
         <ImageView
             android:id="@+id/theme_preview"
             android:adjustViewBounds="true"
+            android:padding="1dp"
+            android:background="@drawable/image_borders"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/settings_preview" />
