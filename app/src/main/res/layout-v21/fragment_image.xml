@@ -52,6 +52,7 @@
             android:id="@+id/theme_preview"
             android:adjustViewBounds="true"
             android:padding="1dp"
+            android:visibility="gone"
             android:background="@drawable/image_borders"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

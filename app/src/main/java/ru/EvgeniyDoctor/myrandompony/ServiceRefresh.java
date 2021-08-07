@@ -16,7 +16,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -76,7 +75,6 @@ public class ServiceRefresh extends Service {
 
     @Override
     public void onCreate() {
-        //Log.d(Helper.tag, "onCreate");
         super.onCreate();
 
         settings = new AppPreferences(getApplicationContext());
@@ -87,7 +85,6 @@ public class ServiceRefresh extends Service {
 
         // завершение работы, если сервис был запущен при автостарте
         if (!settings.contains(getResources().getString(R.string.enabled_pony_wallpapers)) || !settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false)) {
-            //Log.d(Helper.tag, "onCreate - stopSelf");
             stopSelf();
         }
 
@@ -103,7 +100,7 @@ public class ServiceRefresh extends Service {
     // res - https://stackoverflow.com/questions/47531742/startforeground-fail-after-upgrade-to-android-8-1
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startForegroundService(){
-        //Log.d(Helper.tag, "startForegroundService started");
+        //Helper.d("startForegroundService started");
         String NOTIFICATION_CHANNEL_ID = "ru.EvgeniyDoctor.myrandompony";
         String channelName = "My Background Service";
 
@@ -130,7 +127,7 @@ public class ServiceRefresh extends Service {
 
     @Override
     public void onDestroy() {
-        //Log.d(Helper.tag, "Service - onDestroy");
+        //Helper.d("Service - onDestroy");
         super.onDestroy();
 
         if (timer != null) {
@@ -151,81 +148,81 @@ public class ServiceRefresh extends Service {
             public void run() {
                 // проверка, доступна ли сеть
                 if (!Helper.checkInternetConnection(ServiceRefresh.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
-                    Log.d (Helper.tag, "No network connection or not WIFI, return");
+                    Helper.d("No network connection or not WIFI, return");
                     return;
                 }
 
                 calendar = Calendar.getInstance();
-                Log.d (Helper.tag, dateFormat.format(calendar.getTime()) + ":" + calendar.get(Calendar.MINUTE));
+                Helper.d(dateFormat.format(calendar.getTime()) + ":" + calendar.get(Calendar.MINUTE));
 
                 switch (typeRefreshFrequency) {
                     case 1:
-                        Log.d (Helper.tag, "case 1");
+                        Helper.d("case 1");
                         int day = calendar.get(Calendar.DATE);
 
-                        Log.d (Helper.tag, "current day = " + day);
+                        Helper.d("current day = " + day);
                         try {
-                            Log.d (Helper.tag, "saved day = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_day)));
+                            Helper.d("saved day = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_day)));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
                         if (day != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_day), 0)) {
-                            Log.d(Helper.tag, "true, change began");
+                            Helper.d("true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_day), day); // текущее число
                             startLoad();
                         }
-                        Log.d (Helper.tag, "-----------------------------------------");
+                        Helper.d("-----------------------------------------");
 
                         updateNotification(typeRefreshFrequency);
 
                         break;
 
                     case 2:
-                        Log.d (Helper.tag, "case 2");
+                        Helper.d("case 2");
                         int week = calendar.get(Calendar.WEEK_OF_YEAR);
 
-                        Log.d (Helper.tag, "current week = " + week);
+                        Helper.d("current week = " + week);
                         try {
-                            Log.d (Helper.tag, "saved week = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_week)));
+                            Helper.d("saved week = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_week)));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
                         if (week != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_week), 0)) {
-                            Log.d(Helper.tag, "true, change began");
+                            Helper.d("true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_week), week); // номер текущей недели
                             startLoad();
                         }
-                        Log.d (Helper.tag, "-----------------------------------------");
+                        Helper.d("-----------------------------------------");
 
                         updateNotification(typeRefreshFrequency);
 
                         break;
 
                     case 3:
-                        Log.d (Helper.tag, "case 3");
+                        Helper.d("case 3");
                         int month = calendar.get(Calendar.MONTH);
 
-                        Log.d (Helper.tag, "current month = " + month);
+                        Helper.d("current month = " + month);
                         try {
-                            Log.d (Helper.tag, "saved month = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_month)));
+                            Helper.d("saved month = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_month)));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
                         if (month != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_month), 0)) { // текущий месяц != сохранённому
-                            Log.d(Helper.tag, "true, change began");
+                            Helper.d("true, change began");
 
                             settings.put(getResources().getString(R.string.refresh_frequency_curr_month), month); // текущий месяц
                             startLoad();
                         }
-                        Log.d (Helper.tag, "-----------------------------------------");
+                        Helper.d("-----------------------------------------");
 
                         updateNotification(typeRefreshFrequency);
 
@@ -277,20 +274,20 @@ public class ServiceRefresh extends Service {
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-        IntentServiceLoadNewWallpaper.Codes res = (IntentServiceLoadNewWallpaper.Codes)
-                intent.getSerializableExtra(IntentServiceLoadNewWallpaper.RESULT);
+            IntentServiceLoadNewWallpaper.Codes res = (IntentServiceLoadNewWallpaper.Codes)
+                    intent.getSerializableExtra(IntentServiceLoadNewWallpaper.RESULT);
 
-        if (res == IntentServiceLoadNewWallpaper.Codes.CHANGE_WALLPAPER) {// res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
-            // установка фона
-            WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-            try {
-                myWallpaperManager.setBitmap(open_background()); // установка фона
-                System.gc();
+            if (res == IntentServiceLoadNewWallpaper.Codes.CHANGE_WALLPAPER) {// res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
+                // установка фона
+                WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
+                try {
+                    myWallpaperManager.setBitmap(open_background()); // установка фона
+                    System.gc();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         }
     };
     //----------------------------------------------------------------------------------------------

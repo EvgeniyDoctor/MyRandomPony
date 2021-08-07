@@ -1,9 +1,6 @@
 package ru.EvgeniyDoctor.myrandompony;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
@@ -15,14 +12,11 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -57,7 +51,7 @@ public class Main extends AppCompatActivity {
             checkBox_mobile_only,
             checkBox_wifi_only;
     private ImageView
-            current_wallpaper;
+            currentWallpaper;
     private TextView
             textview_download_url;
     private ProgressDialog
@@ -109,7 +103,7 @@ public class Main extends AppCompatActivity {
         checkBox_enabled                = findViewById(R.id.enable_checkbox);
         checkBox_mobile_only            = findViewById(R.id.only_mobile);
         checkBox_wifi_only              = findViewById(R.id.only_wifi);
-        current_wallpaper               = findViewById(R.id.theme_preview);
+        currentWallpaper = findViewById(R.id.theme_preview);
         textview_download_url           = findViewById(R.id.download_url);
         radio_button1                   = findViewById(R.id.radio_1);
         radio_button2                   = findViewById(R.id.radio_2);
@@ -124,7 +118,7 @@ public class Main extends AppCompatActivity {
         layout_enable.setOnClickListener(click);
         layout_mobile_only.setOnClickListener(click);
         layout_wifi_only.setOnClickListener(click);
-        current_wallpaper.setOnClickListener(click);
+        currentWallpaper.setOnClickListener(click);
         layout_radio_1.setOnClickListener(click);
         layout_radio_2.setOnClickListener(click);
         layout_radio_3.setOnClickListener(click);
@@ -215,8 +209,7 @@ public class Main extends AppCompatActivity {
             String link = settings.getString(getResources().getString(R.string.downloadurl), "");
             if (link != null && !link.isEmpty()) {
                 setLink(link);
-
-                current_wallpaper.setImageBitmap(openBackground());
+                setWallpaperPreview();
             }
         }
 
@@ -339,7 +332,7 @@ public class Main extends AppCompatActivity {
                                     MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
-                            current_wallpaper.setImageBitmap(openBackground());
+                            currentWallpaper.setImageBitmap(openBackground());
                             Helper.toggleViewState(Main.this, btn_cancel, false);
                         }
                         else {
@@ -576,6 +569,15 @@ public class Main extends AppCompatActivity {
 
 
 
+    //
+    private void setWallpaperPreview () {
+        currentWallpaper.setImageBitmap(openBackground()); // load wallpaper preview
+        currentWallpaper.setVisibility(View.VISIBLE);
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -585,8 +587,7 @@ public class Main extends AppCompatActivity {
             switch (res) {
                 case SUCCESS:
                     // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
-                    // установка фона
-                    current_wallpaper.setImageBitmap(openBackground());
+                    setWallpaperPreview();
 
                     // установка ссылки для загрузки
                     if (settings.contains(getResources().getString(R.string.downloadurl))) {
@@ -659,7 +660,7 @@ public class Main extends AppCompatActivity {
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            current_wallpaper.setImageBitmap(openBackground());
+            currentWallpaper.setImageBitmap(openBackground());
 
             Helper.toggleViewState(Main.this, btn_cancel, true);
 
@@ -719,7 +720,7 @@ public class Main extends AppCompatActivity {
         checkBox_enabled = null;
         checkBox_mobile_only = null;
         checkBox_wifi_only = null;
-        current_wallpaper = null;
+        currentWallpaper = null;
         textview_download_url = null;
         settings = null;
         radio_button1 = null;
