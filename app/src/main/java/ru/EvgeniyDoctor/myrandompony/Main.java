@@ -77,8 +77,8 @@ public class Main extends AppCompatActivity {
 
 
 
-    // todo 05.08.2021: notf: show WIFI and Mobile state info?
-    // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
+    // todo 05.08.2021: ? notf: show WIFI and Mobile state info
+    // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
 
 
 
@@ -91,7 +91,7 @@ public class Main extends AppCompatActivity {
 
         setContentView(R.layout.main);
 
-        // логи при ошибке
+        // логи при ошибке // error logs
         //RoboErrorReporter.bindReporter(this.getApplicationContext());
 
         btnCancel = findViewById(R.id.btn_cancel);
@@ -123,7 +123,7 @@ public class Main extends AppCompatActivity {
         layout_radio_2.setOnClickListener(click);
         layout_radio_3.setOnClickListener(click);
 
-        // частота обновления
+        // частота обновления // refresh frequency
         if (settings.contains(getResources().getString(R.string.refresh_frequency))) {
             switch (settings.getInt(getResources().getString(R.string.refresh_frequency), 2)) {
                 case 1:
@@ -143,11 +143,12 @@ public class Main extends AppCompatActivity {
                     break;
             }
         }
-        else { // если это первый запуск программы, то раз в неделю
+        else { // если это первый запуск программы, то раз в неделю // if this is the first launch of the program, then once a week
             settings.put(getResources().getString(R.string.refresh_frequency), 2);
         }
 
         // установка первоначальных данных. Если этого не сделать, то при смене пользователем стд настройки с "Раз в неделю" на любую другую произойдёт обновление обоев
+        // setting the initial data. If this is not done, then when the user changes the std settings from "Once a week" to any other, the wallpaper will be updated
         Calendar calendar = Calendar.getInstance();
         if (!settings.contains(getResources().getString(R.string.refresh_frequency_curr_day))) {
             settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
@@ -159,12 +160,12 @@ public class Main extends AppCompatActivity {
             settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH));
         }
 
-        // включено ли
+        // включено ли // is enabled
         if (settings.contains(getResources().getString(R.string.enabled_pony_wallpapers))) {
             checkBoxEnabled.setChecked(settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false));
         }
 
-        // разрешение обоев
+        // разрешение обоев // wallpaper resolution
         if (settings.contains(getResources().getString(R.string.mobile_pony_wallpapers))) {
             checkBoxMobileOnly.setChecked(settings.getBoolean(getResources().getString(R.string.mobile_pony_wallpapers), true));
         }
@@ -180,7 +181,7 @@ public class Main extends AppCompatActivity {
             settings.put(getResources().getString(R.string.wifi_only), true);
         }
 
-        // запуск сервиса, если надо
+        // запуск сервиса, если надо // starting the service, if necessary
         if (checkBoxEnabled.isChecked()) {
             Helper.startService(Main.this);
         }
@@ -204,7 +205,7 @@ public class Main extends AppCompatActivity {
             alertDialog.show();
         }
 
-        // установка ссылки
+        // установка ссылки // set link
         if (settings.contains(getResources().getString(R.string.downloadurl))) {
             String link = settings.getString(getResources().getString(R.string.downloadurl), "");
             if (link != null && !link.isEmpty()) {
@@ -221,7 +222,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    // Изменение ориентации экрана
+    // Изменение ориентации экрана // Changing the screen orientation
     @Override
     public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -243,6 +244,7 @@ public class Main extends AppCompatActivity {
 
 
     // при изменении темы, после нажатия на кнопку Принять это активити останавливается для перезапуска
+    // when changing the theme, after clicking on the Apply button, this activity stops for restarting
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -255,7 +257,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    // создание меню из 3 точек
+    // creating a 3-dot menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -265,20 +267,20 @@ public class Main extends AppCompatActivity {
 
 
 
-    // пункты меню из 3 точек
+    // 3-dot menu items
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_action_themes:
+            case R.id.menu_item_action_themes: // themes
                 menuShowActivity(Themes.class);
                 return true;
 
-            case R.id.menu_item_action_help: // помощь
+            case R.id.menu_item_action_help: // help
                 menuShowActivity(Help.class);
                 return true;
 
-            case R.id.menu_item_action_about: // о приложении
+            case R.id.menu_item_action_about: // about
                 menuShowActivity(About.class);
                 return true;
 
@@ -298,8 +300,8 @@ public class Main extends AppCompatActivity {
 
 
 
-    // вызов диалогового окна
     /*
+    // вызов диалогового окна
     protected void callDialog(int title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
@@ -326,7 +328,7 @@ public class Main extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 // buttons --->
-                case R.id.btn_cancel: // кнопка отмены изменений
+                case R.id.btn_cancel: // Cancel button
                     File bg_edited = new File(
                             new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
                                     MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
@@ -344,7 +346,7 @@ public class Main extends AppCompatActivity {
                     }
                     break;
 
-                case R.id.btn_edit: // кнопка редактирования
+                case R.id.btn_edit: // Edit button
                     File input = new File(
                             new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
                                     MODE_PRIVATE), getResources().getString(R.string.file_name));
@@ -371,7 +373,7 @@ public class Main extends AppCompatActivity {
                     UCrop.of(Uri.fromFile(input), Uri.fromFile(output)).withOptions(options).start(Main.this);
                     break;
 
-                case R.id.btn_next: // кнопка "дальше"
+                case R.id.btn_next: // Next button
                     if (Helper.checkInternetConnection(Main.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
@@ -383,8 +385,8 @@ public class Main extends AppCompatActivity {
                         Intent intent = new Intent(Main.this, IntentServiceLoadNewWallpaper.class);
                         intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
                         intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, "");
-                        intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, ""); // "" - не нужно менять фон
-                        intent.setAction(Helper.ACTION_NEXT_BUTTON); // была нажата кнопка "Дальше", запустится обычный сервис, не ForegroundService
+                        intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, ""); // "" - не нужно менять фон // "" - no need to change the background
+                        intent.setAction(Helper.ACTION_NEXT_BUTTON); // была нажата кнопка "Дальше", запустится обычный сервис, не ForegroundService // the "Next" button was pressed, the usual service will start, not the Foreground Service
                         Helper.startService(Main.this, intent);
                     }
                     else {
@@ -399,7 +401,7 @@ public class Main extends AppCompatActivity {
                         checkBoxEnabled.setChecked(false);
                         stopService(new Intent(Main.this, ServiceRefresh.class));
                     }
-                    else { // чекбокс был ВЫключен при нажатии
+                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
                         checkBoxEnabled.setChecked(true);
                         if (!Helper.checkInternetConnection(Main.this, false)) {
                             Toast.makeText(Main.this, R.string.settings_internet_warn, Toast.LENGTH_LONG).show();
@@ -425,7 +427,7 @@ public class Main extends AppCompatActivity {
                             restartService();
                         }
                     }
-                    else { // чекбокс был ВЫключен при нажатии
+                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
                         checkBoxMobileOnly.setChecked(true);
 
                         settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBoxMobileOnly.isChecked());
@@ -441,7 +443,7 @@ public class Main extends AppCompatActivity {
                         checkBoxWifiOnly.setChecked(false);
                         settings.put(getResources().getString(R.string.wifi_only), checkBoxWifiOnly.isChecked());
                     }
-                    else { // чекбокс был ВЫключен при нажатии
+                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
                         checkBoxWifiOnly.setChecked(true);
                         settings.put(getResources().getString(R.string.wifi_only), checkBoxWifiOnly.isChecked());
                     }
@@ -468,7 +470,7 @@ public class Main extends AppCompatActivity {
 
                     break;
 
-                // частота обновления обоев
+                // частота обновления обоев // wallpaper refresh frequency
                 case R.id.layout_radio_1:
                     radioButton1.setChecked(true);
                     radioButton2.setChecked(false);
@@ -516,12 +518,11 @@ public class Main extends AppCompatActivity {
 
 
 
-    // установка фона по нажатию на preview
+    // установка фона по нажатию на preview // setting the background by clicking on preview
     public void setBackground() {
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
         try {
-            myWallpaperManager.setBitmap(openBackground()); // установка фона
-            //Toast.makeText(Main.this, R.string.settings_preview_setbackground, Toast.LENGTH_LONG).show(); // don't work in thread
+            myWallpaperManager.setBitmap(openBackground());
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -531,7 +532,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    // открытие фона
+    // open background
     private Bitmap openBackground() {
         // res. - http://www.vogella.com/tutorials/AndroidApplicationOptimization/article.html#handling-bitmaps
         // https://habrahabr.ru/post/161027/
@@ -542,6 +543,7 @@ public class Main extends AppCompatActivity {
         );
 
         // если существует bg_edited.jpeg, то он и будет открыт, иначе - откроется исходное изо
+        // if there is bg_edited.jpeg, then it will be opened, otherwise - the original image will open
         if (!background.exists()) {
             background = new File( // bg.jpeg
                 new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
@@ -569,7 +571,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    //
+    // set wallpaper preview
     private void setWallpaperPreview () {
         currentWallpaper.setImageBitmap(openBackground()); // load wallpaper preview
         currentWallpaper.setVisibility(View.VISIBLE);
@@ -589,7 +591,7 @@ public class Main extends AppCompatActivity {
                     // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
                     setWallpaperPreview();
 
-                    // установка ссылки для загрузки
+                    // установка ссылки для загрузки // set link
                     if (settings.contains(getResources().getString(R.string.downloadurl))) {
                         setLink(settings.getString(getResources().getString(R.string.downloadurl), ""));
                     }
@@ -601,7 +603,7 @@ public class Main extends AppCompatActivity {
                     Helper.toggleViewState(Main.this, btnCancel, false);
                     Helper.toggleViewState(Main.this, btnEdit,   true);
 
-                    // подсказка после первой загрузки изображения на кнопку "Дальше"
+                    // подсказка после первой загрузки изображения на кнопку "Дальше" // hint after the first image upload, click on the"Next" button
                     if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
                         builder.setMessage(R.string.settings_hint1_alert_msg);
@@ -615,7 +617,6 @@ public class Main extends AppCompatActivity {
                         alertDialog = builder.create();
                         alertDialog.show();
                     }
-
                     break;
 
                 case NOT_CONNECTED:
@@ -655,7 +656,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    // результат активити редактирования изо
+    // результат активити редактирования изо // result of the activity for image editing
     @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -692,6 +693,7 @@ public class Main extends AppCompatActivity {
 
 
 
+    // check if the original image exists
     public boolean originalImageExists(){
         File input = new File(
                 new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
@@ -703,6 +705,7 @@ public class Main extends AppCompatActivity {
 
 
 
+    // check if the edited image exists
     public boolean editedImageExists(){
         File bg_edited = new File(
                 new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
@@ -739,7 +742,9 @@ public class Main extends AppCompatActivity {
 
         if (receiver != null) {
             try {
-                unregisterReceiver(receiver); // отмена ресивера. Может быть вызвано, например, при изменении ориентации экрана.
+                // отмена ресивера. Может быть вызвано, например, при изменении ориентации экрана.
+                // canceling the receiver. It can be caused, for example, when changing the screen orientation.
+                unregisterReceiver(receiver);
             }
             catch (IllegalArgumentException ignored) {}
         }

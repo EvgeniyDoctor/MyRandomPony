@@ -39,7 +39,7 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
         SUCCESS,
         CHANGE_WALLPAPER,
         NOT_CONNECTED, // url does not exist or connect timeout
-        NOT_JSON, // в ответ пришёл не json
+        NOT_JSON, // в ответе не json // the response is not json
     }
 
 
@@ -56,21 +56,21 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
         JSONObject current_result = null;
         final boolean URL_STRING_is_empty = intent.getStringExtra(URL_STRING).equals("");
 
-        Log.d(Helper.tag, "URL_STRING 1 = " + intent.getStringExtra(URL_STRING));
+        Helper.d("URL_STRING 1 = " + intent.getStringExtra(URL_STRING));
 
-        // получаем данные с внешнего ресурса
-        if (URL_STRING_is_empty) { // если надо загрузить новую картинку
-            try { // функции нынче удалённого ParseTask
-                Log.d(Helper.tag, "ParseTask execute");
+        // загрузка данные с внешнего ресурса // loading data from an external resource
+        if (URL_STRING_is_empty) { // если надо загрузить новую картинку // if you need to upload a new image
+            try {
+                Helper.d("ParseTask execute");
 
                 URL url;
                 final AppPreferences settings = new AppPreferences(getApplicationContext());
 
-                // нужное разрешение
-                if (settings.getBoolean(getResources().getString(R.string.mobile_pony_wallpapers), true)) { // только с разрешением для мобильных
+                // нужное разрешение // required screen resolution
+                if (settings.getBoolean(getResources().getString(R.string.mobile_pony_wallpapers), true)) { // только с разрешением для мобильных // mobile screen resolution only
                     url = new URL(getResources().getString(R.string.url_request_mobile));
                 }
-                else { // все подряд обои
+                else {
                     url = new URL(getResources().getString(R.string.url_request_all));
                 }
 
@@ -79,15 +79,15 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
                 urlConnection.setConnectTimeout(5000);
                 urlConnection.setReadTimeout(60000);
 
-                // подключение к серверу
+                // подключение к серверу // connect to the server
                 try {
-                    if (urlConnection.getResponseCode() == 200) { // любой код restful, кроме 200 (OK)
-                        Log.d(Helper.tag, "Connect OK");
+                    if (urlConnection.getResponseCode() == 200) { // restful code 200 (OK)
+                        Helper.d("Connect OK");
                         urlConnection.connect();
                     }
                 }
                 catch (IOException e) {
-                    Log.d(Helper.tag, "HTTP answer != OK");
+                    Helper.d("HTTP answer != OK");
                     e.printStackTrace();
                     send(Codes.NOT_CONNECTED);
                     error = true;
@@ -105,20 +105,20 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
 
                     // ---
 
-                    // разбор json-массива на нужные части
+                    // разбор json-массива на нужные части // parsing a json array
                     try {
                         // json structure - https://www.mylittlewallpaper.com/c/my-little-pony/api-v1
                         String server_answer = buffer.toString();
-                        if (server_answer.charAt(0) != '{') { // если первый символ buffer !={, значит, в ответ пришёл не json
+                        if (server_answer.charAt(0) != '{') { // если первый символ buffer !={, значит, в ответ пришёл не json // if the first character in buffer != {, it means that the response did not come from json
                             send(Codes.NOT_JSON);
                             error = true;
                         }
-                        else { // если в ответе сервера json
+                        else { // если в ответе сервера json // json - ok
                             JSONObject dataJsonObj = new JSONObject(server_answer);
                             JSONArray jsonArray = dataJsonObj.getJSONArray("result");
                             current_result = jsonArray.getJSONObject(0);
 
-                            // сохранение ссылки для загрузки (откроется страница с картинкой)
+                            // сохранение ссылки для загрузки (откроется страница с картинкой) // saving the download link (a page with an image opens)
                             settings.put(getResources().getString(R.string.downloadurl), current_result.getString(getResources().getString(R.string.downloadurl)));
                         }
                     }
@@ -136,23 +136,23 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
         // ---
 
         if (!error) {
-            try { // функции IntentService_LoadNewWallpaper
-                Log.d(Helper.tag, "IntentService_LoadNewWallpaper execute");
+            try {
+                Helper.d("IntentService_LoadNewWallpaper execute");
 
                 if (current_result != null || !URL_STRING_is_empty) {
-                    Log.d(Helper.tag, "IntentService_LoadNewWallpaper TRUE current_result != null || !intent.getStringExtra(URL_STRING).equals(\"\")");
+                    Helper.d("IntentService_LoadNewWallpaper TRUE current_result != null || !intent.getStringExtra(URL_STRING).equals(\"\")");
 
                     InputStream in;
 
-                    if (URL_STRING_is_empty) { // загрузка новой обоины
+                    if (URL_STRING_is_empty) { // загрузка новой обоины // load new wallpaper
                         in = new URL(getResources().getString(R.string.url_full_size_download) + current_result.getString("imageid") + ".png").openStream();
                     }
-                    else { // восставновление ранее стоявшей обоины
+                    else { // восставновление ранее стоявшей обоины // restoring a previous wallpaper
                         in = new URL(intent.getStringExtra(URL_STRING)).openStream();
                     }
 
                     if (in != null) {
-                        // масштабирование размера изображения из потока при загрузке --->
+                        // масштабирование размера изображения из потока при загрузке // scaling the image size from the stream when loading --->
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeStream(in, null, options);
@@ -161,26 +161,28 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
                         options.inJustDecodeBounds = false;
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-                        if (URL_STRING_is_empty) { // загрузка новой обоины
+                        if (URL_STRING_is_empty) { // загрузка новой обоины // load a new wallpaper
                             in = new URL(getResources().getString(R.string.url_full_size_download) + current_result.getString("imageid") + ".png").openStream();
                         }
-                        else { // восставновление ранее стоявшей обоины
+                        else { // восставновление ранее стоявшей обоины // restoring a previous wallpaper
                             in = new URL(intent.getStringExtra(URL_STRING)).openStream();
                         }
-                        Bitmap img = BitmapFactory.decodeStream(in, null, options); // открытие масштабированного изо
+                        Bitmap img = BitmapFactory.decodeStream(in, null, options); // открытие масштабированного изо // opening a scaled image
                         // <---
 
+
+
                         if (img != null) {
-                            // удаление отредактированного изо, если оно было
+                            // удаление отредактированного изо, если оно было // deleting the edited image
                             File bg_edited = new File(
                                     new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
                                             MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
                             if (bg_edited.exists()) {
-                                Log.d(Helper.tag, "IntentService delete_bg_edited OK");
+                                Helper.d("IntentService delete_bg_edited OK");
                                 bg_edited.delete();
                             }
 
-                            // сохранение нового изо
+                            // сохранение нового изо // save new image
                             FileOutputStream fos = new FileOutputStream(new File(
                                     new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
                                             MODE_PRIVATE), intent.getStringExtra(FILENAME))); // bg.png
@@ -191,7 +193,7 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
                             if (intent.getStringExtra(NEED_CHANGE_BG).equals("")) { // не нужно менять фон
                                 send(Codes.SUCCESS);
                             }
-                            else { // нужно изменить фон
+                            else { // нужно изменить фон // change wallpaper
                                 send(Codes.CHANGE_WALLPAPER);
                             }
 
@@ -209,7 +211,7 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
 
 
 
-    // вычисление размеров картинки
+    // вычисление размеров картинки // calculating the size of the image
     public static int calculateSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
@@ -234,16 +236,16 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
 
 
     // value:
-    // -1 - успех, фон НЕ будет изменён;
-    // 0 - успех, фон будет изменён;
-    // 1 - ошибка подключения к серверу;
-    // 2 - в ответе сервера не json
+    // -1 - успех, фон НЕ будет изменён;    // success, the background will NOT be changed;
+    // 0 - успех, фон будет изменён;        // success, the background will be changed;
+    // 1 - ошибка подключения к серверу;    // server connection error;
+    // 2 - в ответе сервера не json         // the server response is not json
     private void send (Codes value) {
         Intent intent = new Intent(NOTIFICATION_LOAD_NEW_WALLPAPER);
         intent.putExtra(RESULT, value);
         sendBroadcast(intent);
 
-        Log.d(Helper.tag, "IntentService sendBroadcast = " + value);
+        Helper.d("IntentService sendBroadcast = " + value);
     }
     //----------------------------------------------------------------------------------------------
 }

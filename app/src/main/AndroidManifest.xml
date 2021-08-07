@@ -22,7 +22,6 @@
             android:name="android.max_aspect"
             android:value="2.1" />
 
-<!--        android:configChanges="orientation|screenSize"-->
         <activity
             android:name=".Main"
             android:screenOrientation="portrait"

@@ -83,7 +83,7 @@ public class ServiceRefresh extends Service {
             startForegroundService();
         }
 
-        // завершение работы, если сервис был запущен при автостарте
+        // завершение работы, если сервис был запущен при автостарте // shutdown if the service was started during autostart
         if (!settings.contains(getResources().getString(R.string.enabled_pony_wallpapers)) || !settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false)) {
             stopSelf();
         }
@@ -147,7 +147,7 @@ public class ServiceRefresh extends Service {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                // проверка, доступна ли сеть
+                // checking if the network is available
                 if (!Helper.checkInternetConnection(ServiceRefresh.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
                     Helper.d("No network connection or not WIFI, return");
                     return;
@@ -221,7 +221,7 @@ public class ServiceRefresh extends Service {
                         break;
                 } //switch
             } // run
-        }, 0, 60000); // 60000 - раз в минуту
+        }, 0, 60000); // 60000 - once a minute
     }
     //----------------------------------------------------------------------------------------------
 
@@ -254,7 +254,7 @@ public class ServiceRefresh extends Service {
     private void startLoad() {
         Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
         intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-        intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
+        intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg // the path already contains the id and. jpeg
         intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, "1");
         startService(intent);
         System.gc();
@@ -273,7 +273,7 @@ public class ServiceRefresh extends Service {
                 // установка фона
                 WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
                 try {
-                    myWallpaperManager.setBitmap(open_background()); // установка фона
+                    myWallpaperManager.setBitmap(openBackground()); // setting the background
                     System.gc();
                 }
                 catch (IOException e) {
@@ -286,8 +286,8 @@ public class ServiceRefresh extends Service {
 
 
 
-    // открытие фона
-    private Bitmap open_background() {
+    // opening the background
+    private Bitmap openBackground() {
         File background = new File( // open bg.jpeg
                 new ContextWrapper(
                         getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE), getResources().getString(R.string.file_name));

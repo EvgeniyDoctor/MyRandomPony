@@ -77,11 +77,6 @@ enum eThemes {
 
 
 
-// todo 04.08.2021: посмотреть на планшете
-// todo 04.08.2021: change color vars in xml
-
-
-
 public class Themes extends AppCompatActivity {
     static AppPreferences settings;
     RadioGroup radioGroup;
@@ -146,7 +141,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // получение указанного цвета текущей темы
+    // get some color of the current theme
     public static int getThemeColorById (Context context, int id){
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
@@ -172,7 +167,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // отменить выбор со всех RadioButtons
+    // uncheck all RadioButtons
     private void uncheckAllRadioButtons() {
         for (RadioButton btn : listOfRadioButtons) {
             btn.setChecked(false);
@@ -182,7 +177,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // выбор RadioButton по заданному тегу
+    // check RadioButton by tag
     private void setRadioButtonCheckedByTag (String name){
         for (RadioButton btn : listOfRadioButtons) {
             if (btn.getTag().equals(name)) {
@@ -195,7 +190,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // получение ид темы по её названию
+    // get theme ID by its name
     private int getThemeIdByName(String name){
         for (eThemes theme : eThemes.values()) {
             if (name.equals(theme.getName())) {
@@ -208,7 +203,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // получение превью темы по её названию
+    // get theme preview by its name
     private int getThemePreviewByName(String name){
         for (eThemes theme : eThemes.values()) {
             if (name.equals(theme.getName())) {
@@ -221,7 +216,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // формирование массива со всеми RadioButtons в группе
+    // get all RadioButtons in RadioGroup in array
     private void getRadioButtons(){
         int count = radioGroup.getChildCount();
 
@@ -248,7 +243,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // сохранение выбранной темы и перезапуск Main activity
+    // save selected theme and restart Main activity
     @SuppressLint("NonConstantResourceId")
     public void changeTheme(int themeId) {
         //setTheme(themeId); // std Android method
@@ -283,7 +278,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // загрузка текущей темы из настроек
+    // load current theme from the app preferences
     public static int loadTheme (AppPreferences settings){
         if (settings.contains(THEME_NAME_APP_SETTINGS)) {
             String currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
@@ -300,7 +295,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // загрузка текущей темы из настроек
+    // load current theme from the app preferences
     public static int loadTheme (){
         if (settings.contains(THEME_NAME_APP_SETTINGS)) {
             String currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());

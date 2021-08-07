@@ -23,7 +23,7 @@ public class Helper {
 
 
 
-    // проверка, доступна ли сеть
+    // checking if the network is available
     public static boolean checkInternetConnection(Context context, boolean need_type) {
         AppPreferences settings = new AppPreferences(context);
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -32,9 +32,9 @@ public class Helper {
             return false;
         }
 
-        if (need_type) { // если важен тип подключения
+        if (need_type) { // if the connection type is important
             if (netInfo.isConnectedOrConnecting()) {
-                if (settings.getBoolean(context.getResources().getString(R.string.wifi_only), true)) { // если нужен только wifi
+                if (settings.getBoolean(context.getResources().getString(R.string.wifi_only), true)) { // если нужен только wifi // wifi only
                     return netInfo.getTypeName().equals("WIFI");
                 }
             }
@@ -47,6 +47,7 @@ public class Helper {
 
 
     // из-за того, что некоторые строки заданы в ресурсах многострочно, они выводятся с пробелами в начале строки. Этот метод это исправляет
+    // due to the fact that some lines are set multiline in resources, they are output with spaces at the beginning of the line. This method fixes it
     public static String removeSpacesFromStringStart (String text){
         String[] arr;
         int i;
@@ -69,7 +70,7 @@ public class Helper {
 
 
 
-    // включение или отключение кнопок
+    // включение или отключение кнопок // enabling or disablin buttons
     public static void toggleViewState (Context context, View view, boolean state){
         if (state) {
             view.setEnabled(true);
@@ -84,7 +85,7 @@ public class Helper {
 
 
 
-    // старт сервиса в зависимости от платформы
+    // старт сервиса в зависимости от платформы // start of the service depending on the platform
     public static void startService (Context context){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //Log.d(Helper.tag, "Helper - startService - startForegroundService");
@@ -97,7 +98,7 @@ public class Helper {
         }
         else { // normal version of android
             //Log.d(Helper.tag, "Helper - startService - startService");
-            context.startService(new Intent(context, ServiceRefresh.class)); // no action
+            context.startService(new Intent(context, ServiceRefresh.class));
         }
     }
     //--------------------------------------------------------------------------------------------------
@@ -106,7 +107,9 @@ public class Helper {
 
     // for Next button and Autostart
     public static void startService (Context context, Intent intent){
-        if (intent.getAction() != null && intent.getAction().equals(ACTION_NEXT_BUTTON)) { // если нажата кнопка "Дальше", незачем запускать ForegroundService, потому что активити будет открыто
+        // если нажата кнопка "Дальше", незачем запускать ForegroundService, потому что активити уже открыто
+        // if the "Next" button is pressed, there is no need to start ForegroundService, because the activity already opened
+        if (intent.getAction() != null && intent.getAction().equals(ACTION_NEXT_BUTTON)) {
             //Log.d(Helper.tag, "Helper - startService + intent - Next btn - startService");
             context.startService(intent);
             return;
