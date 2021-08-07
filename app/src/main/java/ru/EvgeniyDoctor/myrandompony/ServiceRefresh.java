@@ -92,6 +92,7 @@ public class ServiceRefresh extends Service {
         registerReceiver(receiver, new IntentFilter(IntentServiceLoadNewWallpaper.NOTIFICATION_LOAD_NEW_WALLPAPER));
 
         check_time();
+        updateNotification(typeRefreshFrequency);
     }
     //----------------------------------------------------------------------------------------------
 
@@ -175,9 +176,6 @@ public class ServiceRefresh extends Service {
                             startLoad();
                         }
                         Helper.d("-----------------------------------------");
-
-                        updateNotification(typeRefreshFrequency);
-
                         break;
 
                     case 2:
@@ -199,9 +197,6 @@ public class ServiceRefresh extends Service {
                             startLoad();
                         }
                         Helper.d("-----------------------------------------");
-
-                        updateNotification(typeRefreshFrequency);
-
                         break;
 
                     case 3:
@@ -223,9 +218,6 @@ public class ServiceRefresh extends Service {
                             startLoad();
                         }
                         Helper.d("-----------------------------------------");
-
-                        updateNotification(typeRefreshFrequency);
-
                         break;
                 } //switch
             } // run
@@ -263,7 +255,7 @@ public class ServiceRefresh extends Service {
         Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
         intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
         intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg
-        intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, "1");
+        intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, "1");
         startService(intent);
         System.gc();
     }

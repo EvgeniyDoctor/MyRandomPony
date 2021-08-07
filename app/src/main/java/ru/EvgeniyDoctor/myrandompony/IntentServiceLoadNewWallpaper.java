@@ -32,7 +32,7 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
             FILENAME = "filename",
             RESULT = "result",
             NOTIFICATION_LOAD_NEW_WALLPAPER = "ru.EvgeniyDoctor.service.IntentServiceLoadNewWallpaper",
-            need_change_bg = "";
+            NEED_CHANGE_BG = "";
     private boolean
             error = false;
     enum Codes {
@@ -188,7 +188,7 @@ public class IntentServiceLoadNewWallpaper extends IntentService {
                             img.recycle();
 
                             // send result
-                            if (intent.getStringExtra(need_change_bg).equals("")) { // не нужно менять фон
+                            if (intent.getStringExtra(NEED_CHANGE_BG).equals("")) { // не нужно менять фон
                                 send(Codes.SUCCESS);
                             }
                             else { // нужно изменить фон

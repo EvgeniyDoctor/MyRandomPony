@@ -47,9 +47,9 @@ import java.util.Calendar;
 
 public class Main extends AppCompatActivity {
     private CheckBox
-            checkBox_enabled,
-            checkBox_mobile_only,
-            checkBox_wifi_only;
+            checkBoxEnabled,
+            checkBoxMobileOnly,
+            checkBoxWifiOnly;
     private ImageView
             currentWallpaper;
     private TextView
@@ -57,13 +57,13 @@ public class Main extends AppCompatActivity {
     private ProgressDialog
             progressDialog = null;
     private RadioButton
-            radio_button1,
-            radio_button2,
-            radio_button3;
+            radioButton1,
+            radioButton2,
+            radioButton3;
     private Button
-            btn_cancel,
-            btn_edit,
-            btn_next;
+            btnCancel,
+            btnEdit,
+            btnNext;
     static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private AlertDialog
         alertDialog = null;
@@ -94,27 +94,27 @@ public class Main extends AppCompatActivity {
         // логи при ошибке
         //RoboErrorReporter.bindReporter(this.getApplicationContext());
 
-        btn_cancel                      = findViewById(R.id.btn_cancel);
-        btn_edit                        = findViewById(R.id.btn_edit);
-        btn_next                        = findViewById(R.id.btn_next);
+        btnCancel = findViewById(R.id.btn_cancel);
+        btnEdit = findViewById(R.id.btn_edit);
+        btnNext = findViewById(R.id.btn_next);
         FrameLayout layout_enable       = findViewById(R.id.layout_enable);
         FrameLayout layout_mobile_only  = findViewById(R.id.layout_mobile_only);
         FrameLayout layout_wifi_only    = findViewById(R.id.layout_wifi_only);
-        checkBox_enabled                = findViewById(R.id.enable_checkbox);
-        checkBox_mobile_only            = findViewById(R.id.only_mobile);
-        checkBox_wifi_only              = findViewById(R.id.only_wifi);
+        checkBoxEnabled = findViewById(R.id.enable_checkbox);
+        checkBoxMobileOnly = findViewById(R.id.only_mobile);
+        checkBoxWifiOnly = findViewById(R.id.only_wifi);
         currentWallpaper = findViewById(R.id.theme_preview);
         textview_download_url           = findViewById(R.id.download_url);
-        radio_button1                   = findViewById(R.id.radio_1);
-        radio_button2                   = findViewById(R.id.radio_2);
-        radio_button3                   = findViewById(R.id.radio_3);
+        radioButton1 = findViewById(R.id.radio_1);
+        radioButton2 = findViewById(R.id.radio_2);
+        radioButton3 = findViewById(R.id.radio_3);
         FrameLayout layout_radio_1      = findViewById(R.id.layout_radio_1);
         FrameLayout layout_radio_2      = findViewById(R.id.layout_radio_2);
         FrameLayout layout_radio_3      = findViewById(R.id.layout_radio_3);
 
-        btn_cancel.setOnClickListener(click);
-        btn_edit.setOnClickListener(click);
-        btn_next.setOnClickListener(click);
+        btnCancel.setOnClickListener(click);
+        btnEdit.setOnClickListener(click);
+        btnNext.setOnClickListener(click);
         layout_enable.setOnClickListener(click);
         layout_mobile_only.setOnClickListener(click);
         layout_wifi_only.setOnClickListener(click);
@@ -127,19 +127,19 @@ public class Main extends AppCompatActivity {
         if (settings.contains(getResources().getString(R.string.refresh_frequency))) {
             switch (settings.getInt(getResources().getString(R.string.refresh_frequency), 2)) {
                 case 1:
-                    radio_button1.setChecked(true);
-                    radio_button2.setChecked(false);
-                    radio_button3.setChecked(false);
+                    radioButton1.setChecked(true);
+                    radioButton2.setChecked(false);
+                    radioButton3.setChecked(false);
                     break;
                 case 2:
-                    radio_button1.setChecked(false);
-                    radio_button2.setChecked(true);
-                    radio_button3.setChecked(false);
+                    radioButton1.setChecked(false);
+                    radioButton2.setChecked(true);
+                    radioButton3.setChecked(false);
                     break;
                 case 3:
-                    radio_button1.setChecked(false);
-                    radio_button2.setChecked(false);
-                    radio_button3.setChecked(true);
+                    radioButton1.setChecked(false);
+                    radioButton2.setChecked(false);
+                    radioButton3.setChecked(true);
                     break;
             }
         }
@@ -161,12 +161,12 @@ public class Main extends AppCompatActivity {
 
         // включено ли
         if (settings.contains(getResources().getString(R.string.enabled_pony_wallpapers))) {
-            checkBox_enabled.setChecked(settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false));
+            checkBoxEnabled.setChecked(settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false));
         }
 
         // разрешение обоев
         if (settings.contains(getResources().getString(R.string.mobile_pony_wallpapers))) {
-            checkBox_mobile_only.setChecked(settings.getBoolean(getResources().getString(R.string.mobile_pony_wallpapers), true));
+            checkBoxMobileOnly.setChecked(settings.getBoolean(getResources().getString(R.string.mobile_pony_wallpapers), true));
         }
         else {
             settings.put(getResources().getString(R.string.mobile_pony_wallpapers), true);
@@ -174,14 +174,14 @@ public class Main extends AppCompatActivity {
 
         // WiFi only
         if (settings.contains(getResources().getString(R.string.wifi_only))) {
-            checkBox_wifi_only.setChecked(settings.getBoolean(getResources().getString(R.string.wifi_only), true));
+            checkBoxWifiOnly.setChecked(settings.getBoolean(getResources().getString(R.string.wifi_only), true));
         }
         else {
             settings.put(getResources().getString(R.string.wifi_only), true);
         }
 
         // запуск сервиса, если надо
-        if (checkBox_enabled.isChecked()) {
+        if (checkBoxEnabled.isChecked()) {
             Helper.startService(Main.this);
         }
         else {
@@ -333,7 +333,7 @@ public class Main extends AppCompatActivity {
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
                             currentWallpaper.setImageBitmap(openBackground());
-                            Helper.toggleViewState(Main.this, btn_cancel, false);
+                            Helper.toggleViewState(Main.this, btnCancel, false);
                         }
                         else {
                             Toast.makeText(Main.this, getResources().getString(R.string.settings_image_cancel2), Toast.LENGTH_LONG).show();
@@ -383,7 +383,7 @@ public class Main extends AppCompatActivity {
                         Intent intent = new Intent(Main.this, IntentServiceLoadNewWallpaper.class);
                         intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
                         intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, "");
-                        intent.putExtra(IntentServiceLoadNewWallpaper.need_change_bg, ""); // "" - не нужно менять фон
+                        intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, ""); // "" - не нужно менять фон
                         intent.setAction(Helper.ACTION_NEXT_BUTTON); // была нажата кнопка "Дальше", запустится обычный сервис, не ForegroundService
                         Helper.startService(Main.this, intent);
                     }
@@ -395,12 +395,12 @@ public class Main extends AppCompatActivity {
 
                 // layers --->
                 case R.id.layout_enable:
-                    if (checkBox_enabled.isChecked()) {
-                        checkBox_enabled.setChecked(false);
+                    if (checkBoxEnabled.isChecked()) {
+                        checkBoxEnabled.setChecked(false);
                         stopService(new Intent(Main.this, ServiceRefresh.class));
                     }
                     else { // чекбокс был ВЫключен при нажатии
-                        checkBox_enabled.setChecked(true);
+                        checkBoxEnabled.setChecked(true);
                         if (!Helper.checkInternetConnection(Main.this, false)) {
                             Toast.makeText(Main.this, R.string.settings_internet_warn, Toast.LENGTH_LONG).show();
                         }
@@ -411,39 +411,39 @@ public class Main extends AppCompatActivity {
 
                         Helper.startService(Main.this);
                     }
-                    settings.put(getResources().getString(R.string.enabled_pony_wallpapers), checkBox_enabled.isChecked());
+                    settings.put(getResources().getString(R.string.enabled_pony_wallpapers), checkBoxEnabled.isChecked());
                     break;
 
                 case R.id.layout_mobile_only:
-                    if (checkBox_mobile_only.isChecked()) {
-                        checkBox_mobile_only.setChecked(false);
+                    if (checkBoxMobileOnly.isChecked()) {
+                        checkBoxMobileOnly.setChecked(false);
 
-                        settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBox_mobile_only.isChecked());
+                        settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBoxMobileOnly.isChecked());
 
                         // restart
-                        if (checkBox_enabled.isChecked()) {
+                        if (checkBoxEnabled.isChecked()) {
                             restartService();
                         }
                     }
                     else { // чекбокс был ВЫключен при нажатии
-                        checkBox_mobile_only.setChecked(true);
+                        checkBoxMobileOnly.setChecked(true);
 
-                        settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBox_mobile_only.isChecked());
+                        settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBoxMobileOnly.isChecked());
 
-                        if (checkBox_enabled.isChecked()) {
+                        if (checkBoxEnabled.isChecked()) {
                             restartService();
                         }
                     }
                     break;
 
                 case R.id.layout_wifi_only:
-                    if (checkBox_wifi_only.isChecked()) {
-                        checkBox_wifi_only.setChecked(false);
-                        settings.put(getResources().getString(R.string.wifi_only), checkBox_wifi_only.isChecked());
+                    if (checkBoxWifiOnly.isChecked()) {
+                        checkBoxWifiOnly.setChecked(false);
+                        settings.put(getResources().getString(R.string.wifi_only), checkBoxWifiOnly.isChecked());
                     }
                     else { // чекбокс был ВЫключен при нажатии
-                        checkBox_wifi_only.setChecked(true);
-                        settings.put(getResources().getString(R.string.wifi_only), checkBox_wifi_only.isChecked());
+                        checkBoxWifiOnly.setChecked(true);
+                        settings.put(getResources().getString(R.string.wifi_only), checkBoxWifiOnly.isChecked());
                     }
 
                     break;
@@ -470,34 +470,34 @@ public class Main extends AppCompatActivity {
 
                 // частота обновления обоев
                 case R.id.layout_radio_1:
-                    radio_button1.setChecked(true);
-                    radio_button2.setChecked(false);
-                    radio_button3.setChecked(false);
+                    radioButton1.setChecked(true);
+                    radioButton2.setChecked(false);
+                    radioButton3.setChecked(false);
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
                     settings.put(getResources().getString(R.string.refresh_frequency), 1);
-                    if (checkBox_enabled.isChecked()) {
+                    if (checkBoxEnabled.isChecked()) {
                         restartService();
                     }
                     break;
 
                 case R.id.layout_radio_2:
-                    radio_button1.setChecked(false);
-                    radio_button2.setChecked(true);
-                    radio_button3.setChecked(false);
+                    radioButton1.setChecked(false);
+                    radioButton2.setChecked(true);
+                    radioButton3.setChecked(false);
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
                     settings.put(getResources().getString(R.string.refresh_frequency), 2);
-                    if (checkBox_enabled.isChecked()) {
+                    if (checkBoxEnabled.isChecked()) {
                         restartService();
                     }
                     break;
 
                 case R.id.layout_radio_3:
-                    radio_button1.setChecked(false);
-                    radio_button2.setChecked(false);
-                    radio_button3.setChecked(true);
+                    radioButton1.setChecked(false);
+                    radioButton2.setChecked(false);
+                    radioButton3.setChecked(true);
                     settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH)); // current month
                     settings.put(getResources().getString(R.string.refresh_frequency), 3);
-                    if (checkBox_enabled.isChecked()) {
+                    if (checkBoxEnabled.isChecked()) {
                         restartService();
                     }
                     break;
@@ -598,8 +598,8 @@ public class Main extends AppCompatActivity {
                         progressDialog.cancel();
                     unregisterReceiver(receiver);
 
-                    Helper.toggleViewState(Main.this, btn_cancel, false);
-                    Helper.toggleViewState(Main.this, btn_edit,   true);
+                    Helper.toggleViewState(Main.this, btnCancel, false);
+                    Helper.toggleViewState(Main.this, btnEdit,   true);
 
                     // подсказка после первой загрузки изображения на кнопку "Дальше"
                     if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
@@ -662,7 +662,7 @@ public class Main extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             currentWallpaper.setImageBitmap(openBackground());
 
-            Helper.toggleViewState(Main.this, btn_cancel, true);
+            Helper.toggleViewState(Main.this, btnCancel, true);
 
             if (!settings.contains(getResources().getString(R.string.settings_first_edit_hint))) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
@@ -685,8 +685,8 @@ public class Main extends AppCompatActivity {
 
     // enable or disable Cancel and Edit buttons; depends on existing respectful images
     public void setButtonsState () {
-        Helper.toggleViewState(Main.this, btn_cancel, editedImageExists());
-        Helper.toggleViewState(Main.this, btn_edit,   originalImageExists());
+        Helper.toggleViewState(Main.this, btnCancel, editedImageExists());
+        Helper.toggleViewState(Main.this, btnEdit,   originalImageExists());
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -717,15 +717,15 @@ public class Main extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        checkBox_enabled = null;
-        checkBox_mobile_only = null;
-        checkBox_wifi_only = null;
+        checkBoxEnabled = null;
+        checkBoxMobileOnly = null;
+        checkBoxWifiOnly = null;
         currentWallpaper = null;
         textview_download_url = null;
         settings = null;
-        radio_button1 = null;
-        radio_button2 = null;
-        radio_button3 = null;
+        radioButton1 = null;
+        radioButton2 = null;
+        radioButton3 = null;
 
         if (alertDialog != null) {
             alertDialog.dismiss();
