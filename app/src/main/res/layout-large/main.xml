@@ -6,7 +6,6 @@
     android:paddingTop="0dp"
     android:paddingRight="@dimen/root_padding_16"
     android:paddingLeft="@dimen/root_padding_16"
-    android:paddingBottom="@dimen/root_padding_16"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent">

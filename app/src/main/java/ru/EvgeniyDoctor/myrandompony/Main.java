@@ -64,7 +64,7 @@ public class Main extends AppCompatActivity {
             btnCancel,
             btnEdit,
             btnNext;
-    static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
+    private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private AlertDialog
         alertDialog = null;
     /*
@@ -96,20 +96,20 @@ public class Main extends AppCompatActivity {
         // логи при ошибке // error logs
         RoboErrorReporter.bindReporter(this.getApplicationContext());
 
-        btnCancel = findViewById(R.id.btn_cancel);
-        btnEdit = findViewById(R.id.btn_edit);
-        btnNext = findViewById(R.id.btn_next);
+        btnCancel                       = findViewById(R.id.btn_cancel);
+        btnEdit                         = findViewById(R.id.btn_edit);
+        btnNext                         = findViewById(R.id.btn_next);
         FrameLayout layout_enable       = findViewById(R.id.layout_enable);
         FrameLayout layout_mobile_only  = findViewById(R.id.layout_mobile_only);
         FrameLayout layout_wifi_only    = findViewById(R.id.layout_wifi_only);
-        checkBoxEnabled = findViewById(R.id.enable_checkbox);
-        checkBoxMobileOnly = findViewById(R.id.only_mobile);
-        checkBoxWifiOnly = findViewById(R.id.only_wifi);
-        currentWallpaper = findViewById(R.id.theme_preview);
+        checkBoxEnabled                 = findViewById(R.id.enable_checkbox);
+        checkBoxMobileOnly              = findViewById(R.id.only_mobile);
+        checkBoxWifiOnly                = findViewById(R.id.only_wifi);
+        currentWallpaper                = findViewById(R.id.theme_preview);
         textview_download_url           = findViewById(R.id.download_url);
-        radioButton1 = findViewById(R.id.radio_1);
-        radioButton2 = findViewById(R.id.radio_2);
-        radioButton3 = findViewById(R.id.radio_3);
+        radioButton1                    = findViewById(R.id.radio_1);
+        radioButton2                    = findViewById(R.id.radio_2);
+        radioButton3                    = findViewById(R.id.radio_3);
         FrameLayout layout_radio_1      = findViewById(R.id.layout_radio_1);
         FrameLayout layout_radio_2      = findViewById(R.id.layout_radio_2);
         FrameLayout layout_radio_3      = findViewById(R.id.layout_radio_3);
