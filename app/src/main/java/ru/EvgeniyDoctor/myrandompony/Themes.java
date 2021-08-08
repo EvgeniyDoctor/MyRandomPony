@@ -39,6 +39,12 @@ import java.util.ArrayList;
 
 
 
+    // todo 08.08.2021:
+//  граница иногда выпирает, Main too
+//  если выбрать новую тему, а затем повернуть экран - кнопка Принять станет неактивной, превью сбросится ддо текущей темы, но селект останется правильный
+
+
+
 // all themes and its attrs
 enum eThemes {
     // name (theme name in styles.xml, name in app preferences and tags, id of the preview image)

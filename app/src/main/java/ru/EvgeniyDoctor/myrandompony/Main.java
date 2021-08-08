@@ -80,6 +80,7 @@ public class Main extends AppCompatActivity {
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
 
+    // todo: на планшете везде сделать отступ 32; на телефоне - 16 (сейчас: майн и темы - большой отступ; остальное - меньше); large-land: майн и темы - большой отступ; остальное - ещё больше (TV)
 
 
     @Override
@@ -92,7 +93,7 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.main);
 
         // логи при ошибке // error logs
-        //RoboErrorReporter.bindReporter(this.getApplicationContext());
+        RoboErrorReporter.bindReporter(this.getApplicationContext());
 
         btnCancel = findViewById(R.id.btn_cancel);
         btnEdit = findViewById(R.id.btn_edit);

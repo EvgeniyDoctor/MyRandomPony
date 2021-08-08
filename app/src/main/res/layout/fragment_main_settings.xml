@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -17,6 +18,7 @@
             <CheckBox
                 android:layout_gravity="end"
                 android:id="@+id/enable_checkbox"
+                android:buttonTint="?attr/colorRadioCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="false"/>
@@ -24,7 +26,8 @@
             <FrameLayout
                 android:id="@+id/layout_enable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                style="?android:attr/buttonBarButtonStyle">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -52,17 +55,18 @@
             <CheckBox
                 android:layout_gravity="end"
                 android:id="@+id/only_mobile"
+                android:buttonTint="?attr/colorRadioCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="true"/>
 
             <FrameLayout
                 android:id="@+id/layout_mobile_only"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:layout_marginRight="40dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -88,22 +92,24 @@
             <CheckBox
                 android:layout_gravity="end"
                 android:id="@+id/only_wifi"
+                android:buttonTint="?attr/colorRadioCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="true"/>
 
             <FrameLayout
                 android:id="@+id/layout_wifi_only"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:layout_marginRight="40dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorText"
-                    android:text="@string/settings_wifi_only"/>
+                    android:text="@string/settings_wifi_only"
+                    />
             </FrameLayout>
         </FrameLayout>
     </LinearLayout>
@@ -120,16 +126,18 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/radio_1"
                     android:layout_gravity="end"
+                    android:buttonTint="?attr/colorRadioCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
                 <FrameLayout
                     android:id="@+id/layout_radio_1"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -145,17 +153,20 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/radio_2"
                     android:layout_gravity="end"
+                    android:buttonTint="?attr/colorRadioCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:checked="true"/>
+                    android:checked="true"
+                    />
 
                 <FrameLayout
                     android:id="@+id/layout_radio_2"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -171,16 +182,18 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/radio_3"
                     android:layout_gravity="end"
+                    android:buttonTint="?attr/colorRadioCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
                 <FrameLayout
                     android:id="@+id/layout_radio_3"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 

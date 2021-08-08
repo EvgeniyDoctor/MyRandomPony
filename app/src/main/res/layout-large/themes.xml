@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="?attr/commonBackground"
+
+    android:paddingTop="@dimen/root_padding_24"
+    android:paddingRight="@dimen/root_padding_24"
+    android:paddingLeft="@dimen/root_padding_24"
+    android:paddingBottom="@dimen/root_padding_24"
+
+    android:layout_height="match_parent">
+
+
+    <fragment
+        android:id="@+id/fragment_themes_image"
+        tools:layout="@layout/fragment_themes_image"
+        android:layout_above="@+id/fragment_themes_settings"
+        android:name="ru.EvgeniyDoctor.myrandompony.FragmentThemesImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="@dimen/root_padding_24"
+        />
+
+    <fragment
+        android:id="@+id/fragment_themes_settings"
+        tools:layout="@layout/fragment_themes_settings"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:name="ru.EvgeniyDoctor.myrandompony.FragmentThemesSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</RelativeLayout>

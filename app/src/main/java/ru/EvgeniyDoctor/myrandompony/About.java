@@ -19,7 +19,7 @@ public class About extends AppCompatActivity {
         settings = new AppPreferences(getApplicationContext());
         setTheme(Themes.loadTheme(settings));
 
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.about);
 
         TextView textView = findViewById(R.id.textViewAbout);
         String text = getResources().getString(R.string.about_text);

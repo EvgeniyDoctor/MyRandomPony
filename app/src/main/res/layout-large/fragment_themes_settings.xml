@@ -1,42 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="?attr/commonBackground"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:layout_height="match_parent">
-
-
-    <!-- android:padding="1dp" - for background -->
-    <LinearLayout
-        android:layout_gravity="center"
-        android:id="@+id/layout_theme_preview"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="125dp"
-        android:padding="1dp"
-        android:background="@drawable/image_borders"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/theme_preview"
-            android:adjustViewBounds="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/theme_preview_spike"
-            android:contentDescription="@string/settings_preview" />
-    </LinearLayout>
-
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
 
     <LinearLayout
-        android:layout_below="@+id/layout_theme_preview"
-        android:layout_above="@+id/layout_btn_theme_save"
+        android:id="@+id/layout_theme_select"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="6dp"
         android:background="@drawable/themes_scrollview_borders"
         android:paddingRight="6dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <!-- android:scrollbarFadeDuration="0" - always show scrollbar -->
         <ScrollView
@@ -191,14 +168,15 @@
 
 
     <LinearLayout
+        android:layout_below="@+id/layout_theme_select"
         android:id="@+id/layout_btn_theme_save"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_height="75dp"
         android:layout_width="match_parent"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
-        android:layout_height="75dp"
-        android:gravity="center_vertical">
+        >
 
         <Button
             android:id="@+id/btn_theme_apply"
