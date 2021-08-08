@@ -79,8 +79,9 @@ public class Main extends AppCompatActivity {
 
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
+    // todo 08.08.2021: make different variants of the image for portrait and landscape modes
+    // todo 08.08.2021: граница превью иногда выпирает, in Themes too
 
-    // todo: на планшете везде сделать отступ 32; на телефоне - 16 (сейчас: майн и темы - большой отступ; остальное - меньше); large-land: майн и темы - большой отступ; остальное - ещё больше (TV)
 
 
     @Override

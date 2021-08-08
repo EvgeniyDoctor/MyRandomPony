@@ -13,9 +13,12 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.grandcentrix.tray.AppPreferences;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -36,12 +39,6 @@ import java.util.ArrayList;
 3) в drawable создать новый файл selector_<theme_name>. Этот файл отвечает за цвета выбранного/невыбранного radiobutton и чекбокса
 4) описать тему в файле values/styles.xml. Новые item в тему добавляются в файле values/attrs.xml.
 */
-
-
-
-    // todo 08.08.2021:
-//  граница иногда выпирает, Main too
-//  если выбрать новую тему, а затем повернуть экран - кнопка Принять станет неактивной, превью сбросится ддо текущей темы, но селект останется правильный
 
 
 
@@ -86,15 +83,16 @@ enum eThemes {
 
 
 public class Themes extends AppCompatActivity {
-    static AppPreferences settings;
-    RadioGroup radioGroup;
-    Button btn_theme_apply;
-    ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
-    String currentTheme; // name of the current theme, "Chrysalis", "Spike", etc.
-    ImageView imageView;
+    private static AppPreferences settings;
+    private RadioGroup radioGroup;
+    private Button btn_theme_apply;
+    private ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
+    private String currentTheme; // name of the current theme, "Chrysalis", "Spike", etc.
+    private ImageView imageView;
+    private final String SAVE_INSTANCE_SELECTED_THEME = "SAVE_INSTANCE_SELECTED_THEME"; // key for save selected theme ID when screen orientation changed
 
-    static final String THEME_INTENT_FLAG = "keep"; // intent extra name to restart Main activity
-    static final String THEME_NAME_APP_SETTINGS = "theme"; // tag for app settings
+    public static final String THEME_INTENT_FLAG = "keep"; // intent extra name to restart Main activity
+    public static final String THEME_NAME_APP_SETTINGS = "theme"; // key for app settings
 
 
 
@@ -126,6 +124,33 @@ public class Themes extends AppCompatActivity {
             setRadioButtonCheckedByTag(currentTheme);
             imageView.setImageResource(getThemePreviewByName(currentTheme)); // load preview image
         }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // save data when screen orientation changed
+    @Override
+    protected void onSaveInstanceState(@NonNull @NotNull Bundle outState) { // protected, not public
+        super.onSaveInstanceState(outState);
+
+        int selected = getSelectedRadioButton();
+        outState.putInt(SAVE_INSTANCE_SELECTED_THEME, selected);
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // restore saved data when screen orientation changed
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        int selected = savedInstanceState.getInt(SAVE_INSTANCE_SELECTED_THEME); // selected theme id
+        String name = getThemeNameById(selected); // selected theme name
+
+        imageView.setImageResource(getThemePreviewByName(name)); // load preview image
+        Helper.toggleViewState(Themes.this, btn_theme_apply, !currentTheme.equals(name)); // disable/enable Apply btn
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -164,7 +189,7 @@ public class Themes extends AppCompatActivity {
     public void setCheckedFromLayout(View view) {
         String tag = view.getTag().toString();
 
-        Helper.toggleViewState(Themes.this, btn_theme_apply, !currentTheme.equals(tag)); // disable Save btn if current theme selected
+        Helper.toggleViewState(Themes.this, btn_theme_apply, !currentTheme.equals(tag)); // disable Apply btn if current theme selected
 
         uncheckAllRadioButtons();
         setRadioButtonCheckedByTag(tag);
@@ -185,6 +210,19 @@ public class Themes extends AppCompatActivity {
 
 
 
+    // get selected radio button
+    private int getSelectedRadioButton(){
+        for (RadioButton btn : listOfRadioButtons) {
+            if (btn.isChecked()) {
+                return getThemeIdByName(btn.getTag().toString());
+            }
+        }
+        return eThemes.Spike.getId();
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
     // check RadioButton by tag
     private void setRadioButtonCheckedByTag (String name){
         for (RadioButton btn : listOfRadioButtons) {
@@ -199,7 +237,7 @@ public class Themes extends AppCompatActivity {
 
 
     // get theme ID by its name
-    private int getThemeIdByName(String name){
+    private int getThemeIdByName (String name){
         for (eThemes theme : eThemes.values()) {
             if (name.equals(theme.getName())) {
                 return theme.getId();
@@ -211,8 +249,21 @@ public class Themes extends AppCompatActivity {
 
 
 
+    // get theme name by its id
+    private String getThemeNameById (int id){
+        for (eThemes theme : eThemes.values()) {
+            if (theme.getId() == id) {
+                return theme.getName();
+            }
+        }
+        return eThemes.Spike.getName();
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
     // get theme preview by its name
-    private int getThemePreviewByName(String name){
+    private int getThemePreviewByName (String name){
         for (eThemes theme : eThemes.values()) {
             if (name.equals(theme.getName())) {
                 return theme.getPreview();
@@ -232,7 +283,7 @@ public class Themes extends AppCompatActivity {
             View view1 = radioGroup.getChildAt(i);
 
             if (view1 instanceof FrameLayout) {
-                for (int index = 0; index < ((FrameLayout) view1).getChildCount(); index++) {
+                for (int index = 0; index < ((FrameLayout) view1).getChildCount(); ++index) {
                     View nextChild = ((FrameLayout) view1).getChildAt(index);
 
                     try {
