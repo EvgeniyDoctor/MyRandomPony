@@ -5,7 +5,6 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import net.grandcentrix.tray.AppPreferences;
 

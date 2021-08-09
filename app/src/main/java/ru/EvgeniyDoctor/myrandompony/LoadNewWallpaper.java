@@ -1,0 +1,219 @@
+package ru.EvgeniyDoctor.myrandompony;
+
+
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import net.grandcentrix.tray.AppPreferences;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
+
+public class LoadNewWallpaper {
+    // value:
+    // -1 - успех, фон НЕ будет изменён;    // success, the background will NOT be changed;
+    // 0 - успех, фон будет изменён;        // success, the background will be changed;
+    // 1 - ошибка подключения к серверу;    // server connection error;
+    // 2 - в ответе сервера не json         // the server response is not json
+    enum Codes {
+        SUCCESS, // successful load
+        CHANGE_WALLPAPER, // SUCCESS and need to CHANGE_WALLPAPER
+        NOT_CONNECTED, // url does not exist or connect timeout
+        NOT_JSON, // в ответе не json // the response is not json
+    }
+
+
+
+    private final Context context;
+    private final AppPreferences settings;
+    private final boolean needChangeBg;
+
+
+
+    //LoadNewWallpaper(Context context, AppPreferences settings, String URL_STRING, String FILENAME, String NEED_CHANGE_BG) {
+    LoadNewWallpaper(Context context, AppPreferences settings, boolean needChangeBg) {
+        this.context = context;
+        this.settings = settings;
+        this.needChangeBg = needChangeBg;
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    public Codes load() {
+        JSONObject current_result = null;
+        //final boolean URL_STRING_is_empty = URL_STRING.equals("");
+        boolean error = false;
+
+        // загрузка данные с внешнего ресурса // loading data from an external resource
+        try {
+            Helper.d("ParseTask execute");
+
+            URL url;
+
+            // нужное разрешение // required screen resolution
+            if (settings.getBoolean("mobile_pony_wallpapers", true)) { // только с разрешением для мобильных // mobile screen resolution only
+                url = new URL("https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?search=platform%3AMobile&limit=1");
+            }
+            else {
+                url = new URL("https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?limit=1&search=");
+            }
+
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setConnectTimeout(5000);
+            urlConnection.setReadTimeout(60000);
+
+            // подключение к серверу // connect to the server
+            try {
+                if (urlConnection.getResponseCode() == 200) { // restful code 200 (OK)
+                    Helper.d("Connect OK");
+                    urlConnection.connect();
+                }
+            }
+            catch (IOException e) {
+                Helper.d("HTTP answer != OK");
+                e.printStackTrace();
+                return Codes.NOT_CONNECTED;
+            }
+
+            InputStream inputStream = urlConnection.getInputStream();
+            StringBuilder buffer = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+
+            // ---
+
+            // разбор json-массива на нужные части // parsing a json array
+            try {
+                // json structure - https://www.mylittlewallpaper.com/c/my-little-pony/api-v1
+                String server_answer = buffer.toString();
+                if (server_answer.charAt(0) != '{') { // если первый символ buffer !={, значит, в ответ пришёл не json // if the first character in buffer != {, it means that the response did not come from json
+                    return Codes.NOT_JSON;
+                }
+                else { // если в ответе сервера json // json - ok
+                    JSONObject dataJsonObj = new JSONObject(server_answer);
+                    JSONArray jsonArray = dataJsonObj.getJSONArray("result");
+                    current_result = jsonArray.getJSONObject(0);
+
+                    // сохранение ссылки для загрузки (откроется страница с картинкой) // saving the download link (a page with an image opens)
+                    settings.put("downloadurl", current_result.getString("downloadurl"));
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                error = true;
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            error = true;
+        }
+        // ---
+
+        if (!error) {
+            try {
+                Helper.d("IntentService_LoadNewWallpaper execute");
+
+                Helper.d("IntentService_LoadNewWallpaper TRUE current_result != null || !intent.getStringExtra(URL_STRING).equals(\"\")");
+
+                InputStream in;
+
+                // загрузка новой обоины // load new wallpaper --->
+                in = new URL("https://www.mylittlewallpaper.com/images/o_" + current_result.getString("imageid") + ".png").openStream();
+
+                // масштабирование размера изображения из потока при загрузке // scaling the image size from the stream when loading --->
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeStream(in, null, options);
+
+                options.inSampleSize = calculateSize(options, 1000, 1000);
+                options.inJustDecodeBounds = false;
+                options.inPreferredConfig = Bitmap.Config.RGB_565;
+
+                in = new URL("https://www.mylittlewallpaper.com/images/o_" + current_result.getString("imageid") + ".png").openStream();
+                Bitmap img = BitmapFactory.decodeStream(in, null, options); // открытие масштабированного изо // opening a scaled image
+                // <--- scaling the image size from the stream when loading
+
+                if (img != null) {
+                    // удаление отредактированного изо, если оно было // deleting the edited image
+                    File bg_edited = new File(
+                        new ContextWrapper(context).getDir("My_Random_Pony", Context.MODE_PRIVATE),
+                        "bg_edited.png"
+                    );
+                    if (bg_edited.exists()) {
+                        Helper.d("IntentService delete_bg_edited OK");
+                        bg_edited.delete();
+                    }
+
+                    // сохранение нового изо // save new image
+                    FileOutputStream fos = new FileOutputStream(
+                        new File(
+                            new ContextWrapper(context).getDir("My_Random_Pony", Context.MODE_PRIVATE),
+                            "bg.png"
+                        )
+                    ); // bg.png
+                    img.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    img.recycle();
+
+                    // send result
+                    if (!needChangeBg) { // не нужно менять фон
+                        return Codes.SUCCESS;
+                    }
+                    else { // нужно изменить фон // change wallpaper
+                        return Codes.CHANGE_WALLPAPER;
+                    }
+                }
+                // <--- загрузка новой обоины // load new wallpaper
+            }
+            catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return Codes.NOT_CONNECTED;
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    // вычисление размеров картинки // calculating the size of the image
+    private static int calculateSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height >> 1;
+            final int halfWidth = width >> 1;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize <<= 1;
+            }
+        }
+
+        return inSampleSize;
+    }
+    //----------------------------------------------------------------------------------------------
+}

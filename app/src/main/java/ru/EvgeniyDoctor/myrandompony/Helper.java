@@ -88,7 +88,7 @@ public class Helper {
     // старт сервиса в зависимости от платформы // start of the service depending on the platform
     public static void startService (Context context){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //d("Helper - startService - startForegroundService");
+            d("Helper - startService - startForegroundService");
             startForegroundService(
                 context,
                 new Intent(
@@ -97,7 +97,7 @@ public class Helper {
             );
         }
         else { // normal version of android
-            //d("Helper - startService - startService");
+            d("Helper - startService - startService");
             context.startService(new Intent(context, ServiceRefresh.class));
         }
     }
@@ -106,21 +106,22 @@ public class Helper {
 
 
     // for Next button and Autostart
+    // todo: add ACTION_NEXT_BUTTON as a func parameter
     public static void startService (Context context, Intent intent){
         // если нажата кнопка "Дальше", незачем запускать ForegroundService, потому что активити уже открыто
         // if the "Next" button is pressed, there is no need to start ForegroundService, because the activity already opened
         if (intent.getAction() != null && intent.getAction().equals(ACTION_NEXT_BUTTON)) {
-            //d("Helper - startService + intent - Next btn - startService");
+            d("Helper - startService + intent - Next btn - startService");
             context.startService(intent);
             return;
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //d("Helper - startService + intent - startForegroundService");
+            d("Helper - startService + intent - startForegroundService");
             context.startForegroundService(intent);
         }
         else { // normal version of android
-            //d("Helper - startService + intent - startService");
+            d("Helper - startService + intent - startService");
             context.startService(intent);
         }
     }

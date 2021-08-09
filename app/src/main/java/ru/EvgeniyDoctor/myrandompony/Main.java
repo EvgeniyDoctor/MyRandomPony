@@ -384,11 +384,20 @@ public class Main extends AppCompatActivity {
 
                         registerReceiver(receiver, new IntentFilter(IntentServiceLoadNewWallpaper.NOTIFICATION_LOAD_NEW_WALLPAPER));
 
+                        // todo
+//                        LoadNewWallpaper loadNewWallpaper = new LoadNewWallpaper(
+//                            getApplicationContext(),
+//                            settings,
+//                            false
+//                            // intent.setAction(Helper.ACTION_NEXT_BUTTON); ???
+//                        );
+
                         Intent intent = new Intent(Main.this, IntentServiceLoadNewWallpaper.class);
                         intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
                         intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, "");
                         intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, ""); // "" - не нужно менять фон // "" - no need to change the background
                         intent.setAction(Helper.ACTION_NEXT_BUTTON); // была нажата кнопка "Дальше", запустится обычный сервис, не ForegroundService // the "Next" button was pressed, the usual service will start, not the Foreground Service
+
                         Helper.startService(Main.this, intent);
                     }
                     else {
