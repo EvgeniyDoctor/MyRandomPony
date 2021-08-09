@@ -1,7 +1,7 @@
 # My Random Pony
 ![Platforms](https://img.shields.io/badge/platforms-Android-brightgreen)
 
-<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/icons/full.jpg?raw=true" width="125" title="hover text">
+<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/icons/full.jpg?raw=true" width="125" title="My Random Pony logo">
 
 ### Get new little pony on your background every day!
 
@@ -13,8 +13,10 @@ Also this app:
 - has no any paid features
 - doesn't collect any data
 
+<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/app/src/main/res/drawable/theme_preview_spike.png?raw=true" width="125" title="theme preview spike">
+
 ## Get this app
-You can download an APK file from here or
+You can download an APK file from here or<br>
 <a href='https://play.google.com/store/apps/details?id=ru.EvgeniyDoctor.myrandompony'>
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png?raw=true" alt="The Google Play badge" width="180">
 </a>
@@ -30,9 +32,9 @@ Checkboxes:
 - **WiFi only**: download new wallpapers only via WiFi
 
 Radio buttons allow you to choose the frequency of changing the wallpaper:
-- **Once a day** (the wallpaper will be changed at 00:00 of the next day)
-- **Once a week** (the wallpaper will be changed at 00:00 on Monday of the next week)
-- **Once a month** (the wallpaper will be changed at 00:00 on the 1st of the next month)
+- **Once a day**: the wallpaper will be changed at 00:00 of the next day
+- **Once a week**: the wallpaper will be changed at 00:00 on Sunday or Monday (it depends on your system settings) of the next week
+- **Once a month**: the wallpaper will be changed at 00:00 on the 1st of the next month
 
 Buttons:
 - **Cancel**: resetting all changes after the **"Edit"** button. After that, you need to click on the image to set it as the background
@@ -44,12 +46,6 @@ Buttons:
 **Link under the image**: after successfully downloading the image, a link will appear under it leading to page on http://mylittlewallpaper.com, where you can download this image
 
 You can also change the theme of the application! There are currently 5 themes available: three light and two dark. Available in "_3 vertical dots_" menu.
-
-<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/app/src/main/res/drawable/theme_preview_celestia.png?raw=true" width="125" title="hover text">
-<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/app/src/main/res/drawable/theme_preview_chrysalis.png?raw=true" width="125" title="hover text">
-<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/app/src/main/res/drawable/theme_preview_luna.png?raw=true" width="125" title="hover text">
-<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/app/src/main/res/drawable/theme_preview_spike.png?raw=true" width="125" title="hover text">
-<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/app/src/main/res/drawable/theme_preview_tirek.png?raw=true" width="125" title="hover text">
 
 _Notice for Android 8 users and higher_: due to the new system policy, starting from Android 8 and higher, for the correct operation of this app, constant display of notification is required.<br>
 So you can't disable the notification without disabling the wallpaper change.
