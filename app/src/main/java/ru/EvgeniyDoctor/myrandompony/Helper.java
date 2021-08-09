@@ -105,17 +105,8 @@ public class Helper {
 
 
 
-    // for Next button and Autostart
-    // todo: add ACTION_NEXT_BUTTON as a func parameter
+    // for Autostart
     public static void startService (Context context, Intent intent){
-        // если нажата кнопка "Дальше", незачем запускать ForegroundService, потому что активити уже открыто
-        // if the "Next" button is pressed, there is no need to start ForegroundService, because the activity already opened
-        if (intent.getAction() != null && intent.getAction().equals(ACTION_NEXT_BUTTON)) {
-            d("Helper - startService + intent - Next btn - startService");
-            context.startService(intent);
-            return;
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             d("Helper - startService + intent - startForegroundService");
             context.startForegroundService(intent);

@@ -1,6 +1,5 @@
 package ru.EvgeniyDoctor.myrandompony;
 
-
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
@@ -23,20 +22,17 @@ import java.net.URL;
 
 
 
+// class for load new image. Working for BackgroundService, ForegroundService and "Next" button
+
+
+
 public class LoadNewWallpaper {
-    // value:
-    // -1 - успех, фон НЕ будет изменён;    // success, the background will NOT be changed;
-    // 0 - успех, фон будет изменён;        // success, the background will be changed;
-    // 1 - ошибка подключения к серверу;    // server connection error;
-    // 2 - в ответе сервера не json         // the server response is not json
     enum Codes {
-        SUCCESS, // successful load
-        CHANGE_WALLPAPER, // SUCCESS and need to CHANGE_WALLPAPER
-        NOT_CONNECTED, // url does not exist or connect timeout
-        NOT_JSON, // в ответе не json // the response is not json
+        SUCCESS,            // successful load, the background will NOT be changed;
+        CHANGE_WALLPAPER,   // successful load, the background will be changed;
+        NOT_CONNECTED,      // url does not exist or connect timeout
+        NOT_JSON,           // the response is not json
     }
-
-
 
     private final Context context;
     private final AppPreferences settings;
@@ -44,7 +40,7 @@ public class LoadNewWallpaper {
 
 
 
-    //LoadNewWallpaper(Context context, AppPreferences settings, String URL_STRING, String FILENAME, String NEED_CHANGE_BG) {
+    // constructor
     LoadNewWallpaper(Context context, AppPreferences settings, boolean needChangeBg) {
         this.context = context;
         this.settings = settings;
@@ -54,9 +50,9 @@ public class LoadNewWallpaper {
 
 
 
+    // load new image
     public Codes load() {
         JSONObject current_result = null;
-        //final boolean URL_STRING_is_empty = URL_STRING.equals("");
         boolean error = false;
 
         // загрузка данные с внешнего ресурса // loading data from an external resource
@@ -133,12 +129,8 @@ public class LoadNewWallpaper {
             try {
                 Helper.d("IntentService_LoadNewWallpaper execute");
 
-                Helper.d("IntentService_LoadNewWallpaper TRUE current_result != null || !intent.getStringExtra(URL_STRING).equals(\"\")");
-
-                InputStream in;
-
                 // загрузка новой обоины // load new wallpaper --->
-                in = new URL("https://www.mylittlewallpaper.com/images/o_" + current_result.getString("imageid") + ".png").openStream();
+                InputStream in = new URL("https://www.mylittlewallpaper.com/images/o_" + current_result.getString("imageid") + ".png").openStream();
 
                 // масштабирование размера изображения из потока при загрузке // scaling the image size from the stream when loading --->
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -196,7 +188,7 @@ public class LoadNewWallpaper {
 
 
     // вычисление размеров картинки // calculating the size of the image
-    private static int calculateSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    private static int calculateSize (BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;

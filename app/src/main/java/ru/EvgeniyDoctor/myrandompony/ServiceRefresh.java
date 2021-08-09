@@ -81,17 +81,10 @@ public class ServiceRefresh extends Service {
 
         settings = new AppPreferences(getApplicationContext());
 
-        /*
-        getApplicationContext(),
-        settings,
-        "",
-        getResources().getString(R.string.file_name),
-        "1"
-        */
         loadNewWallpaper = new LoadNewWallpaper(
             getApplicationContext(),
             settings,
-            true
+            true // need to change the background
         );
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -266,15 +259,8 @@ public class ServiceRefresh extends Service {
 
 
     private void startLoad() {
-//        Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
-//        intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-//        intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg // the path already contains the id and. jpeg
-//        intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, "1");
-//        startService(intent);
-        //System.gc();
-
-        LoadNewWallpaper.Codes res = loadNewWallpaper.load();
-        if (res == LoadNewWallpaper.Codes.CHANGE_WALLPAPER) { // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
+        LoadNewWallpaper.Codes code = loadNewWallpaper.load();
+        if (code == LoadNewWallpaper.Codes.CHANGE_WALLPAPER) { // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
             Helper.d("setting new bg!");
 
             // установка фона
@@ -287,7 +273,7 @@ public class ServiceRefresh extends Service {
             }
         }
         else {
-            Helper.d("ServiceRefresh - startLoad - else: " + res);
+            Helper.d("ServiceRefresh - startLoad - else: " + code);
         }
     }
     //-----------------------------------------------------------------------------------------------
