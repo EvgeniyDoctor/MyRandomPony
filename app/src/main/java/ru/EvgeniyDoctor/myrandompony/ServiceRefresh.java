@@ -6,11 +6,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.app.WallpaperManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -47,7 +45,11 @@ public class ServiceRefresh extends Service {
     NotificationManager manager;
     final int notificationId = 1;
 
-    @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH"); // задание формата для получения часов
+    LoadNewWallpaper loadNewWallpaper;
+
+
+
+    @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss"); // задание формата для получения часов
 
     
 
@@ -79,6 +81,12 @@ public class ServiceRefresh extends Service {
 
         settings = new AppPreferences(getApplicationContext());
 
+        loadNewWallpaper = new LoadNewWallpaper(
+            getApplicationContext(),
+            settings,
+            true // need to change the background
+        );
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService();
         }
@@ -89,14 +97,15 @@ public class ServiceRefresh extends Service {
         }
 
         typeRefreshFrequency = settings.getInt(getResources().getString(R.string.refresh_frequency), 2);
-        registerReceiver(receiver, new IntentFilter(IntentServiceLoadNewWallpaper.NOTIFICATION_LOAD_NEW_WALLPAPER));
 
-        check_time();
+        checkTime();
         updateNotification(typeRefreshFrequency);
     }
     //----------------------------------------------------------------------------------------------
 
 
+
+    Notification notification;
 
     // res - https://stackoverflow.com/questions/47531742/startforeground-fail-after-upgrade-to-android-8-1
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -114,7 +123,7 @@ public class ServiceRefresh extends Service {
         manager.createNotificationChannel(channel);
 
         notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        Notification notification = notificationBuilder.setOngoing(true)
+        notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.drawable.ic_stat_name)
             //.setContentTitle("App is running")
             .setPriority(NotificationManager.IMPORTANCE_MIN)
@@ -128,21 +137,20 @@ public class ServiceRefresh extends Service {
 
     @Override
     public void onDestroy() {
-        //Helper.d("Service - onDestroy");
+        Helper.d("Service - onDestroy");
         super.onDestroy();
 
         if (timer != null) {
             timer.cancel();
         }
 
-        unregisterReceiver(receiver);
         System.gc();
     }
     //----------------------------------------------------------------------------------------------
 
 
 
-    public void check_time() {
+    public void checkTime() {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -154,7 +162,7 @@ public class ServiceRefresh extends Service {
                 }
 
                 calendar = Calendar.getInstance();
-                Helper.d(dateFormat.format(calendar.getTime()) + ":" + calendar.get(Calendar.MINUTE));
+                Helper.d(dateFormat.format(calendar.getTime()));
 
                 switch (typeRefreshFrequency) {
                     case 1:
@@ -221,7 +229,7 @@ public class ServiceRefresh extends Service {
                         break;
                 } //switch
             } // run
-        }, 0, 60000); // 60000 - once a minute
+        }, 0, 10000); // 60000 - once a minute
     }
     //----------------------------------------------------------------------------------------------
 
@@ -245,44 +253,30 @@ public class ServiceRefresh extends Service {
         text = Helper.ucfirst(text);
         notificationBuilder.setContentText(text); // 61 char max
         manager.notify(notificationId, notificationBuilder.build());
-
     }
     //-----------------------------------------------------------------------------------------------
 
 
 
     private void startLoad() {
-        Intent intent = new Intent(ServiceRefresh.this, IntentServiceLoadNewWallpaper.class);
-        intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-        intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, ""); // путь уже содержит id и .jpeg // the path already contains the id and. jpeg
-        intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, "1");
-        startService(intent);
-        System.gc();
-    }
-    //-----------------------------------------------------------------------------------------------
+        LoadNewWallpaper.Codes code = loadNewWallpaper.load();
+        if (code == LoadNewWallpaper.Codes.CHANGE_WALLPAPER) { // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
+            Helper.d("setting new bg!");
 
-
-
-    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            IntentServiceLoadNewWallpaper.Codes res = (IntentServiceLoadNewWallpaper.Codes)
-                    intent.getSerializableExtra(IntentServiceLoadNewWallpaper.RESULT);
-
-            if (res == IntentServiceLoadNewWallpaper.Codes.CHANGE_WALLPAPER) {// res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
-                // установка фона
-                WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-                try {
-                    myWallpaperManager.setBitmap(openBackground()); // setting the background
-                    System.gc();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
+            // установка фона
+            WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
+            try {
+                myWallpaperManager.setBitmap(openBackground()); // setting the background
+            }
+            catch (IOException e) {
+                e.printStackTrace();
             }
         }
-    };
-    //----------------------------------------------------------------------------------------------
+        else {
+            Helper.d("ServiceRefresh - startLoad - else: " + code);
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
 
 
 

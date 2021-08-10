@@ -3,21 +3,14 @@ package ru.EvgeniyDoctor.myrandompony;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
@@ -30,6 +23,9 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.yalantis.ucrop.UCrop;
 
@@ -380,16 +376,22 @@ public class Main extends AppCompatActivity {
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
                         progressDialog.setCanceledOnTouchOutside(false);
+                        progressDialog.setCancelable(false);
                         progressDialog.show();
 
-                        registerReceiver(receiver, new IntentFilter(IntentServiceLoadNewWallpaper.NOTIFICATION_LOAD_NEW_WALLPAPER));
-
-                        Intent intent = new Intent(Main.this, IntentServiceLoadNewWallpaper.class);
-                        intent.putExtra(IntentServiceLoadNewWallpaper.FILENAME, getResources().getString(R.string.file_name));
-                        intent.putExtra(IntentServiceLoadNewWallpaper.URL_STRING, "");
-                        intent.putExtra(IntentServiceLoadNewWallpaper.NEED_CHANGE_BG, ""); // "" - не нужно менять фон // "" - no need to change the background
-                        intent.setAction(Helper.ACTION_NEXT_BUTTON); // была нажата кнопка "Дальше", запустится обычный сервис, не ForegroundService // the "Next" button was pressed, the usual service will start, not the Foreground Service
-                        Helper.startService(Main.this, intent);
+                        Thread thread = new Thread() {
+                            @Override
+                            public void run() {
+                                LoadNewWallpaper loadNewWallpaper = new LoadNewWallpaper(
+                                    getApplicationContext(),
+                                    settings,
+                                    false // no need to change the background
+                                );
+                                LoadNewWallpaper.Codes code = loadNewWallpaper.load();
+                                nextButtonProcessing(code); // processing the result and update UI
+                            }
+                        };
+                        thread.start();
                     }
                     else {
                         Toast.makeText(Main.this, R.string.settings_load_error, Toast.LENGTH_LONG).show();
@@ -421,34 +423,26 @@ public class Main extends AppCompatActivity {
                 case R.id.layout_mobile_only:
                     if (checkBoxMobileOnly.isChecked()) {
                         checkBoxMobileOnly.setChecked(false);
-
-                        settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBoxMobileOnly.isChecked());
-
-                        // restart
-                        if (checkBoxEnabled.isChecked()) {
-                            restartService();
-                        }
                     }
                     else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
                         checkBoxMobileOnly.setChecked(true);
-
-                        settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBoxMobileOnly.isChecked());
-
-                        if (checkBoxEnabled.isChecked()) {
-                            restartService();
-                        }
                     }
+                    settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBoxMobileOnly.isChecked());
+
+                    if (checkBoxEnabled.isChecked()) {
+                        restartService();
+                    }
+
                     break;
 
                 case R.id.layout_wifi_only:
                     if (checkBoxWifiOnly.isChecked()) {
                         checkBoxWifiOnly.setChecked(false);
-                        settings.put(getResources().getString(R.string.wifi_only), checkBoxWifiOnly.isChecked());
                     }
                     else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
                         checkBoxWifiOnly.setChecked(true);
-                        settings.put(getResources().getString(R.string.wifi_only), checkBoxWifiOnly.isChecked());
                     }
+                    settings.put(getResources().getString(R.string.wifi_only), checkBoxWifiOnly.isChecked());
 
                     break;
                 // <--- layers
@@ -582,64 +576,60 @@ public class Main extends AppCompatActivity {
 
 
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            IntentServiceLoadNewWallpaper.Codes res = (IntentServiceLoadNewWallpaper.Codes)
-                    intent.getSerializableExtra(IntentServiceLoadNewWallpaper.RESULT);
+    private void nextButtonProcessing(LoadNewWallpaper.Codes code){
+        // update UI in Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (code) {
+                    case SUCCESS:
+                        setWallpaperPreview();
+                        Helper.toggleViewState(Main.this, btnCancel, false);
+                        Helper.toggleViewState(Main.this, btnEdit,   true);
 
-            switch (res) {
-                case SUCCESS:
-                    // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
-                    setWallpaperPreview();
+                        // установка ссылки для загрузки // set link
+                        if (settings.contains(getResources().getString(R.string.downloadurl))) {
+                            setLink(settings.getString(getResources().getString(R.string.downloadurl), ""));
+                        }
 
-                    // установка ссылки для загрузки // set link
-                    if (settings.contains(getResources().getString(R.string.downloadurl))) {
-                        setLink(settings.getString(getResources().getString(R.string.downloadurl), ""));
-                    }
+                        if (progressDialog != null) {
+                            progressDialog.cancel();
+                        }
 
-                    if (progressDialog != null)
-                        progressDialog.cancel();
-                    unregisterReceiver(receiver);
+                        // подсказка после первой загрузки изображения на кнопку "Дальше" // hint after the first image upload, click on the"Next" button
+                        if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+                            builder.setMessage(R.string.settings_hint1_alert_msg);
+                            builder.setCancelable(false);
+                            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    settings.put(getResources().getString(R.string.settings_hint1_flag), false);
+                                }
+                            });
+                            alertDialog = builder.create();
+                            alertDialog.show();
+                        }
+                        break;
 
-                    Helper.toggleViewState(Main.this, btnCancel, false);
-                    Helper.toggleViewState(Main.this, btnEdit,   true);
+                    case NOT_CONNECTED:
+                        Toast.makeText(Main.this, getResources().getString(R.string.settings_update_error), Toast.LENGTH_LONG).show();
+                        if (progressDialog != null) {
+                            progressDialog.cancel();
+                        }
+                        break;
 
-                    // подсказка после первой загрузки изображения на кнопку "Дальше" // hint after the first image upload, click on the"Next" button
-                    if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                        builder.setMessage(R.string.settings_hint1_alert_msg);
-                        builder.setCancelable(false);
-                        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                settings.put(getResources().getString(R.string.settings_hint1_flag), false);
-                            }
-                        });
-                        alertDialog = builder.create();
-                        alertDialog.show();
-                    }
-                    break;
-
-                case NOT_CONNECTED:
-                    Toast.makeText(Main.this, getResources().getString(R.string.settings_update_error), Toast.LENGTH_LONG).show();
-
-                    if (progressDialog != null)
-                        progressDialog.cancel();
-                    unregisterReceiver(receiver);
-                    break;
-
-                case NOT_JSON:
-                    Toast.makeText(Main.this, getResources().getString(R.string.settings_download_error), Toast.LENGTH_LONG).show();
-
-                    if (progressDialog != null)
-                        progressDialog.cancel();
-                    unregisterReceiver(receiver);
-                    break;
+                    case NOT_JSON:
+                        Toast.makeText(Main.this, getResources().getString(R.string.settings_download_error), Toast.LENGTH_LONG).show();
+                        if (progressDialog != null) {
+                            progressDialog.cancel();
+                        }
+                        break;
+                }
             }
-        }
-    };
-    //----------------------------------------------------------------------------------------------
+        });
+    }
+    //-----------------------------------------------------------------------------------------------
 
 
 
@@ -741,16 +731,6 @@ public class Main extends AppCompatActivity {
             progressDialog.dismiss();
         }
         progressDialog = null;
-
-        if (receiver != null) {
-            try {
-                // отмена ресивера. Может быть вызвано, например, при изменении ориентации экрана.
-                // canceling the receiver. It can be caused, for example, when changing the screen orientation.
-                unregisterReceiver(receiver);
-            }
-            catch (IllegalArgumentException ignored) {}
-        }
-        receiver = null;
 
         System.gc();
     }

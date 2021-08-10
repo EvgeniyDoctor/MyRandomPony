@@ -14,10 +14,10 @@ public class AutostartMyRandomPony extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // запуск сервиса при загрузке
-        Log.d(Helper.tag, "Autostart - onReceive");
+        Helper.d("Autostart - onReceive");
 
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
-            Log.d(Helper.tag, "Autostart - ACTION_BOOT_COMPLETED");
+            Helper.d("Autostart - ACTION_BOOT_COMPLETED");
 
             Helper.startService(
                 context,
