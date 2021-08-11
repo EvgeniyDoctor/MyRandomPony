@@ -1,5 +1,6 @@
 # My Random Pony
 ![Platforms](https://img.shields.io/badge/platforms-Android-brightgreen)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/EvgeniyDoctor/MyRandomPony)
 
 <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/icons/full.jpg?raw=true" width="125" title="My Random Pony logo">
 
@@ -32,9 +33,9 @@ Checkboxes:
 - **WiFi only**: download new wallpapers only via WiFi
 
 Radio buttons allow you to choose the frequency of changing the wallpaper:
-- **Once a day**: the wallpaper will be changed at 00:00 of the next day
-- **Once a week**: the wallpaper will be changed at 00:00 on Sunday or Monday (it depends on your system settings) of the next week
-- **Once a month**: the wallpaper will be changed at 00:00 on the 1st of the next month
+- **Once a day**: the wallpaper will change shortly after 00:00 of the next day
+- **Once a week**: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week
+- **Once a month**: the wallpaper will change shortly after 00:00 on the 1st of the next month
 
 Buttons:
 - **Cancel**: resetting all changes after the **"Edit"** button. After that, you need to click on the image to set it as the background
