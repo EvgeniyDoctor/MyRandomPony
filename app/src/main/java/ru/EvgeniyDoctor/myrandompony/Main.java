@@ -75,8 +75,8 @@ public class Main extends AppCompatActivity {
 
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-    // todo 08.08.2021: make different variants of the image for portrait and landscape modes
     // todo 08.08.2021: граница превью иногда выпирает, in Themes too
+    // todo 11.08.2021: delete all app pref keys from resources
 
 
 
@@ -633,7 +633,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    // установка ссылки на текст под изображением
+    // установка ссылки на текст под изображением // set link under the image
     private void setLink (String link){
         String text = String.format(
             "<a href='%s'>%s</a>",
@@ -688,8 +688,9 @@ public class Main extends AppCompatActivity {
     // check if the original image exists
     public boolean originalImageExists(){
         File input = new File(
-                new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
-                        MODE_PRIVATE), getResources().getString(R.string.file_name));
+            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
+            getResources().getString(R.string.file_name)
+        );
 
         return input.exists();
     }
@@ -700,8 +701,9 @@ public class Main extends AppCompatActivity {
     // check if the edited image exists
     public boolean editedImageExists(){
         File bg_edited = new File(
-                new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
-                        MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
+            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
+            getResources().getString(R.string.file_name_edited)
+        );
         return bg_edited.exists();
     }
     //-----------------------------------------------------------------------------------------------

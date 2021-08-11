@@ -56,9 +56,9 @@
         - WiFi only: download new wallpapers only via WiFi (does not apply to the \"Next\" button)\n\n
 
         Radio buttons allow you to choose the frequency of changing the wallpaper:\n
-        - Once a day: the wallpaper will be changed at 00:00 of the next day\n
-        - Once a week: the wallpaper will be changed at 00:00 on Sunday or Monday (it depends on your system settings) of the next week\n
-        - Once a month: the wallpaper will be changed at 00:00 on the 1st of the next month\n\n
+        - Once a day: the wallpaper will change shortly after 00:00 of the next day\n
+        - Once a week: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week\n
+        - Once a month: the wallpaper will change shortly after 00:00 on the 1st of the next month\n\n
 
         Buttons:\n
         - Cancel: resetting all changes after the \"Edit\" button. After that, you need to click on the image to set it as the background\n

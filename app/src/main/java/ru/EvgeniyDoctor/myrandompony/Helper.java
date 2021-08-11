@@ -3,6 +3,7 @@ package ru.EvgeniyDoctor.myrandompony;
 // some common things
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,13 +14,16 @@ import android.view.View;
 
 import net.grandcentrix.tray.AppPreferences;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import static androidx.core.content.ContextCompat.startForegroundService;
 
 
 
 public class Helper {
     static final String tag = "edoctor"; // tag for logs
-    static final String ACTION_NEXT_BUTTON = "ACTION_NEXT_BUTTON"; // действие для Intent, указывающее, что запуск состоялся при нажатии на кнопку "Дальше"
 
 
 
@@ -70,7 +74,7 @@ public class Helper {
 
 
 
-    // включение или отключение кнопок // enabling or disablin buttons
+    // включение или отключение кнопок // enabling or disabling buttons
     public static void toggleViewState (Context context, View view, boolean state){
         if (state) {
             view.setEnabled(true);
@@ -133,6 +137,35 @@ public class Helper {
     }
     public static void d (int text){
         Log.d(tag, "" + text);
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // log to file
+    public static void f (Context context, String text) {
+        File log = new File(
+            new ContextWrapper(context).getDir("My_Random_Pony", Context.MODE_APPEND),
+            "log.txt"
+        );
+
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(log, true);
+            writer.write(text + "\n");
+        }
+        catch (IOException e) {
+            // ignore
+        }
+        finally {
+            try {
+                if (writer != null)
+                    writer.close();
+            }
+            catch (IOException e) {
+                // ignore
+            }
+        }
     }
     //-----------------------------------------------------------------------------------------------
 }

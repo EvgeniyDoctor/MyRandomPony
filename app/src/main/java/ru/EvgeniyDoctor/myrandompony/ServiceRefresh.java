@@ -229,7 +229,7 @@ public class ServiceRefresh extends Service {
                         break;
                 } //switch
             } // run
-        }, 0, 10000); // 60000 - once a minute
+        }, 0, 60000); // 60000 - once a minute
     }
     //----------------------------------------------------------------------------------------------
 

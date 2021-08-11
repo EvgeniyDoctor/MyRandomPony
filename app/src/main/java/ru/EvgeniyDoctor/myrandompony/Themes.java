@@ -116,14 +116,12 @@ public class Themes extends AppCompatActivity {
 
         if (settings.contains(THEME_NAME_APP_SETTINGS)) { // load earlier selected theme
             currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
-            setRadioButtonCheckedByTag(currentTheme);
-            imageView.setImageResource(getThemePreviewByName(currentTheme)); // load preview image
         }
         else { // if this is the first launch
-            currentTheme = settings.getString(THEME_NAME_APP_SETTINGS, eThemes.Spike.getName());
-            setRadioButtonCheckedByTag(currentTheme);
-            imageView.setImageResource(getThemePreviewByName(currentTheme)); // load preview image
+            currentTheme = eThemes.Spike.getName();
         }
+        setRadioButtonCheckedByTag(currentTheme);
+        imageView.setImageResource(getThemePreviewByName(currentTheme)); // load preview image
     }
     //-----------------------------------------------------------------------------------------------
 

@@ -23,6 +23,7 @@ import java.net.URL;
 
 
 // class for load new image. Working for BackgroundService, ForegroundService and "Next" button
+// todo 11.08.2021: all string constants to constant vars
 
 
 
