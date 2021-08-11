@@ -17,7 +17,7 @@ Also this app:
 <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/app/src/main/res/drawable/theme_preview_spike.png?raw=true" width="125" title="theme preview spike">
 
 ## Get this app
-You can download an APK file from here or<br>
+You can download an APK file <a href='https://github.com/EvgeniyDoctor/MyRandomPony/releases'>right from here</a> or<br>
 <a href='https://play.google.com/store/apps/details?id=ru.EvgeniyDoctor.myrandompony'>
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png?raw=true" alt="The Google Play badge" width="180">
 </a>
