@@ -49,7 +49,7 @@ public class ServiceRefresh extends Service {
 
 
 
-    @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss"); // задание формата для получения часов
+    @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("d.MM.y HH:mm:ss"); // задание формата для получения часов
 
     
 

@@ -14,7 +14,10 @@ Also this app:
 - has no any paid features
 - doesn't collect any data
 
-<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/app/src/main/res/drawable/theme_preview_spike.png?raw=true" width="125" title="theme preview spike">
+<p float="left">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/main1.png?raw=true" width="200" title="main activity 1">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/main2.png?raw=true" width="200" title="main activity 2">
+</p>
 
 ## Get this app
 You can download an APK file <a href='https://github.com/EvgeniyDoctor/MyRandomPony/releases'>right from here</a> or<br>
@@ -63,3 +66,13 @@ This is a third-party mobile app for accessing the images on http://mylittlewall
 My Little Pony © Hasbro<br>
 All wallpapers © to their respective artists<br>
 All wallpapers are located at: http://mylittlewallpaper.com
+
+## Screenshots
+
+<p float="left">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Spike.png?raw=true" width="250" title="Spike">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Chrysalis.png?raw=true" width="250" title="Chrysalis">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Tirek.png?raw=true" width="250" title="Tirek">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Luna.png?raw=true" width="250" title="Luna">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Celestia.png?raw=true" width="250" title="Celestia">
+</p>
