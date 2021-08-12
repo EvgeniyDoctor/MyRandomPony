@@ -76,7 +76,6 @@ public class Main extends AppCompatActivity {
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
     // todo 11.08.2021: ! disable obfuscation for next release
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-    // todo 11.08.2021: text formatting in Help
     // todo 11.08.2021: try to start forgservice after app quit or paused 
     // todo 11.08.2021: delete all app pref keys from resources
     // todo 08.08.2021: граница превью иногда выпирает, in Themes too

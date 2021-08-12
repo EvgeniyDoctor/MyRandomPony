@@ -44,35 +44,37 @@
     <string name="wifi_only" translatable="false">wifi_only</string>
     <string name="settings_hint2_alert_title">Hi!</string>
     <string name="settings_hint2_alert_msg">You can set a new background right now by clicking on the \"Next\" button, or check the box \"Enabled\" and wait for a new day!\n\nIf you have any questions, look in the \"Help\"!</string>
-    <string name="settings_help_title">Help</string>
+    <string name="activity_help_title">Help</string>
     <string name="help_text">
-        When you first launch the application, you must enable it by clicking on the \"Enabled\" button, and the application will start working in the background. That\'s it!\n
-        You can also choose the frequency of changing the wallpaper and choose whether it is necessary to change the wallpaper only when connected to a WiFi network.\n
-        If you are impatient and you want to change the wallpaper right now, click on the \"Next\" button, wait for the image to load, and then click on it to set it as a background!\n\n
+        <![CDATA[
+        When you first launch the application, you must enable it by clicking on the <b>\"Enabled\"</b> button, and the application will start working in the background. That\'s it!<br/>
+        You can also choose the frequency of changing the wallpaper and choose whether it is necessary to change the wallpaper only when connected to a WiFi network.<br/>
+        If you are impatient and you want to change the wallpaper right now, click on the <b>\"Next\"</b> button, wait for the image to load, and then click on it to set it as a background!<br/><br/>
 
-        Checkboxes:\n
-        - Enabled: enabling / disabling the wallpaper change\n
-        - Mobile screen resolution only: search for images with mobile screen resolution only\n
-        - WiFi only: download new wallpapers only via WiFi (does not apply to the \"Next\" button)\n\n
+        Checkboxes:<br/>
+        - <b>Enabled</b>: enabling / disabling the wallpaper change<br/>
+        - <b>Mobile screen resolution only</b>: search for images with mobile screen resolution only<br/>
+        - <b>WiFi only</b>: download new wallpapers only via WiFi (does not apply to the <b>\"Next\"</b> button)<br/><br/>
 
-        Radio buttons allow you to choose the frequency of changing the wallpaper:\n
-        - Once a day: the wallpaper will change shortly after 00:00 of the next day\n
-        - Once a week: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week\n
-        - Once a month: the wallpaper will change shortly after 00:00 on the 1st of the next month\n\n
+        Radio buttons allow you to choose the frequency of changing the wallpaper:<br/>
+        - <b>Once a day</b>: the wallpaper will change shortly after 00:00 of the next day<br/>
+        - <b>Once a week</b>: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week<br/>
+        - <b>Once a month</b>: the wallpaper will change shortly after 00:00 on the 1st of the next month<br/><br/>
 
-        Buttons:\n
-        - Cancel: resetting all changes after the \"Edit\" button. After that, you need to click on the image to set it as the background\n
-        - Edit: allows you to crop the image if it is too large. After editing the image, you need to click it again to set it as the background\n
-        - Next: download a new image right now. To set new image as a background just click on it\n\n
+        Buttons:<br/>
+        - <b>Cancel</b>: resetting all changes after the <b>\"Edit\"</b> button. After that, you need to click on the image to set it as the background<br/>
+        - <b>Edit</b>: allows you to crop the image if it is too large. After editing the image, you need to click it again to set it as the background<br/>
+        - <b>Next</b>: download a new image right now. To set new image as a background just click on it<br/><br/>
 
-        Image: wallpaper preview. Click on it to set it as the background!\n\n
+        <b>Image</b>: wallpaper preview. Click on it to set it as the background!<br/><br/>
 
-        Link under the image: after successfully downloading the image, a link will appear under it leading to page on http://mylittlewallpaper.com, where you can download this image\n\n
+        <b>Link under the image</b>: after successfully downloading the image, a link will appear under it leading to page on http://mylittlewallpaper.com, where you can download this image<br/><br/>
 
-        You can also change the theme of the application! Themes available in \"3 vertical dots\" menu.\n\n
+        You can also change the theme of the application! Themes available in \3-dot\ menu.<br/><br/>
 
-        Notice for Android 8 users and higher: due to the new system policy, starting from Android 8 and higher, for the correct operation of this app, constant display of notification is required.\n
+        <i>Notice for Android 8 users and higher</i>: due to the new system policy, starting from Android 8 and higher, for the correct operation of this app, constant display of notification is required.<br/>
         So you can\'t disable the notification without disabling the wallpaper change.
+        ]]>
     </string>
     <string name="menu_item_help">Help</string>
     <string name="menu_item_about">About</string>
