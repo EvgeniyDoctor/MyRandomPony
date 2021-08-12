@@ -80,10 +80,17 @@
     <string name="menu_item_about">About</string>
     <string name="about_text">
         My Little Pony © Hasbro\n\n
+
         All images are located on mylittlewallpaper.com and belong to their authors.\n\n
-        This app was developed by Evgeniy Doctor.\n
+
+        \"My Random Pony\" app is developed by Evgeniy Doctor. All rights reserved. ©\n
+        The app was released on November 24, 2016.\n
+        This is a third-party mobile app for accessing the images on http://mylittlewallpaper.com. The developer is not responsible for the content of the images.\n\n
+
         Open source: https://github.com/EvgeniyDoctor/MyRandomPony\n\n
+
         Also listen to my music and mixes! https://www.youtube.com/channel/UCvPZd3PqeTxNciigUdmgRaQ\n\n
+
         Support me:\n
         - by buying my music: https://arklysis.bandcamp.com\n
         - by money transfer: https://paypal.me/evgeniydoctor

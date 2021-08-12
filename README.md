@@ -59,7 +59,8 @@ So you can't disable the notification without disabling the wallpaper change.
 - [give me some money on Paypal](https://paypal.me/evgeniydoctor)
 
 ## License
-"My Random Pony" app developed by Evgeniy Doctor ©<br>
+
+"My Random Pony" app is developed by Evgeniy Doctor. All rights reserved. ©<br>
 The app was released on November 24, 2016.<br>
 This is a third-party mobile app for accessing the images on http://mylittlewallpaper.com. The developer has no control over what images are available.
 
