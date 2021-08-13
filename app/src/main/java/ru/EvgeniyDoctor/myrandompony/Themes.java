@@ -312,6 +312,8 @@ public class Themes extends AppCompatActivity {
         //setTheme(themeId); // std Android method
         saveTheme(themeId);
 
+        settings.put(Pref.FLAG_MAIN_ACTIVITY_RESTART, true); // not restart service, if it is running
+
         Intent intent = new Intent(this, Main.class);
 
         // disable animation

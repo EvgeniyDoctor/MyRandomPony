@@ -133,8 +133,10 @@ public class LoadNewWallpaper {
             try {
                 Helper.d("IntentService_LoadNewWallpaper execute");
 
+                URL url = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid")));
+
                 // загрузка новой обоины // load new wallpaper --->
-                InputStream in = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid"))).openStream();
+                InputStream in = url.openStream();
 
                 // масштабирование размера изображения из потока при загрузке // scaling the image size from the stream when loading --->
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -145,7 +147,7 @@ public class LoadNewWallpaper {
                 options.inJustDecodeBounds = false;
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-                in = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid"))).openStream();
+                in = url.openStream();
                 Bitmap img = BitmapFactory.decodeStream(in, null, options); // открытие масштабированного изо // opening a scaled image
                 // <--- scaling the image size from the stream when loading
 

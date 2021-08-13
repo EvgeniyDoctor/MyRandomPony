@@ -75,7 +75,6 @@ public class Main extends AppCompatActivity {
 
     // todo 11.08.2021: ! disable obfuscation for next release
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-    // todo 14.08.2021: after theme change, if forg service was active, it will restart
     // todo 11.08.2021: try to start forgservice after app quit or paused
     // todo 08.08.2021: граница превью иногда выпирает, in Themes too
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
@@ -183,7 +182,12 @@ public class Main extends AppCompatActivity {
 
         // запуск сервиса, если надо // starting the service, if necessary
         if (checkBoxEnabled.isChecked()) {
-            Helper.startService(Main.this);
+            if (settings.contains(Pref.FLAG_MAIN_ACTIVITY_RESTART) && settings.getBoolean(Pref.FLAG_MAIN_ACTIVITY_RESTART, false)) { // if Main activity restarted after applying new theme
+                settings.remove(Pref.FLAG_MAIN_ACTIVITY_RESTART);
+            }
+            else {
+                Helper.startService(Main.this);
+            }
         }
         else {
             stopService(new Intent(this, ServiceRefresh.class));

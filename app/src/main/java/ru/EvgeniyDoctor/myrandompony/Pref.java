@@ -18,8 +18,10 @@ abstract class Pref {
         FILE_NAME_EDITED = "bg_edited.png",
         DOWNLOAD_URL = "downloadurl", // link to the site under the image
 
-        HINT_FIRST_NEXT = "settings_hint1_flag", // hint after the click on the"Next" button
+        HINT_FIRST_NEXT = "settings_hint1_flag", // hint after the click on the "Next" button
         HINT_FIRST_LAUNCH = "settings_hint2_flag", // hint at the first launch
-        HINT_FIRST_EDIT = "settings_first_edit_hint"
+        HINT_FIRST_EDIT = "settings_first_edit_hint",
+
+        FLAG_MAIN_ACTIVITY_RESTART = "flag_main_activity_restart"
     ;
 }

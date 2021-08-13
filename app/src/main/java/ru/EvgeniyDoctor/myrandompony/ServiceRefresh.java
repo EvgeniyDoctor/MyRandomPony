@@ -105,8 +105,6 @@ public class ServiceRefresh extends Service {
 
 
 
-    Notification notification;
-
     // res - https://stackoverflow.com/questions/47531742/startforeground-fail-after-upgrade-to-android-8-1
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startForegroundService(){
@@ -123,7 +121,7 @@ public class ServiceRefresh extends Service {
         manager.createNotificationChannel(channel);
 
         notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        notification = notificationBuilder.setOngoing(true)
+        Notification notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.drawable.ic_stat_name)
             //.setContentTitle("App is running")
             .setPriority(NotificationManager.IMPORTANCE_MIN)
