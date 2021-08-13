@@ -23,12 +23,6 @@
         android:layout_marginBottom="@dimen/root_padding_16"
         />
 
-
-    <!--
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        -->
     <fragment
         android:id="@+id/fragment_themes_settings"
         tools:layout="@layout/fragment_themes_settings"

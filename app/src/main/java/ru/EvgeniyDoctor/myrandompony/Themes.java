@@ -172,7 +172,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // get some color of the current theme
+    // get requested color of the current theme
     public static int getThemeColorById (Context context, int id){
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
@@ -186,6 +186,12 @@ public class Themes extends AppCompatActivity {
     // click on FrameLayout near RadioButton
     public void setCheckedFromLayout(View view) {
         String tag = view.getTag().toString();
+
+        int selectedBefore = getSelectedRadioButton();
+        int selectedNow = getThemeIdByName(tag);
+        if (selectedBefore == selectedNow) { // if clicked on already selected radio btn
+            return;
+        }
 
         Helper.toggleViewState(Themes.this, btn_theme_apply, !currentTheme.equals(tag)); // disable Apply btn if current theme selected
 

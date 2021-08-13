@@ -73,11 +73,12 @@ public class Main extends AppCompatActivity {
 
 
 
-    // todo 05.08.2021: ? notf: show WIFI and Mobile state info
     // todo 11.08.2021: ! disable obfuscation for next release
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
+    // todo 14.08.2021: after theme change, if forg service was active, it will restart
     // todo 11.08.2021: try to start forgservice after app quit or paused
     // todo 08.08.2021: граница превью иногда выпирает, in Themes too
+    // todo 05.08.2021: ? notf: show WIFI and Mobile state info
 
 
 
@@ -473,6 +474,10 @@ public class Main extends AppCompatActivity {
 
                 // частота обновления обоев // wallpaper refresh frequency
                 case R.id.layout_radio_1:
+                    if (radioButton1.isChecked()) {
+                        return;
+                    }
+
                     radioButton1.setChecked(true);
                     radioButton2.setChecked(false);
                     radioButton3.setChecked(false);
@@ -484,6 +489,10 @@ public class Main extends AppCompatActivity {
                     break;
 
                 case R.id.layout_radio_2:
+                    if (radioButton2.isChecked()) {
+                        return;
+                    }
+
                     radioButton1.setChecked(false);
                     radioButton2.setChecked(true);
                     radioButton3.setChecked(false);
@@ -495,6 +504,10 @@ public class Main extends AppCompatActivity {
                     break;
 
                 case R.id.layout_radio_3:
+                    if (radioButton3.isChecked()) {
+                        return;
+                    }
+
                     radioButton1.setChecked(false);
                     radioButton2.setChecked(false);
                     radioButton3.setChecked(true);
