@@ -330,8 +330,9 @@ public class Main extends AppCompatActivity {
                 // buttons --->
                 case R.id.btn_cancel: // Cancel button
                     File bg_edited = new File(
-                            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
-                                    MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
+                        new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
+                        getResources().getString(R.string.file_name_edited)
+                    );
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
                             currentWallpaper.setImageBitmap(openBackground());
@@ -348,8 +349,9 @@ public class Main extends AppCompatActivity {
 
                 case R.id.btn_edit: // Edit button
                     File input = new File(
-                            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
-                                    MODE_PRIVATE), getResources().getString(R.string.file_name));
+                        new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
+                        getResources().getString(R.string.file_name)
+                    );
 
                     if (!input.exists()) {
                         Toast.makeText(Main.this, R.string.hint_edit_first_click, Toast.LENGTH_LONG).show();
@@ -357,8 +359,9 @@ public class Main extends AppCompatActivity {
                     }
 
                     File output = new File(
-                            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path),
-                                    MODE_PRIVATE), getResources().getString(R.string.file_name_edited));
+                        new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
+                        getResources().getString(R.string.file_name_edited)
+                    );
 
                     // res - https://github.com/Yalantis/uCrop
                     UCrop.Options options = new UCrop.Options();
@@ -366,7 +369,8 @@ public class Main extends AppCompatActivity {
 
                     options.setStatusBarColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimaryDark));
                     options.setToolbarColor(Themes.getThemeColorById(Main.this, R.attr.colorPrimary));
-                    options.setActiveWidgetColor(Themes.getThemeColorById(Main.this, R.attr.colorAccent)); // текст снизу
+                    options.setActiveControlsWidgetColor(Themes.getThemeColorById(Main.this, R.attr.colorAccent)); // текст снизу
+                    options.setToolbarWidgetColor(getResources().getColor(R.color.white)); // title color
 
                     options.setShowCropGrid(false); // вид матрицы
                     options.setToolbarTitle(getResources().getString(R.string.settings_image_edit));
