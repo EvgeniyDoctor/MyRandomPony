@@ -132,14 +132,15 @@ public class Helper {
 
 
 
-    public static void d (String text){
-        Log.d(tag, text);
-    }
-    public static void d (int text){
-        Log.d(tag, "" + text);
-    }
-    public static void d (boolean text){
-        Log.d(tag, "" + text);
+    // debug log
+    public static <T> void d (T text) {
+        try {
+            Log.d(tag, text + "");
+        }
+        catch (Exception e) {
+            Log.d(tag, "Helper d error:");
+            e.printStackTrace();
+        }
     }
     //-----------------------------------------------------------------------------------------------
 
