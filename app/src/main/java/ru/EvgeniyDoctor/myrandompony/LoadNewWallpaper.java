@@ -23,7 +23,6 @@ import java.net.URL;
 
 
 // class for load new image. Working for BackgroundService, ForegroundService and "Next" button
-// todo 11.08.2021: all string constants to constant vars
 
 
 
@@ -38,6 +37,10 @@ public class LoadNewWallpaper {
     private final Context context;
     private final AppPreferences settings;
     private final boolean needChangeBg;
+
+    private final String URL_GET_MOBILE_ONLY = "https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?search=platform%3AMobile&limit=1";
+    private final String URL_GET_ALL = "https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?limit=1&search=";
+    private final String URL_NEW_WALLPAPER = "https://www.mylittlewallpaper.com/images/o_%s.png"; // url full size download
 
 
 
@@ -63,11 +66,11 @@ public class LoadNewWallpaper {
             URL url;
 
             // нужное разрешение // required screen resolution
-            if (settings.getBoolean("mobile_pony_wallpapers", true)) { // только с разрешением для мобильных // mobile screen resolution only
-                url = new URL("https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?search=platform%3AMobile&limit=1");
+            if (settings.getBoolean(Pref.MOBILE_ONLY, true)) { // только с разрешением для мобильных // mobile screen resolution only
+                url = new URL(URL_GET_MOBILE_ONLY);
             }
             else {
-                url = new URL("https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?limit=1&search=");
+                url = new URL(URL_GET_ALL);
             }
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -112,7 +115,7 @@ public class LoadNewWallpaper {
                     current_result = jsonArray.getJSONObject(0);
 
                     // сохранение ссылки для загрузки (откроется страница с картинкой) // saving the download link (a page with an image opens)
-                    settings.put("downloadurl", current_result.getString("downloadurl"));
+                    settings.put(Pref.DOWNLOAD_URL, current_result.getString("downloadurl"));
                 }
             }
             catch (Exception e) {
@@ -131,7 +134,7 @@ public class LoadNewWallpaper {
                 Helper.d("IntentService_LoadNewWallpaper execute");
 
                 // загрузка новой обоины // load new wallpaper --->
-                InputStream in = new URL("https://www.mylittlewallpaper.com/images/o_" + current_result.getString("imageid") + ".png").openStream();
+                InputStream in = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid"))).openStream();
 
                 // масштабирование размера изображения из потока при загрузке // scaling the image size from the stream when loading --->
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -142,15 +145,15 @@ public class LoadNewWallpaper {
                 options.inJustDecodeBounds = false;
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-                in = new URL("https://www.mylittlewallpaper.com/images/o_" + current_result.getString("imageid") + ".png").openStream();
+                in = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid"))).openStream();
                 Bitmap img = BitmapFactory.decodeStream(in, null, options); // открытие масштабированного изо // opening a scaled image
                 // <--- scaling the image size from the stream when loading
 
                 if (img != null) {
                     // удаление отредактированного изо, если оно было // deleting the edited image
                     File bg_edited = new File(
-                        new ContextWrapper(context).getDir("My_Random_Pony", Context.MODE_PRIVATE),
-                        "bg_edited.png"
+                        new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_PRIVATE),
+                        Pref.FILE_NAME_EDITED
                     );
                     if (bg_edited.exists()) {
                         Helper.d("IntentService delete_bg_edited OK");
@@ -160,8 +163,8 @@ public class LoadNewWallpaper {
                     // сохранение нового изо // save new image
                     FileOutputStream fos = new FileOutputStream(
                         new File(
-                            new ContextWrapper(context).getDir("My_Random_Pony", Context.MODE_PRIVATE),
-                            "bg.png"
+                            new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_PRIVATE),
+                            Pref.FILE_NAME
                         )
                     ); // bg.png
                     img.compress(Bitmap.CompressFormat.PNG, 100, fos);

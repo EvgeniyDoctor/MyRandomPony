@@ -38,7 +38,7 @@ public class Helper {
 
         if (need_type) { // if the connection type is important
             if (netInfo.isConnectedOrConnecting()) {
-                if (settings.getBoolean(context.getResources().getString(R.string.wifi_only), true)) { // если нужен только wifi // wifi only
+                if (settings.getBoolean(Pref.WIFI_ONLY, true)) { // если нужен только wifi // wifi only
                     return netInfo.getTypeName().equals("WIFI");
                 }
             }
@@ -145,7 +145,7 @@ public class Helper {
     // log to file
     public static void f (Context context, String text) {
         File log = new File(
-            new ContextWrapper(context).getDir("My_Random_Pony", Context.MODE_APPEND),
+            new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_APPEND),
             "log.txt"
         );
 

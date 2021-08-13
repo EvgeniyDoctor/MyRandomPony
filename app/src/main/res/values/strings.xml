@@ -12,38 +12,22 @@
     <string name="settings_radio_3">once a month</string>
     <string name="settings_preview">Preview</string>
     <string name="settings_preview_setbackground">Background has been changed</string>
-    <string name="downloadurl" translatable="false">downloadurl</string>
-    <string name="enabled_pony_wallpapers" translatable="false">enabled_pony_wallpapers</string>
-    <string name="file_name" translatable="false">bg.png</string>
-    <string name="mobile_pony_wallpapers" translatable="false">mobile_pony_wallpapers</string>
-    <string name="refresh_frequency" translatable="false">refresh_frequency</string>
-    <string name="refresh_frequency_curr_month" translatable="false">refresh_frequency_curr_month</string>
-    <string name="save_path" translatable="false">My_Random_Pony</string>
-    <string name="preferences" translatable="false">settings_pony_wallpaper</string>
-    <string name="url_request_all" translatable="false"><![CDATA[https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?limit=1&search=]]></string>
-    <string name="url_request_mobile" translatable="false"><![CDATA[https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?search=platform%3AMobile&limit=1]]></string>
     <string name="ok">OK</string>
     <string name="about">About</string>
-    <string name="url_full_size_download" translatable="false">https://www.mylittlewallpaper.com/images/o_</string>
     <string name="cancel">Cancel</string>
-    <string name="url_full_size_download_pref" translatable="false">url_full_size_download</string>
-    <string name="refresh_frequency_curr_day" translatable="false">refresh_frequency_curr_day</string>
-    <string name="refresh_frequency_curr_week" translatable="false">refresh_frequency_curr_week</string>
-    <string name="settings_hint1_flag" translatable="false">settings_hint1_flag</string>
-    <string name="settings_hint2_flag" translatable="false">settings_hint2_flag</string>
-    <string name="settings_hint1_alert_msg">If you like the image, click on it to set it as the background!\n\nTo resize or crop, press \"Edit\", return to the original image - press \"Cancel\".</string>
     <string name="settings_update_error">mylittlewallpaper.com: cannot be reached</string>
     <string name="settings_download_error">Downloading error</string>
-    <string name="file_name_edited" translatable="false">bg_edited.png</string>
     <string name="settings_cancel_image">Cancel</string>
     <string name="settings_edit_image">Edit</string>
     <string name="settings_image_cancel1">No edited image</string>
     <string name="settings_image_cancel2">Cancel: unknown error</string>
     <string name="settings_image_edit">Editing</string>
     <string name="settings_wifi_only">WiFi only</string>
-    <string name="wifi_only" translatable="false">wifi_only</string>
-    <string name="settings_hint2_alert_title">Hi!</string>
-    <string name="settings_hint2_alert_msg">You can set a new background right now by clicking on the \"Next\" button, or check the box \"Enabled\" and wait for a new day!\n\nIf you have any questions, look in the \"Help\"!</string>
+    <string name="hint_edit_first_click">No image. To download, click \"Next\"</string>
+    <string name="hint_first_edit_text">After editing, click on the resulting image again to set it as the background.\n\nReturn to the original image - press \"Cancel\".</string>
+    <string name="hint_first_next_alert_msg">If you like the image, click on it to set it as the background!\n\nTo resize or crop, press \"Edit\", return to the original image - press \"Cancel\".</string>
+    <string name="hint_first_launch_alert_title">Hi!</string>
+    <string name="hint_first_launch_alert_msg">You can set a new background right now by clicking on the \"Next\" button, or check the box \"Enabled\" and wait for a new day!\n\nIf you have any questions, look in the \"Help\"!</string>
     <string name="activity_help_title">Help</string>
     <string name="help_text">
         <![CDATA[
@@ -95,9 +79,6 @@
         - by buying my music: https://arklysis.bandcamp.com\n
         - by money transfer: https://paypal.me/evgeniydoctor
     </string>
-    <string name="hint_edit_first_click">No image. To download, click \"Next\"</string>
-    <string name="settings_first_edit_hint" translatable="false">settings_first_edit_hint</string>
-    <string name="hint_first_edit_text">After editing, click on the resulting image again to set it as the background.\n\nReturn to the original image - press \"Cancel\".</string>
     <string name="changing_wallpaper_progress_title">Changing</string>
     <string name="open_image_on_site">Open this image on the site</string>
     <string name="activity_about_title">About</string>

@@ -92,11 +92,11 @@ public class ServiceRefresh extends Service {
         }
 
         // завершение работы, если сервис был запущен при автостарте // shutdown if the service was started during autostart
-        if (!settings.contains(getResources().getString(R.string.enabled_pony_wallpapers)) || !settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false)) {
+        if (!settings.contains(Pref.ENABLED) || !settings.getBoolean(Pref.ENABLED, false)) {
             stopSelf();
         }
 
-        typeRefreshFrequency = settings.getInt(getResources().getString(R.string.refresh_frequency), 2);
+        typeRefreshFrequency = settings.getInt(Pref.REFRESH_FREQUENCY, 2);
 
         checkTime();
         updateNotification(typeRefreshFrequency);
@@ -156,7 +156,7 @@ public class ServiceRefresh extends Service {
             @Override
             public void run() {
                 // checking if the network is available
-                if (!Helper.checkInternetConnection(ServiceRefresh.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
+                if (!Helper.checkInternetConnection(ServiceRefresh.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
                     Helper.d("No network connection or not WIFI, return");
                     return;
                 }
@@ -171,16 +171,16 @@ public class ServiceRefresh extends Service {
 
                         Helper.d("current day = " + day);
                         try {
-                            Helper.d("saved day = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_day)));
+                            Helper.d("saved day = " + settings.getInt(Pref.REFRESH_FREQUENCY_CURR_DAY));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
-                        if (day != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_day), 0)) {
+                        if (day != settings.getInt(Pref.REFRESH_FREQUENCY_CURR_DAY, 0)) {
                             Helper.d("true, change began");
 
-                            settings.put(getResources().getString(R.string.refresh_frequency_curr_day), day); // текущее число
+                            settings.put(Pref.REFRESH_FREQUENCY_CURR_DAY, day); // текущее число
                             startLoad();
                         }
                         Helper.d("-----------------------------------------");
@@ -192,16 +192,16 @@ public class ServiceRefresh extends Service {
 
                         Helper.d("current week = " + week);
                         try {
-                            Helper.d("saved week = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_week)));
+                            Helper.d("saved week = " + settings.getInt(Pref.REFRESH_FREQUENCY_CURR_WEEK));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
-                        if (week != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_week), 0)) {
+                        if (week != settings.getInt(Pref.REFRESH_FREQUENCY_CURR_WEEK, 0)) {
                             Helper.d("true, change began");
 
-                            settings.put(getResources().getString(R.string.refresh_frequency_curr_week), week); // номер текущей недели
+                            settings.put(Pref.REFRESH_FREQUENCY_CURR_WEEK, week); // номер текущей недели
                             startLoad();
                         }
                         Helper.d("-----------------------------------------");
@@ -213,16 +213,16 @@ public class ServiceRefresh extends Service {
 
                         Helper.d("current month = " + month);
                         try {
-                            Helper.d("saved month = " + settings.getInt(getResources().getString(R.string.refresh_frequency_curr_month)));
+                            Helper.d("saved month = " + settings.getInt(Pref.REFRESH_FREQUENCY_CURR_MONTH));
                         }
                         catch (ItemNotFoundException e) {
                             e.printStackTrace();
                         }
 
-                        if (month != settings.getInt(getResources().getString(R.string.refresh_frequency_curr_month), 0)) { // текущий месяц != сохранённому
+                        if (month != settings.getInt(Pref.REFRESH_FREQUENCY_CURR_MONTH, 0)) { // текущий месяц != сохранённому
                             Helper.d("true, change began");
 
-                            settings.put(getResources().getString(R.string.refresh_frequency_curr_month), month); // текущий месяц
+                            settings.put(Pref.REFRESH_FREQUENCY_CURR_MONTH, month); // текущий месяц
                             startLoad();
                         }
                         Helper.d("-----------------------------------------");
@@ -283,8 +283,9 @@ public class ServiceRefresh extends Service {
     // opening the background
     private Bitmap openBackground() {
         File background = new File( // open bg.jpeg
-                new ContextWrapper(
-                        getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE), getResources().getString(R.string.file_name));
+            new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+            Pref.FILE_NAME
+        );
         FileInputStream f = null;
 
         try {

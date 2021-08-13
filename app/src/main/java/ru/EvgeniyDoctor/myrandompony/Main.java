@@ -76,8 +76,7 @@ public class Main extends AppCompatActivity {
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
     // todo 11.08.2021: ! disable obfuscation for next release
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-    // todo 11.08.2021: try to start forgservice after app quit or paused 
-    // todo 11.08.2021: delete all app pref keys from resources
+    // todo 11.08.2021: try to start forgservice after app quit or paused
     // todo 08.08.2021: граница превью иногда выпирает, in Themes too
 
 
@@ -124,8 +123,8 @@ public class Main extends AppCompatActivity {
         layout_radio_3.setOnClickListener(click);
 
         // частота обновления // refresh frequency
-        if (settings.contains(getResources().getString(R.string.refresh_frequency))) {
-            switch (settings.getInt(getResources().getString(R.string.refresh_frequency), 2)) {
+        if (settings.contains(Pref.REFRESH_FREQUENCY)) {
+            switch (settings.getInt(Pref.REFRESH_FREQUENCY, 2)) {
                 case 1:
                     radioButton1.setChecked(true);
                     radioButton2.setChecked(false);
@@ -144,41 +143,41 @@ public class Main extends AppCompatActivity {
             }
         }
         else { // если это первый запуск программы, то раз в неделю // if this is the first launch of the program, then once a week
-            settings.put(getResources().getString(R.string.refresh_frequency), 2);
+            settings.put(Pref.REFRESH_FREQUENCY, 2);
         }
 
         // установка первоначальных данных. Если этого не сделать, то при смене пользователем стд настройки с "Раз в неделю" на любую другую произойдёт обновление обоев
         // setting the initial data. If this is not done, then when the user changes the std settings from "Once a week" to any other, the wallpaper will be updated
         Calendar calendar = Calendar.getInstance();
-        if (!settings.contains(getResources().getString(R.string.refresh_frequency_curr_day))) {
-            settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
+        if (!settings.contains(Pref.REFRESH_FREQUENCY_CURR_DAY)) {
+            settings.put(Pref.REFRESH_FREQUENCY_CURR_DAY, calendar.get(Calendar.DATE));
         }
-        if (!settings.contains(getResources().getString(R.string.refresh_frequency_curr_week))) {
-            settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
+        if (!settings.contains(Pref.REFRESH_FREQUENCY_CURR_WEEK)) {
+            settings.put(Pref.REFRESH_FREQUENCY_CURR_WEEK, calendar.get(Calendar.WEEK_OF_YEAR));
         }
-        if (!settings.contains(getResources().getString(R.string.refresh_frequency_curr_month))) {
-            settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH));
+        if (!settings.contains(Pref.REFRESH_FREQUENCY_CURR_MONTH)) {
+            settings.put(Pref.REFRESH_FREQUENCY_CURR_MONTH, calendar.get(Calendar.MONTH));
         }
 
         // включено ли // is enabled
-        if (settings.contains(getResources().getString(R.string.enabled_pony_wallpapers))) {
-            checkBoxEnabled.setChecked(settings.getBoolean(getResources().getString(R.string.enabled_pony_wallpapers), false));
+        if (settings.contains(Pref.ENABLED)) {
+            checkBoxEnabled.setChecked(settings.getBoolean(Pref.ENABLED, false));
         }
 
         // разрешение обоев // wallpaper resolution
-        if (settings.contains(getResources().getString(R.string.mobile_pony_wallpapers))) {
-            checkBoxMobileOnly.setChecked(settings.getBoolean(getResources().getString(R.string.mobile_pony_wallpapers), true));
+        if (settings.contains(Pref.MOBILE_ONLY)) {
+            checkBoxMobileOnly.setChecked(settings.getBoolean(Pref.MOBILE_ONLY, true));
         }
         else {
-            settings.put(getResources().getString(R.string.mobile_pony_wallpapers), true);
+            settings.put(Pref.MOBILE_ONLY, true);
         }
 
         // WiFi only
-        if (settings.contains(getResources().getString(R.string.wifi_only))) {
-            checkBoxWifiOnly.setChecked(settings.getBoolean(getResources().getString(R.string.wifi_only), true));
+        if (settings.contains(Pref.WIFI_ONLY)) {
+            checkBoxWifiOnly.setChecked(settings.getBoolean(Pref.WIFI_ONLY, true));
         }
         else {
-            settings.put(getResources().getString(R.string.wifi_only), true);
+            settings.put(Pref.WIFI_ONLY, true);
         }
 
         // запуск сервиса, если надо // starting the service, if necessary
@@ -190,15 +189,15 @@ public class Main extends AppCompatActivity {
         }
 
         // hint
-        if (!settings.contains(getResources().getString(R.string.settings_hint2_flag))) {
+        if (!settings.contains(Pref.HINT_FIRST_LAUNCH)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-            builder.setTitle(R.string.settings_hint2_alert_title);
-            builder.setMessage(R.string.settings_hint2_alert_msg);
+            builder.setTitle(R.string.hint_first_launch_alert_title);
+            builder.setMessage(R.string.hint_first_launch_alert_msg);
             builder.setCancelable(false);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    settings.put(getResources().getString(R.string.settings_hint2_flag), false);
+                    settings.put(Pref.HINT_FIRST_LAUNCH, false);
                 }
             });
             alertDialog = builder.create();
@@ -206,8 +205,8 @@ public class Main extends AppCompatActivity {
         }
 
         // установка ссылки // set link
-        if (settings.contains(getResources().getString(R.string.downloadurl))) {
-            String link = settings.getString(getResources().getString(R.string.downloadurl), "");
+        if (settings.contains(Pref.DOWNLOAD_URL)) {
+            String link = settings.getString(Pref.DOWNLOAD_URL, "");
             if (link != null && !link.isEmpty()) {
                 setLink(link);
                 setWallpaperPreview();
@@ -330,8 +329,8 @@ public class Main extends AppCompatActivity {
                 // buttons --->
                 case R.id.btn_cancel: // Cancel button
                     File bg_edited = new File(
-                        new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-                        getResources().getString(R.string.file_name_edited)
+                        new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                        Pref.FILE_NAME_EDITED
                     );
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
@@ -349,8 +348,8 @@ public class Main extends AppCompatActivity {
 
                 case R.id.btn_edit: // Edit button
                     File input = new File(
-                        new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-                        getResources().getString(R.string.file_name)
+                        new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                        Pref.FILE_NAME
                     );
 
                     if (!input.exists()) {
@@ -359,8 +358,8 @@ public class Main extends AppCompatActivity {
                     }
 
                     File output = new File(
-                        new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-                        getResources().getString(R.string.file_name_edited)
+                        new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                        Pref.FILE_NAME_EDITED
                     );
 
                     // res - https://github.com/Yalantis/uCrop
@@ -378,7 +377,7 @@ public class Main extends AppCompatActivity {
                     break;
 
                 case R.id.btn_next: // Next button
-                    if (Helper.checkInternetConnection(Main.this, settings.getBoolean(getResources().getString(R.string.wifi_only), true))) {
+                    if (Helper.checkInternetConnection(Main.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
                         progressDialog.setCanceledOnTouchOutside(false);
@@ -417,13 +416,13 @@ public class Main extends AppCompatActivity {
                             Toast.makeText(Main.this, R.string.settings_internet_warn, Toast.LENGTH_LONG).show();
                         }
                         Calendar calendar = Calendar.getInstance();
-                        settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
-                        settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
-                        settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH));
+                        settings.put(Pref.REFRESH_FREQUENCY_CURR_DAY, calendar.get(Calendar.DATE));
+                        settings.put(Pref.REFRESH_FREQUENCY_CURR_WEEK, calendar.get(Calendar.WEEK_OF_YEAR));
+                        settings.put(Pref.REFRESH_FREQUENCY_CURR_MONTH, calendar.get(Calendar.MONTH));
 
                         Helper.startService(Main.this);
                     }
-                    settings.put(getResources().getString(R.string.enabled_pony_wallpapers), checkBoxEnabled.isChecked());
+                    settings.put(Pref.ENABLED, checkBoxEnabled.isChecked());
                     break;
 
                 case R.id.layout_mobile_only:
@@ -433,7 +432,7 @@ public class Main extends AppCompatActivity {
                     else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
                         checkBoxMobileOnly.setChecked(true);
                     }
-                    settings.put(getResources().getString(R.string.mobile_pony_wallpapers), checkBoxMobileOnly.isChecked());
+                    settings.put(Pref.MOBILE_ONLY, checkBoxMobileOnly.isChecked());
 
                     if (checkBoxEnabled.isChecked()) {
                         restartService();
@@ -448,7 +447,7 @@ public class Main extends AppCompatActivity {
                     else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
                         checkBoxWifiOnly.setChecked(true);
                     }
-                    settings.put(getResources().getString(R.string.wifi_only), checkBoxWifiOnly.isChecked());
+                    settings.put(Pref.WIFI_ONLY, checkBoxWifiOnly.isChecked());
 
                     break;
                 // <--- layers
@@ -477,8 +476,8 @@ public class Main extends AppCompatActivity {
                     radioButton1.setChecked(true);
                     radioButton2.setChecked(false);
                     radioButton3.setChecked(false);
-                    settings.put(getResources().getString(R.string.refresh_frequency_curr_day), calendar.get(Calendar.DATE));
-                    settings.put(getResources().getString(R.string.refresh_frequency), 1);
+                    settings.put(Pref.REFRESH_FREQUENCY_CURR_DAY, calendar.get(Calendar.DATE));
+                    settings.put(Pref.REFRESH_FREQUENCY, 1);
                     if (checkBoxEnabled.isChecked()) {
                         restartService();
                     }
@@ -488,8 +487,8 @@ public class Main extends AppCompatActivity {
                     radioButton1.setChecked(false);
                     radioButton2.setChecked(true);
                     radioButton3.setChecked(false);
-                    settings.put(getResources().getString(R.string.refresh_frequency_curr_week), calendar.get(Calendar.WEEK_OF_YEAR));
-                    settings.put(getResources().getString(R.string.refresh_frequency), 2);
+                    settings.put(Pref.REFRESH_FREQUENCY_CURR_WEEK, calendar.get(Calendar.WEEK_OF_YEAR));
+                    settings.put(Pref.REFRESH_FREQUENCY, 2);
                     if (checkBoxEnabled.isChecked()) {
                         restartService();
                     }
@@ -499,8 +498,8 @@ public class Main extends AppCompatActivity {
                     radioButton1.setChecked(false);
                     radioButton2.setChecked(false);
                     radioButton3.setChecked(true);
-                    settings.put(getResources().getString(R.string.refresh_frequency_curr_month), calendar.get(Calendar.MONTH)); // current month
-                    settings.put(getResources().getString(R.string.refresh_frequency), 3);
+                    settings.put(Pref.REFRESH_FREQUENCY_CURR_MONTH, calendar.get(Calendar.MONTH)); // current month
+                    settings.put(Pref.REFRESH_FREQUENCY, 3);
                     if (checkBoxEnabled.isChecked()) {
                         restartService();
                     }
@@ -540,16 +539,16 @@ public class Main extends AppCompatActivity {
         // https://habrahabr.ru/post/161027/
 
         File background = new File(
-            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-            getResources().getString(R.string.file_name_edited)
+            new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+            Pref.FILE_NAME_EDITED
         );
 
         // если существует bg_edited.jpeg, то он и будет открыт, иначе - откроется исходное изо
         // if there is bg_edited.jpeg, then it will be opened, otherwise - the original image will open
         if (!background.exists()) {
             background = new File( // bg.jpeg
-                new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-                getResources().getString(R.string.file_name)
+                new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                Pref.FILE_NAME
             );
         }
         FileInputStream fileInputStream = null;
@@ -594,23 +593,23 @@ public class Main extends AppCompatActivity {
                         Helper.toggleViewState(Main.this, btnEdit,   true);
 
                         // установка ссылки для загрузки // set link
-                        if (settings.contains(getResources().getString(R.string.downloadurl))) {
-                            setLink(settings.getString(getResources().getString(R.string.downloadurl), ""));
+                        if (settings.contains(Pref.DOWNLOAD_URL)) {
+                            setLink(settings.getString(Pref.DOWNLOAD_URL, ""));
                         }
 
                         if (progressDialog != null) {
                             progressDialog.cancel();
                         }
 
-                        // подсказка после первой загрузки изображения на кнопку "Дальше" // hint after the first image upload, click on the"Next" button
-                        if (!settings.contains(getResources().getString(R.string.settings_hint1_flag))) {
+                        // подсказка после первой загрузки изображения на кнопку "Дальше" // hint after the click on the"Next" button
+                        if (!settings.contains(Pref.HINT_FIRST_NEXT)) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                            builder.setMessage(R.string.settings_hint1_alert_msg);
+                            builder.setMessage(R.string.hint_first_next_alert_msg);
                             builder.setCancelable(false);
                             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    settings.put(getResources().getString(R.string.settings_hint1_flag), false);
+                                    settings.put(Pref.HINT_FIRST_NEXT, false);
                                 }
                             });
                             alertDialog = builder.create();
@@ -663,14 +662,14 @@ public class Main extends AppCompatActivity {
 
             Helper.toggleViewState(Main.this, btnCancel, true);
 
-            if (!settings.contains(getResources().getString(R.string.settings_first_edit_hint))) {
+            if (!settings.contains(Pref.HINT_FIRST_EDIT)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
                 builder.setMessage(R.string.hint_first_edit_text);
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        settings.put(getResources().getString(R.string.settings_first_edit_hint), true);
+                        settings.put(Pref.HINT_FIRST_EDIT, true);
                     }
                 });
                 alertDialog = builder.create();
@@ -694,8 +693,8 @@ public class Main extends AppCompatActivity {
     // check if the original image exists
     public boolean originalImageExists(){
         File input = new File(
-            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-            getResources().getString(R.string.file_name)
+            new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+            Pref.FILE_NAME
         );
 
         return input.exists();
@@ -707,8 +706,8 @@ public class Main extends AppCompatActivity {
     // check if the edited image exists
     public boolean editedImageExists(){
         File bg_edited = new File(
-            new ContextWrapper(getApplicationContext()).getDir(getResources().getString(R.string.save_path), MODE_PRIVATE),
-            getResources().getString(R.string.file_name_edited)
+            new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+            Pref.FILE_NAME_EDITED
         );
         return bg_edited.exists();
     }
