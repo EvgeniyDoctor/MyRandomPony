@@ -73,7 +73,6 @@ public class Main extends AppCompatActivity {
 
 
 
-    // todo 11.08.2021: ! disable obfuscation for next release
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
     // todo 11.08.2021: try to start forgservice after app quit or paused
     // todo 08.08.2021: граница превью иногда выпирает, in Themes too
@@ -91,7 +90,7 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.main);
 
         // логи при ошибке // error logs
-        RoboErrorReporter.bindReporter(this.getApplicationContext());
+        //RoboErrorReporter.bindReporter(this.getApplicationContext());
 
         btnCancel                       = findViewById(R.id.btn_cancel);
         btnEdit                         = findViewById(R.id.btn_edit);

@@ -33,19 +33,14 @@ import java.util.TimerTask;
 
 
 public class ServiceRefresh extends Service {
-    private int
-            typeRefreshFrequency;
-    private Timer
-            timer;
-    private Calendar
-            calendar;
-    static AppPreferences
-            settings;
-    NotificationCompat.Builder notificationBuilder;
-    NotificationManager manager;
-    final int notificationId = 1;
-
-    LoadNewWallpaper loadNewWallpaper;
+    private int typeRefreshFrequency;
+    private Timer timer;
+    private Calendar calendar;
+    private static AppPreferences settings = null;
+    private NotificationCompat.Builder notificationBuilder = null;
+    private NotificationManager manager = null;
+    private final int notificationId = 1;
+    private LoadNewWallpaper loadNewWallpaper = null;
 
 
 
@@ -69,6 +64,16 @@ public class ServiceRefresh extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (settings == null) {
+            settings = new AppPreferences(getApplicationContext());
+        }
+        if (loadNewWallpaper == null) {
+            loadNewWallpaper = new LoadNewWallpaper(
+                getApplicationContext(),
+                settings,
+                true // need to change the background
+            );
+        }
         return Service.START_STICKY;
     }
     //----------------------------------------------------------------------------------------------
@@ -79,13 +84,16 @@ public class ServiceRefresh extends Service {
     public void onCreate() {
         super.onCreate();
 
-        settings = new AppPreferences(getApplicationContext());
-
-        loadNewWallpaper = new LoadNewWallpaper(
-            getApplicationContext(),
-            settings,
-            true // need to change the background
-        );
+        if (settings == null) {
+            settings = new AppPreferences(getApplicationContext());
+        }
+        if (loadNewWallpaper == null) {
+            loadNewWallpaper = new LoadNewWallpaper(
+                getApplicationContext(),
+                settings,
+                true // need to change the background
+            );
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService();
@@ -99,7 +107,10 @@ public class ServiceRefresh extends Service {
         typeRefreshFrequency = settings.getInt(Pref.REFRESH_FREQUENCY, 2);
 
         checkTime();
-        updateNotification(typeRefreshFrequency);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            updateNotification(typeRefreshFrequency);
+        }
     }
     //----------------------------------------------------------------------------------------------
 
@@ -234,6 +245,11 @@ public class ServiceRefresh extends Service {
 
 
     private void updateNotification (int frequency){
+        if (notificationBuilder == null || manager == null) {
+            Helper.d("ServiceRefresh - updateNotification - notificationBuilder || manager == null");
+            return;
+        }
+
         String text = "";
 
         switch (frequency) {
@@ -246,6 +262,8 @@ public class ServiceRefresh extends Service {
             case 3:
                 text = getResources().getString(R.string.settings_radio_3);
                 break;
+            default:
+                text = getResources().getString(R.string.settings_radio_2);
         }
 
         text = Helper.ucfirst(text);

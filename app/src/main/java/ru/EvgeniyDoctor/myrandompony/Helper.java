@@ -146,8 +146,8 @@ public class Helper {
 
 
 
-    // log to file
-    public static void f (Context context, String text) {
+    // debug log to file
+    public static <T> void f (Context context, T text) {
         File log = new File(
             new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_APPEND),
             "log.txt"
