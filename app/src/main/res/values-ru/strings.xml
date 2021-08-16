@@ -95,4 +95,6 @@
     <string name="activity_about_title">О приложении</string>
     <string name="activity_themes_title">Темы</string>
     <string name="theme_apply">Применить</string>
+    <string name="error_unknown">Произошла неизвестная ошибка: %s</string>
+    <string name="wallpaper_preview">предпросмотр изображения</string>
 </resources>

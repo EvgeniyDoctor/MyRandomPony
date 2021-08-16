@@ -19,14 +19,14 @@
         tools:context="ru.EvgeniyDoctor.myrandompony.Main">
 
         <fragment
-            android:id="@+id/fragment_settings_layout"
+            android:id="@+id/fragment_main_settings"
             tools:layout="@layout/fragment_main_settings"
             android:name="ru.EvgeniyDoctor.myrandompony.FragmentMainSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <fragment
-            android:id="@+id/fragment_image_layout"
+            android:id="@+id/fragment_main_image"
             tools:layout="@layout/fragment_main_image"
             android:name="ru.EvgeniyDoctor.myrandompony.FragmentMainImage"
             android:layout_width="match_parent"

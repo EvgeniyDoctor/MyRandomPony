@@ -52,7 +52,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/theme_preview"
+            android:id="@+id/preview_wallpaper"
             android:adjustViewBounds="true"
             android:padding="1dp"
             android:visibility="gone"

@@ -106,7 +106,7 @@ public class Themes extends AppCompatActivity {
 
         btn_theme_apply = findViewById(R.id.btn_theme_apply);
         radioGroup      = findViewById(R.id.radio_group_themes);
-        imageView       = findViewById(R.id.theme_preview);
+        imageView       = findViewById(R.id.preview_theme);
 
         // get all radio buttons with themes into listOfRadioButtons
         getRadioButtons();

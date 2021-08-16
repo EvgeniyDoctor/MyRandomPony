@@ -19,7 +19,7 @@
         tools:context="ru.EvgeniyDoctor.myrandompony.Main">
 
         <fragment
-            android:id="@+id/fragment_settings_layout"
+            android:id="@+id/fragment_main_settings"
             tools:layout="@layout/fragment_main_settings"
             android:name="ru.EvgeniyDoctor.myrandompony.FragmentMainSettings"
             android:layout_marginRight="@dimen/margin_between_fragments"
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"/>
 
         <fragment
-            android:layout_toRightOf="@+id/fragment_settings_layout"
-            android:id="@+id/fragment_image_layout"
+            android:layout_toRightOf="@+id/fragment_main_settings"
+            android:id="@+id/fragment_main_image"
             tools:layout="@layout/fragment_main_image"
             android:name="ru.EvgeniyDoctor.myrandompony.FragmentMainImage"
             android:layout_width="match_parent"

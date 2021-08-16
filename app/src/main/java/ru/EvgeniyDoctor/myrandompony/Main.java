@@ -46,12 +46,9 @@ public class Main extends AppCompatActivity {
             checkBoxEnabled,
             checkBoxMobileOnly,
             checkBoxWifiOnly;
-    private ImageView
-            currentWallpaper;
-    private TextView
-            textview_download_url;
-    private ProgressDialog
-            progressDialog = null;
+    private ImageView currentWallpaper = null;
+    private TextView textviewDownloadUrl;
+    private ProgressDialog progressDialog = null;
     private RadioButton
             radioButton1,
             radioButton2,
@@ -61,8 +58,7 @@ public class Main extends AppCompatActivity {
             btnEdit,
             btnNext;
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
-    private AlertDialog
-        alertDialog = null;
+    private AlertDialog alertDialog = null;
     /*
         alertDialog - переменная для показа диалоговых окон.
     Нужна, так как если делать напрямую - builder.show(); то если, например, во время показа диалога вёрстка экрана изменится
@@ -74,7 +70,6 @@ public class Main extends AppCompatActivity {
 
 
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-    // todo 11.08.2021: try to start forgservice after app quit or paused
     // todo 08.08.2021: граница превью иногда выпирает, in Themes too
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
 
@@ -101,8 +96,8 @@ public class Main extends AppCompatActivity {
         checkBoxEnabled                 = findViewById(R.id.enable_checkbox);
         checkBoxMobileOnly              = findViewById(R.id.only_mobile);
         checkBoxWifiOnly                = findViewById(R.id.only_wifi);
-        currentWallpaper                = findViewById(R.id.theme_preview);
-        textview_download_url           = findViewById(R.id.download_url);
+        currentWallpaper                = findViewById(R.id.preview_wallpaper);
+        textviewDownloadUrl             = findViewById(R.id.download_url);
         radioButton1                    = findViewById(R.id.radio_1);
         radioButton2                    = findViewById(R.id.radio_2);
         radioButton3                    = findViewById(R.id.radio_3);
@@ -456,7 +451,7 @@ public class Main extends AppCompatActivity {
                     break;
                 // <--- layers
 
-                case R.id.theme_preview: // press on the image
+                case R.id.preview_wallpaper: // press on the image
                     ProgressDialog pd = new ProgressDialog(Main.this);
                     pd.setTitle(getResources().getString(R.string.changing_wallpaper_progress_title));
                     pd.setMessage(getResources().getString(R.string.settings_progress_msg));
@@ -569,7 +564,7 @@ public class Main extends AppCompatActivity {
         }
         FileInputStream fileInputStream = null;
 
-        if(background.exists()) {
+        if (background.exists()) {
             try {
                 fileInputStream = new FileInputStream(background);
             }
@@ -590,8 +585,26 @@ public class Main extends AppCompatActivity {
 
     // set wallpaper preview
     private void setWallpaperPreview () {
-        currentWallpaper.setImageBitmap(openBackground()); // load wallpaper preview
-        currentWallpaper.setVisibility(View.VISIBLE);
+        if (currentWallpaper == null) {
+            currentWallpaper = findViewById(R.id.preview_wallpaper);
+        }
+
+        if (currentWallpaper != null) {
+            currentWallpaper.setImageBitmap(openBackground()); // load wallpaper preview
+            currentWallpaper.setVisibility(View.VISIBLE);
+            textviewDownloadUrl.setVisibility(View.VISIBLE);
+        }
+        else {
+            Toast.makeText(
+                Main.this,
+                String.format(
+                    getResources().getString(R.string.error_unknown),
+                    getResources().getString(R.string.wallpaper_preview)
+                ),
+                Toast.LENGTH_LONG)
+            .show();
+            textviewDownloadUrl.setVisibility(View.GONE);
+        }
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -662,8 +675,8 @@ public class Main extends AppCompatActivity {
             getResources().getString(R.string.open_image_on_site)
         );
 
-        textview_download_url.setText(Html.fromHtml(text));
-        textview_download_url.setMovementMethod(LinkMovementMethod.getInstance());
+        textviewDownloadUrl.setText(Html.fromHtml(text));
+        textviewDownloadUrl.setMovementMethod(LinkMovementMethod.getInstance());
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -739,7 +752,7 @@ public class Main extends AppCompatActivity {
         checkBoxMobileOnly = null;
         checkBoxWifiOnly = null;
         currentWallpaper = null;
-        textview_download_url = null;
+        textviewDownloadUrl = null;
         settings = null;
         radioButton1 = null;
         radioButton2 = null;
