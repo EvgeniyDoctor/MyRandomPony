@@ -6,6 +6,7 @@ import android.app.WallpaperManager;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,7 +71,6 @@ public class Main extends AppCompatActivity {
 
 
     // todo 05.08.2021: ! if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-    // todo 08.08.2021: граница превью иногда выпирает, in Themes too
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
 
 
@@ -377,6 +377,7 @@ public class Main extends AppCompatActivity {
 
                 case R.id.btn_next: // Next button
                     if (Helper.checkInternetConnection(Main.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
+                        progressDialog = new ProgressDialog(Main.this);
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
                         progressDialog.setCanceledOnTouchOutside(false);
@@ -386,6 +387,8 @@ public class Main extends AppCompatActivity {
                         Thread thread = new Thread() {
                             @Override
                             public void run() {
+                                Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
+
                                 LoadNewWallpaper loadNewWallpaper = new LoadNewWallpaper(
                                     getApplicationContext(),
                                     settings,
@@ -393,6 +396,8 @@ public class Main extends AppCompatActivity {
                                 );
                                 LoadNewWallpaper.Codes code = loadNewWallpaper.load();
                                 nextButtonProcessing(code); // processing the result and update UI
+
+                                Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
                             }
                         };
                         thread.start();
@@ -452,18 +457,22 @@ public class Main extends AppCompatActivity {
                 // <--- layers
 
                 case R.id.preview_wallpaper: // press on the image
-                    ProgressDialog pd = new ProgressDialog(Main.this);
-                    pd.setTitle(getResources().getString(R.string.changing_wallpaper_progress_title));
-                    pd.setMessage(getResources().getString(R.string.settings_progress_msg));
-                    pd.setCanceledOnTouchOutside(false);
-                    pd.setCancelable(false); // back btn
-                    pd.show();
+                    progressDialog = new ProgressDialog(Main.this);
+                    progressDialog.setTitle(getResources().getString(R.string.changing_wallpaper_progress_title));
+                    progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setCancelable(false); // back btn
+                    progressDialog.show();
 
                     Thread thread = new Thread() {
                         @Override
                         public void run() {
+                            Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
+
                             setBackground();
-                            pd.dismiss();
+                            progressDialog.dismiss();
+
+                            Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
                         }
                     };
                     thread.start();

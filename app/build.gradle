@@ -8,7 +8,7 @@ android {
         applicationId "ru.EvgeniyDoctor.myrandompony"
         resValue "string", "tray__authority", "${applicationId}.tray"
         // add this to set a unique tray authority based on your applicationId
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 30
         versionCode 16
         versionName "1.7.1"
