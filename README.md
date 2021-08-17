@@ -1,6 +1,6 @@
 # My Random Pony
 ![Platforms](https://img.shields.io/badge/platforms-Android-brightgreen)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/EvgeniyDoctor/MyRandomPony)
+<!-- ![GitHub release (latest by date)](https://img.shields.io/github/v/release/EvgeniyDoctor/MyRandomPony) -->
 
 <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/icons/full.jpg?raw=true" width="125" title="My Random Pony logo">
 
@@ -33,7 +33,7 @@ If you are impatient and you want to change the wallpaper right now, click on th
 Checkboxes:
 - **Enabled**: enabling / disabling the wallpaper change
 - **Mobile screen resolution only**: search for images with mobile screen resolution only
-- **WiFi only**: download new wallpapers only via WiFi
+- **WiFi only**: download new wallpapers only via WiFi (applies to the **"Next"** button as well)
 
 Radio buttons allow you to choose the frequency of changing the wallpaper:
 - **Once a day**: the wallpaper will change shortly after 00:00 of the next day

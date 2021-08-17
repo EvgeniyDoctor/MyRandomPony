@@ -76,7 +76,7 @@ public class LoadNewWallpaper {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.setConnectTimeout(5000);
-            urlConnection.setReadTimeout(60000);
+            urlConnection.setReadTimeout(10000); // 10 sec
 
             // подключение к серверу // connect to the server
             try {

@@ -38,7 +38,7 @@
         Checkboxes:<br/>
         - <b>Enabled</b>: enabling / disabling the wallpaper change<br/>
         - <b>Mobile screen resolution only</b>: search for images with mobile screen resolution only<br/>
-        - <b>WiFi only</b>: download new wallpapers only via WiFi (does not apply to the <b>\"Next\"</b> button)<br/><br/>
+        - <b>WiFi only</b>: download new wallpapers only via WiFi (applies to the <b>\"Next\"</b> button as well)<br/><br/>
 
         Radio buttons allow you to choose the frequency of changing the wallpaper:<br/>
         - <b>Once a day</b>: the wallpaper will change shortly after 00:00 of the next day<br/>
