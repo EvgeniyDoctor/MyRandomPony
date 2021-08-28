@@ -75,13 +75,13 @@ All wallpapers are located at: http://mylittlewallpaper.com
   <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Chrysalis.png?raw=true"    width="150" title="Chrysalis">
   <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Tirek.png?raw=true"        width="150" title="Tirek">
   <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Luna.png?raw=true"         width="150" title="Luna">
-  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Celestia.png?raw=true"     width="250" title="Celestia">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Celestia.png?raw=true"     width="150" title="Celestia">
 </p>
 
 ### Tablet
 <p float="left">
   <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/tablet/Screenshot_portrait.png?raw=true"     width="150" title="Screenshot portrait tablet">
-  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/tablet/Screenshot_landscape.png?raw=true"    width="150" title="Screenshot landscape tablet">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/tablet/Screenshot_landscape.png?raw=true"    width="250" title="Screenshot landscape tablet">
 </p>
 
 ### Chrome OS
