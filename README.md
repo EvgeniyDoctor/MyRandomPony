@@ -2,7 +2,9 @@
 ![Platforms](https://img.shields.io/badge/platforms-Android-brightgreen)
 <!-- ![GitHub release (latest by date)](https://img.shields.io/github/v/release/EvgeniyDoctor/MyRandomPony) -->
 
-<img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/icons/full.jpg?raw=true" width="125" title="My Random Pony logo">
+<p align="center">
+    <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/icons/full.jpg?raw=true" width="125" title="My Random Pony logo">
+</p>
 
 ### Get new little pony on your background every day!
 
@@ -49,10 +51,7 @@ Buttons:
 
 **Link under the image**: after successfully downloading the image, a link will appear under it leading to page on http://mylittlewallpaper.com, where you can download this image
 
-You can also change the theme of the application! There are currently 5 themes available: three light and two dark. Available in "_3 vertical dots_" menu.
-
-_Notice for Android 8 users and higher_: due to the new system policy, starting from Android 8 and higher, for the correct operation of this app, constant display of notification is required.<br>
-So you can't disable the notification without disabling the wallpaper change.
+You can also change the theme of the application! There are currently 5 themes available: three light and two dark. Available in _3 dots_ menu.
 
 ## Support me
 - [buy my music on Bandcamp](https://arklysis.bandcamp.com)
@@ -70,10 +69,25 @@ All wallpapers are located at: http://mylittlewallpaper.com
 
 ## Screenshots
 
+### Phone
 <p float="left">
-  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Spike.png?raw=true" width="250" title="Spike">
-  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Chrysalis.png?raw=true" width="250" title="Chrysalis">
-  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Tirek.png?raw=true" width="250" title="Tirek">
-  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Luna.png?raw=true" width="250" title="Luna">
-  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/Celestia.png?raw=true" width="250" title="Celestia">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Spike.png?raw=true"        width="150" title="Spike">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Chrysalis.png?raw=true"    width="150" title="Chrysalis">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Tirek.png?raw=true"        width="150" title="Tirek">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Luna.png?raw=true"         width="150" title="Luna">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/phone/Celestia.png?raw=true"     width="250" title="Celestia">
+</p>
+
+### Tablet
+<p float="left">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/tablet/Screenshot_portrait.png?raw=true"     width="150" title="Screenshot portrait tablet">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/tablet/Screenshot_landscape.png?raw=true"    width="150" title="Screenshot landscape tablet">
+</p>
+
+### Chrome OS
+<p float="left">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/chromeos/Screenshot_1_portrait.png?raw=true"     width="200" title="Screenshot portrait Chrome OS">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/chromeos/Screenshot_1_landscape.png?raw=true"    width="200" title="Screenshot landscape Chrome OS">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/chromeos/Screenshot_2_portrait.png?raw=true"     width="200" title="Screenshot portrait Chrome OS">
+  <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/chromeos/Screenshot_2_landscape.png?raw=true"    width="200" title="Screenshot landscape Chrome OS">
 </p>
