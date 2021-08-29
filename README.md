@@ -15,6 +15,7 @@ Also this app:
 - has no any advertising
 - has no any paid features
 - doesn't collect any data
+- doesn't require registration
 
 <p float="left">
   <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/screenshots/github/main1.png?raw=true" width="200" title="main activity 1">
