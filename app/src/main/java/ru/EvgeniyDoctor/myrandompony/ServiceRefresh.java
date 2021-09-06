@@ -99,11 +99,6 @@ public class ServiceRefresh extends Service {
             startForegroundService();
         }
 
-        // завершение работы, если сервис был запущен при автостарте // shutdown if the service was started during autostart
-        if (!settings.contains(Pref.ENABLED) || !settings.getBoolean(Pref.ENABLED, false)) {
-            stopSelf();
-        }
-
         typeRefreshFrequency = settings.getInt(Pref.REFRESH_FREQUENCY, 2);
 
         checkTime();
