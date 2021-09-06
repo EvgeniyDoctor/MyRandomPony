@@ -243,6 +243,11 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
+        if (intent == null) {
+            return;
+        }
+
         boolean keep = intent.getExtras().getBoolean(Themes.THEME_INTENT_FLAG);
         if (!keep) {
             Main.this.finish();

@@ -55,9 +55,6 @@
         <b>Link under the image</b>: after successfully downloading the image, a link will appear under it leading to page on http://mylittlewallpaper.com, where you can download this image<br/><br/>
 
         You can also change the theme of the application! Themes available in \3-dot\ menu.<br/><br/>
-
-        <i>Notice for Android 8 users and higher</i>: due to the new system policy, starting from Android 8 and higher, for the correct operation of this app, constant display of notification is required.<br/>
-        So you can\'t disable the notification without disabling the wallpaper change.
         ]]>
     </string>
     <string name="menu_item_help">Help</string>
