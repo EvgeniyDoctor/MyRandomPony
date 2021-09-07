@@ -2,6 +2,7 @@ package ru.EvgeniyDoctor.myrandompony;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -23,6 +24,14 @@ public class About extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.textViewAbout);
         String text = getResources().getString(R.string.about_text);
+
+        try {
+            text += "\n\nv" + BuildConfig.VERSION_NAME;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
         textView.setText(Helper.removeSpacesFromStringStart(text));
     }
 }
