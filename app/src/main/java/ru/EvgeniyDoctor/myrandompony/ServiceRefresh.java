@@ -279,7 +279,7 @@ public class ServiceRefresh extends Service {
             try {
                 myWallpaperManager.setBitmap(openBackground()); // setting the background
             }
-            catch (IOException e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
