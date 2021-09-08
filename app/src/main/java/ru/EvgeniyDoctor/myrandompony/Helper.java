@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.View;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -146,7 +148,30 @@ public class Helper {
 
 
 
-    // debug log to file
+    // log to file in device memory, not SD card
+    public static <T> void f (T text) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File dir = new File(root + "/My Random Pony");
+        File file = new File(dir, "log.txt");
+
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+
+        try {
+            FileOutputStream out = new FileOutputStream(file, true); // true - append
+            out.write((text + "\n").getBytes());
+            out.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // log to file in private app folder
     public static <T> void f (Context context, T text) {
         File log = new File(
             new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_APPEND),
