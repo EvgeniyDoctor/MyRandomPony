@@ -193,6 +193,14 @@ public class ServiceRefresh extends Service {
 
 
     public void checkTime() {
+        int time;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            time = 60000; // 60000 - once a minute
+        }
+        else {
+            time = 60000 * 20;
+        }
+
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -265,8 +273,7 @@ public class ServiceRefresh extends Service {
                         break;
                 } //switch
             } // run
-        }, 0, 60000); // 60000 - once a minute
-        //}, 0, 60000 * 30);
+        }, 0, time);
     }
     //----------------------------------------------------------------------------------------------
 
