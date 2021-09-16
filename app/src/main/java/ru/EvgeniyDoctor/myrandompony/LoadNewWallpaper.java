@@ -28,10 +28,10 @@ import java.net.URL;
 
 public class LoadNewWallpaper {
     enum Codes {
-        SUCCESS,            // successful load, the background will NOT be changed;
-        CHANGE_WALLPAPER,   // successful load, the background will be changed;
-        NOT_CONNECTED,      // url does not exist or connect timeout
-        NOT_JSON,           // the response is not json
+        SUCCESS,                    // successful load, the background will NOT be changed;
+        SUCCESS_CHANGE_WALLPAPER,   // successful load, the background will be changed;
+        NOT_CONNECTED,              // url does not exist or connect timeout
+        NOT_JSON,                   // the response is not json
     }
 
     private final Context context;
@@ -87,7 +87,7 @@ public class LoadNewWallpaper {
             }
             catch (IOException e) {
                 Helper.d("HTTP answer != OK");
-                e.printStackTrace();
+                //e.printStackTrace();
                 return Codes.NOT_CONNECTED;
             }
 
@@ -177,7 +177,7 @@ public class LoadNewWallpaper {
                         return Codes.SUCCESS;
                     }
                     else { // нужно изменить фон // change wallpaper
-                        return Codes.CHANGE_WALLPAPER;
+                        return Codes.SUCCESS_CHANGE_WALLPAPER;
                     }
                 }
                 // <--- загрузка новой обоины // load new wallpaper

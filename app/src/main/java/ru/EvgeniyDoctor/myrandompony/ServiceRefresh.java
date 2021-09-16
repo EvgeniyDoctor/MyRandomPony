@@ -25,7 +25,6 @@ import net.grandcentrix.tray.core.ItemNotFoundException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Timer;
@@ -222,9 +221,7 @@ public class ServiceRefresh extends Service {
 
                         if (day != settings.getInt(Pref.REFRESH_FREQUENCY_CURR_DAY, 0)) {
                             Helper.d("true, change began");
-
-                            settings.put(Pref.REFRESH_FREQUENCY_CURR_DAY, day); // текущее число
-                            startLoad();
+                            startLoad(day);
                         }
                         Helper.d("-----------------------------------------");
                         break;
@@ -243,9 +240,7 @@ public class ServiceRefresh extends Service {
 
                         if (week != settings.getInt(Pref.REFRESH_FREQUENCY_CURR_WEEK, 0)) {
                             Helper.d("true, change began");
-
-                            settings.put(Pref.REFRESH_FREQUENCY_CURR_WEEK, week); // номер текущей недели
-                            startLoad();
+                            startLoad(week);
                         }
                         Helper.d("-----------------------------------------");
                         break;
@@ -264,9 +259,7 @@ public class ServiceRefresh extends Service {
 
                         if (month != settings.getInt(Pref.REFRESH_FREQUENCY_CURR_MONTH, 0)) { // текущий месяц != сохранённому
                             Helper.d("true, change began");
-
-                            settings.put(Pref.REFRESH_FREQUENCY_CURR_MONTH, month); // текущий месяц
-                            startLoad();
+                            startLoad(month);
                         }
                         Helper.d("-----------------------------------------");
                         break;
@@ -279,10 +272,12 @@ public class ServiceRefresh extends Service {
 
 
 
-    private void startLoad() {
+    private void startLoad (int unit) {
         LoadNewWallpaper.Codes code = loadNewWallpaper.load();
-        if (code == LoadNewWallpaper.Codes.CHANGE_WALLPAPER) { // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
+        if (code == LoadNewWallpaper.Codes.SUCCESS_CHANGE_WALLPAPER) { // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
             Helper.d("setting new bg!");
+
+            saveNew(unit);
 
             // установка фона
             WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
@@ -295,6 +290,24 @@ public class ServiceRefresh extends Service {
         }
         else {
             Helper.d("ServiceRefresh - startLoad - else: " + code);
+        }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // save current day, week or month after successful download
+    private void saveNew (int unit) {
+        switch (typeRefreshFrequency) {
+            case 1:
+                settings.put(Pref.REFRESH_FREQUENCY_CURR_DAY, unit);
+                break;
+            case 2:
+                settings.put(Pref.REFRESH_FREQUENCY_CURR_WEEK, unit);
+                break;
+            case 3:
+                settings.put(Pref.REFRESH_FREQUENCY_CURR_MONTH, unit);
+                break;
         }
     }
     //-----------------------------------------------------------------------------------------------
