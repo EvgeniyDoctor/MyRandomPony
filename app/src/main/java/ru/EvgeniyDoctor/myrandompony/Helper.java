@@ -13,6 +13,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
 import net.grandcentrix.tray.AppPreferences;
 
 import java.io.File;
@@ -93,19 +95,8 @@ public class Helper {
 
     // старт сервиса в зависимости от платформы // start of the service depending on the platform
     public static void startService (Context context){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            d("Helper - startService - startForegroundService");
-            startForegroundService(
-                context,
-                new Intent(
-                    context, ServiceRefresh.class
-                )
-            );
-        }
-        else { // normal version of android
-            d("Helper - startService - startService");
-            context.startService(new Intent(context, ServiceRefresh.class));
-        }
+        d("Helper - startService - startForegroundService");
+        ContextCompat.startForegroundService(context, new Intent(context, ServiceRefresh.class)); // res: https://stackoverflow.com/questions/64932667/android-workmanager-start-delay-after-killing-app
     }
     //--------------------------------------------------------------------------------------------------
 
@@ -113,14 +104,8 @@ public class Helper {
 
     // for Autostart
     public static void startService (Context context, Intent intent){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            d("Helper - startService + intent - startForegroundService");
-            context.startForegroundService(intent);
-        }
-        else { // normal version of android
-            d("Helper - startService + intent - startService");
-            context.startService(intent);
-        }
+        d("Helper - startService + intent - startForegroundService");
+        ContextCompat.startForegroundService(context, intent);
     }
     //--------------------------------------------------------------------------------------------------
 
@@ -150,6 +135,7 @@ public class Helper {
 
     // log to file in device memory, not SD card
     public static <T> void f (T text) {
+        // <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         String root = Environment.getExternalStorageDirectory().toString();
         File dir = new File(root + "/My Random Pony");
         File file = new File(dir, "log.txt");

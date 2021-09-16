@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -37,10 +38,9 @@ public class ServiceRefresh extends Service {
     private Timer timer;
     private Calendar calendar;
     private static AppPreferences settings = null;
-    private NotificationCompat.Builder notificationBuilder = null;
-    private NotificationManager manager = null;
     private final int notificationId = 1;
     private LoadNewWallpaper loadNewWallpaper = null;
+    private final String NOTIFICATION_CHANNEL_ID = "ru.EvgeniyDoctor.myrandompony";
 
 
 
@@ -95,17 +95,18 @@ public class ServiceRefresh extends Service {
             );
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService();
-        }
-
         typeRefreshFrequency = settings.getInt(Pref.REFRESH_FREQUENCY, 2);
 
-        checkTime();
-
+        Helper.d("typeRefreshFrequency: " + typeRefreshFrequency);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            updateNotification(typeRefreshFrequency);
+            startForegroundService();
+            //updateNotification();
         }
+        else { // 7 and lower
+            startForegroundServiceOld();
+        }
+
+        checkTime();
     }
     //----------------------------------------------------------------------------------------------
 
@@ -115,21 +116,21 @@ public class ServiceRefresh extends Service {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startForegroundService(){
         //Helper.d("startForegroundService started");
-        String NOTIFICATION_CHANNEL_ID = "ru.EvgeniyDoctor.myrandompony";
         String channelName = "My Background Service";
 
         NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         channel.setLightColor(Color.BLUE);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 
-        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert manager != null; // I was so assertive
         manager.createNotificationChannel(channel);
 
-        notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.drawable.ic_stat_name)
             //.setContentTitle("App is running")
+            .setContentText(getNotificationText())
             .setPriority(NotificationManager.IMPORTANCE_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build();
@@ -139,18 +140,56 @@ public class ServiceRefresh extends Service {
 
 
 
-    @Override
-    public void onDestroy() {
-        Helper.d("Service - onDestroy");
-        super.onDestroy();
+    // 7 and lower
+    private void startForegroundServiceOld(){
+        Intent notificationIntent = new Intent(this, Main.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        if (timer != null) {
-            timer.cancel();
+        Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_stat_name)
+            //.setContentTitle("My Awesome App")
+            .setContentText(getNotificationText())
+            .setContentIntent(pendingIntent).build();
+        startForeground(notificationId, notification);
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+//    private void updateNotification(){
+//        if (notificationBuilder == null || manager == null) {
+//            Helper.d("ServiceRefresh - updateNotification - notificationBuilder || manager == null");
+//            return;
+//        }
+//
+//        String text = getNotificationText();
+//        notificationBuilder.setContentText(text); // 61 char max
+//        manager.notify(notificationId, notificationBuilder.build());
+//    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    private String getNotificationText(){
+        String text;
+        switch (typeRefreshFrequency) {
+            case 1:
+                text = getResources().getString(R.string.settings_radio_1);
+                break;
+            case 2:
+                text = getResources().getString(R.string.settings_radio_2);
+                break;
+            case 3:
+                text = getResources().getString(R.string.settings_radio_3);
+                break;
+            default:
+                text = getResources().getString(R.string.settings_radio_2);
         }
 
-        System.gc();
+        text = Helper.ucfirst(text);
+        return text;
     }
-    //----------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------
 
 
 
@@ -159,14 +198,14 @@ public class ServiceRefresh extends Service {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                calendar = Calendar.getInstance();
+                Helper.d(dateFormat.format(calendar.getTime()));
+
                 // checking if the network is available
                 if (!Helper.checkInternetConnection(ServiceRefresh.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
                     Helper.d("No network connection or not WIFI, return");
                     return;
                 }
-
-                calendar = Calendar.getInstance();
-                Helper.d(dateFormat.format(calendar.getTime()));
 
                 switch (typeRefreshFrequency) {
                     case 1:
@@ -234,38 +273,9 @@ public class ServiceRefresh extends Service {
                 } //switch
             } // run
         }, 0, 60000); // 60000 - once a minute
+        //}, 0, 60000 * 30);
     }
     //----------------------------------------------------------------------------------------------
-
-
-
-    private void updateNotification (int frequency){
-        if (notificationBuilder == null || manager == null) {
-            Helper.d("ServiceRefresh - updateNotification - notificationBuilder || manager == null");
-            return;
-        }
-
-        String text = "";
-
-        switch (frequency) {
-            case 1:
-                text = getResources().getString(R.string.settings_radio_1);
-                break;
-            case 2:
-                text = getResources().getString(R.string.settings_radio_2);
-                break;
-            case 3:
-                text = getResources().getString(R.string.settings_radio_3);
-                break;
-            default:
-                text = getResources().getString(R.string.settings_radio_2);
-        }
-
-        text = Helper.ucfirst(text);
-        notificationBuilder.setContentText(text); // 61 char max
-        manager.notify(notificationId, notificationBuilder.build());
-    }
-    //-----------------------------------------------------------------------------------------------
 
 
 
@@ -311,6 +321,21 @@ public class ServiceRefresh extends Service {
         }
 
         return null;
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    @Override
+    public void onDestroy() {
+        Helper.d("Service - onDestroy");
+        super.onDestroy();
+
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        System.gc();
     }
     //----------------------------------------------------------------------------------------------
 }
