@@ -1,5 +1,6 @@
 # My Random Pony
 ![Platforms](https://img.shields.io/badge/platforms-Android-brightgreen)
+![MinAndroid](https://img.shields.io/badge/Min%20Android-4.3-blue)
 <!-- ![GitHub release (latest by date)](https://img.shields.io/github/v/release/EvgeniyDoctor/MyRandomPony) -->
 
 <p align="center">
