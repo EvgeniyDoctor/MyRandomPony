@@ -380,7 +380,7 @@ public class Main extends AppCompatActivity {
                 case R.id.btn_next: // Next button
                     Helper.d("Main - Next");
 
-                    if (Helper.checkInternetConnection(Main.this, settings.getBoolean(Pref.WIFI_ONLY, true))) { // todo null check
+                    if (Helper.checkInternetConnection(Main.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
                         progressDialog = new ProgressDialog(Main.this);
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
