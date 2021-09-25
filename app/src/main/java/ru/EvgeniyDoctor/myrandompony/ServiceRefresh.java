@@ -45,7 +45,7 @@ public class ServiceRefresh extends Service {
 
     @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("d.MM.y HH:mm:ss"); // задание формата для получения часов
 
-    
+
 
     public ServiceRefresh() {
     }
@@ -128,7 +128,7 @@ public class ServiceRefresh extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
             .setSmallIcon(R.drawable.ic_stat_name)
-            //.setContentTitle("App is running")
+            //.setContentTitle(getResources().getString(R.string.app_name))
             .setContentText(getNotificationText())
             .setPriority(NotificationManager.IMPORTANCE_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
@@ -143,28 +143,26 @@ public class ServiceRefresh extends Service {
     private void startForegroundServiceOld(){
         Intent notificationIntent = new Intent(this, Main.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        Notification notification;
 
-        Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_stat_name)
-            //.setContentTitle("My Awesome App")
-            .setContentText(getNotificationText())
-            .setContentIntent(pendingIntent).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // api 24, android 7
+            notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setContentText(getNotificationText())
+                .setContentIntent(pendingIntent)
+                .build();
+        }
+        else { // android 6 and lower
+            notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setContentTitle(getResources().getString(R.string.app_name))
+                .setContentText(getNotificationText())
+                .setContentIntent(pendingIntent)
+                .build();
+        }
+
         startForeground(notificationId, notification);
     }
-    //-----------------------------------------------------------------------------------------------
-
-
-
-//    private void updateNotification(){
-//        if (notificationBuilder == null || manager == null) {
-//            Helper.d("ServiceRefresh - updateNotification - notificationBuilder || manager == null");
-//            return;
-//        }
-//
-//        String text = getNotificationText();
-//        notificationBuilder.setContentText(text); // 61 char max
-//        manager.notify(notificationId, notificationBuilder.build());
-//    }
     //-----------------------------------------------------------------------------------------------
 
 
