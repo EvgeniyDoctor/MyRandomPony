@@ -4,7 +4,7 @@
 <!-- ![GitHub release (latest by date)](https://img.shields.io/github/v/release/EvgeniyDoctor/MyRandomPony) -->
 
 <p align="center">
-    <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/icons/full.jpg?raw=true" width="125" title="My Random Pony logo">
+    <img src="https://github.com/EvgeniyDoctor/MyRandomPony/blob/master/icons/full_circle.png?raw=true" width="125" title="My Random Pony logo">
 </p>
 
 ### Get new little pony on your background every day!
@@ -26,7 +26,7 @@ Also this app:
 ## Get this app
 You can download an APK file <a href='https://github.com/EvgeniyDoctor/MyRandomPony/releases'>right from here</a> or<br>
 <a href='https://play.google.com/store/apps/details?id=ru.EvgeniyDoctor.myrandompony'>
-<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png?raw=true" alt="The Google Play badge" width="180">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png?raw=true" target="_blank" alt="The Google Play badge" width="180">
 </a>
 
 ## Get started
