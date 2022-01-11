@@ -25,8 +25,8 @@ Also this app:
 
 ## Get this app
 You can download an APK file <a href='https://github.com/EvgeniyDoctor/MyRandomPony/releases'>right from here</a> or<br>
-<a href='https://play.google.com/store/apps/details?id=ru.EvgeniyDoctor.myrandompony'>
-<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png?raw=true" target="_blank" alt="The Google Play badge" width="180">
+<a href='https://play.google.com/store/apps/details?id=ru.EvgeniyDoctor.myrandompony' target="_blank">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png?raw=true" alt="The Google Play badge" width="180">
 </a>
 
 ## Get started
