@@ -2,6 +2,7 @@ package ru.EvgeniyDoctor.myrandompony;
 
 // some common things
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -21,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static androidx.core.content.ContextCompat.startForegroundService;
 
@@ -128,6 +131,16 @@ public class Helper {
             Log.d(tag, "Helper d error:");
             e.printStackTrace();
         }
+    }
+    //-----------------------------------------------------------------------------------------------
+
+
+
+    // timestamp
+    public static String now(){
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat s = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        return s.format(new Date());
     }
     //-----------------------------------------------------------------------------------------------
 
