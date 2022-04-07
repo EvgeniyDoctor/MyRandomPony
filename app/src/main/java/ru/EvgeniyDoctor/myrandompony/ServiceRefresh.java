@@ -25,6 +25,7 @@ import net.grandcentrix.tray.core.ItemNotFoundException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Timer;
@@ -286,12 +287,51 @@ public class ServiceRefresh extends Service {
 
             // установка фона
             WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
+
+            int screen = 0;
+            if (settings.contains(Pref.SCREEN_IMAGE)) {
+                screen = settings.getInt(Pref.SCREEN_IMAGE, 0);
+            }
+
+            switch (screen) {
+                case 0: // both
+                    try {
+                        myWallpaperManager.setBitmap(openBackground());
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 1: // home
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
+                        try {
+                            myWallpaperManager.setBitmap(openBackground(), null, true, WallpaperManager.FLAG_SYSTEM);
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                case 2: // lock
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
+                        try {
+                            myWallpaperManager.setBitmap(openBackground(), null, true, WallpaperManager.FLAG_LOCK);
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+            }
+            /*
             try {
                 myWallpaperManager.setBitmap(openBackground()); // setting the background
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
+
+             */
         }
         else {
             Helper.d("ServiceRefresh - startLoad - else: " + code);

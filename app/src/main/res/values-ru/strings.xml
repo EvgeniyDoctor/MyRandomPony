@@ -94,4 +94,9 @@
     <string name="theme_apply">Применить</string>
     <string name="error_unknown">Произошла неизвестная ошибка: %s</string>
     <string name="wallpaper_preview">предпросмотр изображения</string>
+    <string name="screen_both">оба</string>
+    <string name="screen_lockscreen">блокировки</string>
+    <string name="screen_homescreen">домашний</string>
+    <string name="screen_change">Менять изобр. на экране</string>
+    <string name="screen_alert_title">Выберите экран</string>
 </resources>

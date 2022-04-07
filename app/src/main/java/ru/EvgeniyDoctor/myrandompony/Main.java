@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +40,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.List;
 
 
 public class Main extends AppCompatActivity {
@@ -48,7 +51,9 @@ public class Main extends AppCompatActivity {
             checkBoxMobileOnly,
             checkBoxWifiOnly;
     private ImageView currentWallpaper = null;
-    private TextView textviewDownloadUrl;
+    private TextView
+            textviewDownloadUrl,
+            screen_image;
     private ProgressDialog progressDialog = null;
     private RadioButton
             radioButton1,
@@ -72,6 +77,7 @@ public class Main extends AppCompatActivity {
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
     // todo 05.08.2021: ? notf: show WIFI and Mobile state info
+    // todo 07.04.2022: add derpibooru?
 
 
 
@@ -101,6 +107,9 @@ public class Main extends AppCompatActivity {
         FrameLayout layout_radio_1      = findViewById(R.id.layout_radio_1);
         FrameLayout layout_radio_2      = findViewById(R.id.layout_radio_2);
         FrameLayout layout_radio_3      = findViewById(R.id.layout_radio_3);
+        LinearLayout layout_root_set_screen = findViewById(R.id.layout_root_set_screen);
+        FrameLayout layout_set_screen   = findViewById(R.id.layout_set_screen);
+        screen_image                    = findViewById(R.id.screen_image);
 
         btnCancel.setOnClickListener(click);
         btnEdit.setOnClickListener(click);
@@ -112,6 +121,7 @@ public class Main extends AppCompatActivity {
         layout_radio_1.setOnClickListener(click);
         layout_radio_2.setOnClickListener(click);
         layout_radio_3.setOnClickListener(click);
+        layout_set_screen.setOnClickListener(click);
 
         // частота обновления // refresh frequency
         if (settings.contains(Pref.REFRESH_FREQUENCY)) {
@@ -169,6 +179,20 @@ public class Main extends AppCompatActivity {
         }
         else {
             settings.put(Pref.WIFI_ONLY, true);
+        }
+
+        // change image on screen
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
+            if (settings.contains(Pref.SCREEN_IMAGE)) {
+                setScreenImageText(settings.getInt(Pref.SCREEN_IMAGE, 0));
+            }
+            else {
+                settings.put(Pref.SCREEN_IMAGE, 0);
+                screen_image.setText(getResources().getString(R.string.screen_both));
+            }
+        }
+        else {
+            layout_root_set_screen.setVisibility(View.GONE); // hide, if Android version < 7.0
         }
 
         // запуск сервиса, если надо // starting the service, if necessary
@@ -322,11 +346,59 @@ public class Main extends AppCompatActivity {
 
     View.OnClickListener click = new View.OnClickListener() {
         final Calendar calendar = Calendar.getInstance();
+        int screenImage; //
 
         @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                case R.id.layout_set_screen:
+                    // TODO
+                    int dflt = 0;
+                    String[] vars = {
+                        getResources().getString(R.string.screen_both),
+                        getResources().getString(R.string.screen_homescreen),
+                        getResources().getString(R.string.screen_lockscreen),
+                    };
+
+                    if (settings.contains(Pref.SCREEN_IMAGE)) {
+                        dflt = settings.getInt(Pref.SCREEN_IMAGE, 0);
+                    }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+                    builder.setTitle(getResources().getString(R.string.screen_alert_title));
+                    builder.setSingleChoiceItems(vars, dflt, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            screenImage = which;
+                        }
+                    });
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            settings.put(Pref.SCREEN_IMAGE, screenImage);
+
+                            // update ui
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setScreenImageText(screenImage);
+                                }
+                            });
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+
+                    break;
+
                 // buttons --->
                 case R.id.btn_cancel: // Cancel button
                     File bg_edited = new File(
@@ -535,6 +607,23 @@ public class Main extends AppCompatActivity {
 
 
 
+    private void setScreenImageText(int screenImage){
+        switch (screenImage){
+            case 0: // both
+                screen_image.setText(getResources().getString(R.string.screen_both));
+                break;
+            case 1: // homescreen
+                screen_image.setText(getResources().getString(R.string.screen_homescreen));
+                break;
+            case 2: // lockscreen
+                screen_image.setText(getResources().getString(R.string.screen_lockscreen));
+                break;
+        }
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
     private void restartService(){
         stopService(new Intent(Main.this, ServiceRefresh.class));
         Helper.startService(Main.this);
@@ -546,11 +635,42 @@ public class Main extends AppCompatActivity {
     // установка фона по нажатию на preview // setting the background by clicking on preview
     public void setBackground() {
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-        try {
-            myWallpaperManager.setBitmap(openBackground());
+
+        // todo
+        int screen = 0;
+        if (settings.contains(Pref.SCREEN_IMAGE)) {
+            screen = settings.getInt(Pref.SCREEN_IMAGE, 0);
         }
-        catch (IOException e) {
-            e.printStackTrace();
+
+        switch (screen) {
+            case 0: // both
+                try {
+                    myWallpaperManager.setBitmap(openBackground());
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 1: // homescreen
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
+                    try {
+                        myWallpaperManager.setBitmap(openBackground(), null, true, WallpaperManager.FLAG_SYSTEM);
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 2: // lockscreen
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
+                    try {
+                        myWallpaperManager.setBitmap(openBackground(), null, true, WallpaperManager.FLAG_LOCK);
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }
     }
     //----------------------------------------------------------------------------------------------

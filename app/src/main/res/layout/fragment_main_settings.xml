@@ -117,6 +117,48 @@
 
 
     <LinearLayout
+        android:id="@+id/layout_root_set_screen"
+        android:orientation="vertical"
+        android:showDividers="end"
+        android:divider="@drawable/separator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp">
+
+            <TextView
+                android:id="@+id/screen_image"
+                android:layout_gravity="end"
+                android:paddingEnd="@dimen/root_padding_8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorText"
+                android:text=""
+                />
+
+            <FrameLayout
+                android:id="@+id/layout_set_screen"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/screen_change"/>
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:divider="@drawable/separator"
         android:layout_width="match_parent"
         android:layout_height="150dp">
 

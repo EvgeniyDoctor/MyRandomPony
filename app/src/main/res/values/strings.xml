@@ -83,4 +83,10 @@
     <string name="theme_apply">Apply</string>
     <string name="error_unknown">An unknown error has occurred: %s</string>
     <string name="wallpaper_preview">wallpaper preview</string>
+
+    <string name="screen_change">Change image on</string>
+    <string name="screen_alert_title">Pick a screen</string>
+    <string name="screen_both">both</string>
+    <string name="screen_homescreen">homescreen</string>
+    <string name="screen_lockscreen">lockscreen</string>
 </resources>

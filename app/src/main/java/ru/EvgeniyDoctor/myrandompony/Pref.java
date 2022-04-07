@@ -7,6 +7,7 @@ abstract class Pref {
         ENABLED             = "enabled_pony_wallpapers",
         MOBILE_ONLY         = "mobile_pony_wallpapers",
         WIFI_ONLY           = "wifi_only",
+        SCREEN_IMAGE        = "screen_image",
         REFRESH_FREQUENCY   = "refresh_frequency",
 
         REFRESH_FREQUENCY_CURR_DAY      = "refresh_frequency_curr_day",
