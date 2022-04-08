@@ -2,14 +2,12 @@ package ru.EvgeniyDoctor.myrandompony;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.app.WallpaperManager;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,12 +35,8 @@ import net.grandcentrix.tray.AppPreferences;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+
 
 
 public class Main extends AppCompatActivity {
@@ -76,7 +70,6 @@ public class Main extends AppCompatActivity {
 
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-    // todo 05.08.2021: ? notf: show WIFI and Mobile state info
     // todo 07.04.2022: add derpibooru?
 
 
@@ -352,53 +345,6 @@ public class Main extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.layout_set_screen:
-                    // TODO
-                    int dflt = 0;
-                    String[] vars = {
-                        getResources().getString(R.string.screen_both),
-                        getResources().getString(R.string.screen_homescreen),
-                        getResources().getString(R.string.screen_lockscreen),
-                    };
-
-                    if (settings.contains(Pref.SCREEN_IMAGE)) {
-                        dflt = settings.getInt(Pref.SCREEN_IMAGE, 0);
-                    }
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                    builder.setTitle(getResources().getString(R.string.screen_alert_title));
-                    builder.setSingleChoiceItems(vars, dflt, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            screenImage = which;
-                        }
-                    });
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            settings.put(Pref.SCREEN_IMAGE, screenImage);
-
-                            // update ui
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setScreenImageText(screenImage);
-                                }
-                            });
-
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.create().show();
-
-                    break;
-
                 // buttons --->
                 case R.id.btn_cancel: // Cancel button
                     File bg_edited = new File(
@@ -407,7 +353,7 @@ public class Main extends AppCompatActivity {
                     );
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
-                            currentWallpaper.setImageBitmap(openBackground());
+                            currentWallpaper.setImageBitmap(ChangeWallpaper.loadWallpaper(getApplicationContext()));
                             Helper.toggleViewState(Main.this, btnCancel, false);
                         }
                         else {
@@ -545,7 +491,8 @@ public class Main extends AppCompatActivity {
                         public void run() {
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
 
-                            setBackground();
+                            //setBackground();
+                            new ChangeWallpaper(settings).setWallpaper(getApplicationContext());
                             progressDialog.dismiss();
 
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
@@ -600,6 +547,53 @@ public class Main extends AppCompatActivity {
                         restartService();
                     }
                     break;
+
+                // change screen
+                case R.id.layout_set_screen:
+                    int dflt = 0;
+                    String[] vars = {
+                            getResources().getString(R.string.screen_both),
+                            getResources().getString(R.string.screen_homescreen),
+                            getResources().getString(R.string.screen_lockscreen),
+                    };
+
+                    if (settings.contains(Pref.SCREEN_IMAGE)) {
+                        dflt = settings.getInt(Pref.SCREEN_IMAGE, 0);
+                    }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+                    builder.setTitle(getResources().getString(R.string.screen_alert_title));
+                    builder.setSingleChoiceItems(vars, dflt, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            screenImage = which;
+                        }
+                    });
+                    builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            settings.put(Pref.SCREEN_IMAGE, screenImage);
+
+                            // update ui
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setScreenImageText(screenImage);
+                                }
+                            });
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+
+                    break;
             }
         }
     };
@@ -607,6 +601,7 @@ public class Main extends AppCompatActivity {
 
 
 
+    // set text for screen
     private void setScreenImageText(int screenImage){
         switch (screenImage){
             case 0: // both
@@ -632,90 +627,6 @@ public class Main extends AppCompatActivity {
 
 
 
-    // установка фона по нажатию на preview // setting the background by clicking on preview
-    public void setBackground() {
-        WallpaperManager myWallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-
-        // todo
-        int screen = 0;
-        if (settings.contains(Pref.SCREEN_IMAGE)) {
-            screen = settings.getInt(Pref.SCREEN_IMAGE, 0);
-        }
-
-        switch (screen) {
-            case 0: // both
-                try {
-                    myWallpaperManager.setBitmap(openBackground());
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case 1: // homescreen
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
-                    try {
-                        myWallpaperManager.setBitmap(openBackground(), null, true, WallpaperManager.FLAG_SYSTEM);
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 2: // lockscreen
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
-                    try {
-                        myWallpaperManager.setBitmap(openBackground(), null, true, WallpaperManager.FLAG_LOCK);
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-        }
-    }
-    //----------------------------------------------------------------------------------------------
-
-
-
-    // open background
-    private Bitmap openBackground() {
-        // res. - http://www.vogella.com/tutorials/AndroidApplicationOptimization/article.html#handling-bitmaps
-        // https://habrahabr.ru/post/161027/
-
-        File background = new File(
-            new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-            Pref.FILE_NAME_EDITED
-        );
-
-        // если существует bg_edited.jpeg, то он и будет открыт, иначе - откроется исходное изо
-        // if there is bg_edited.jpeg, then it will be opened, otherwise - the original image will open
-        if (!background.exists()) {
-            background = new File( // bg.jpeg
-                new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                Pref.FILE_NAME
-            );
-        }
-        FileInputStream fileInputStream = null;
-
-        if (background.exists()) {
-            try {
-                fileInputStream = new FileInputStream(background);
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (fileInputStream != null) {
-            return BitmapFactory.decodeStream(fileInputStream);
-        }
-
-        return null;
-    }
-    //----------------------------------------------------------------------------------------------
-
-
-
     // set wallpaper preview
     private void setWallpaperPreview () {
         if (currentWallpaper == null) {
@@ -723,7 +634,7 @@ public class Main extends AppCompatActivity {
         }
 
         if (currentWallpaper != null) {
-            currentWallpaper.setImageBitmap(openBackground()); // load wallpaper preview
+            currentWallpaper.setImageBitmap(ChangeWallpaper.loadWallpaper(getApplicationContext())); // load wallpaper preview
             currentWallpaper.setVisibility(View.VISIBLE);
             textviewDownloadUrl.setVisibility(View.VISIBLE);
         }
@@ -820,7 +731,7 @@ public class Main extends AppCompatActivity {
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            currentWallpaper.setImageBitmap(openBackground());
+            currentWallpaper.setImageBitmap(ChangeWallpaper.loadWallpaper(getApplicationContext()));
 
             Helper.toggleViewState(Main.this, btnCancel, true);
 
