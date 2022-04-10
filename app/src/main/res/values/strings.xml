@@ -7,9 +7,12 @@
     <string name="settings_enable">Enabled</string>
     <string name="settings_next_image">Next</string>
     <string name="settings_only_mobile">Mobile screen resolution only</string>
-    <string name="settings_radio_1">once a day</string>
-    <string name="settings_radio_2">once a week</string>
-    <string name="settings_radio_3">once a month</string>
+
+    <string name="frequency_changing">Frequency of changing</string>
+    <string name="frequency_once_a_day">once a day</string>
+    <string name="frequency_once_a_week">once a week</string>
+    <string name="frequency_once_a_month">once a month</string>
+
     <string name="settings_preview">Preview</string>
     <string name="settings_preview_setbackground">Background has been changed</string>
     <string name="ok">OK</string>

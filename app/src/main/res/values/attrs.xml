@@ -8,6 +8,7 @@
     <attr name="colorPrimaryDark" format="color" />
     <attr name="colorAccent" format="color" />
     <attr name="colorText" format="color" />
+    <attr name="colorTextValue" format="color" />
     <attr name="separator" format="color" />
     <attr name="themePreviewBorder" format="color" />
     <attr name="themeScrollviewBorder" format="color" />

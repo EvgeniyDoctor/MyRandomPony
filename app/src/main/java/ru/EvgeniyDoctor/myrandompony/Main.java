@@ -47,12 +47,9 @@ public class Main extends AppCompatActivity {
     private ImageView currentWallpaper = null;
     private TextView
             textviewDownloadUrl,
-            screen_image;
+            textScreenImage,
+            textFrequency;
     private ProgressDialog progressDialog = null;
-    private RadioButton
-            radioButton1,
-            radioButton2,
-            radioButton3;
     private Button
             btnCancel,
             btnEdit,
@@ -94,15 +91,11 @@ public class Main extends AppCompatActivity {
         checkBoxWifiOnly                = findViewById(R.id.only_wifi);
         currentWallpaper                = findViewById(R.id.preview_wallpaper);
         textviewDownloadUrl             = findViewById(R.id.download_url);
-        radioButton1                    = findViewById(R.id.radio_1);
-        radioButton2                    = findViewById(R.id.radio_2);
-        radioButton3                    = findViewById(R.id.radio_3);
-        FrameLayout layout_radio_1      = findViewById(R.id.layout_radio_1);
-        FrameLayout layout_radio_2      = findViewById(R.id.layout_radio_2);
-        FrameLayout layout_radio_3      = findViewById(R.id.layout_radio_3);
-        LinearLayout layout_root_set_screen = findViewById(R.id.layout_root_set_screen);
+        LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
         FrameLayout layout_set_screen   = findViewById(R.id.layout_set_screen);
-        screen_image                    = findViewById(R.id.screen_image);
+        FrameLayout layout_set_frequency   = findViewById(R.id.layout_set_frequency);
+        textScreenImage = findViewById(R.id.screen_image);
+        textFrequency = findViewById(R.id.text_frequency);
 
         btnCancel.setOnClickListener(click);
         btnEdit.setOnClickListener(click);
@@ -111,34 +104,9 @@ public class Main extends AppCompatActivity {
         layout_mobile_only.setOnClickListener(click);
         layout_wifi_only.setOnClickListener(click);
         currentWallpaper.setOnClickListener(click);
-        layout_radio_1.setOnClickListener(click);
-        layout_radio_2.setOnClickListener(click);
-        layout_radio_3.setOnClickListener(click);
         layout_set_screen.setOnClickListener(click);
+        layout_set_frequency.setOnClickListener(click);
 
-        // частота обновления // refresh frequency
-        if (settings.contains(Pref.REFRESH_FREQUENCY)) {
-            switch (settings.getInt(Pref.REFRESH_FREQUENCY, 2)) {
-                case 1:
-                    radioButton1.setChecked(true);
-                    radioButton2.setChecked(false);
-                    radioButton3.setChecked(false);
-                    break;
-                case 2:
-                    radioButton1.setChecked(false);
-                    radioButton2.setChecked(true);
-                    radioButton3.setChecked(false);
-                    break;
-                case 3:
-                    radioButton1.setChecked(false);
-                    radioButton2.setChecked(false);
-                    radioButton3.setChecked(true);
-                    break;
-            }
-        }
-        else { // если это первый запуск программы, то раз в неделю // if this is the first launch of the program, then once a week
-            settings.put(Pref.REFRESH_FREQUENCY, 2);
-        }
 
         // установка первоначальных данных. Если этого не сделать, то при смене пользователем стд настройки с "Раз в неделю" на любую другую произойдёт обновление обоев
         // setting the initial data. If this is not done, then when the user changes the std settings from "Once a week" to any other, the wallpaper will be updated
@@ -181,11 +149,20 @@ public class Main extends AppCompatActivity {
             }
             else {
                 settings.put(Pref.SCREEN_IMAGE, 0);
-                screen_image.setText(getResources().getString(R.string.screen_both));
+                textScreenImage.setText(getResources().getString(R.string.screen_both));
             }
         }
         else {
             layout_root_set_screen.setVisibility(View.GONE); // hide, if Android version < 7.0
+        }
+
+        // refresh frequency
+        if (settings.contains(Pref.REFRESH_FREQUENCY)) {
+            setFrequencyText(settings.getInt(Pref.REFRESH_FREQUENCY, 2)-1);
+        }
+        else {
+            settings.put(Pref.REFRESH_FREQUENCY, 2); // once a week
+            textFrequency.setText(getResources().getString(R.string.frequency_once_a_week));
         }
 
         // запуск сервиса, если надо // starting the service, if necessary
@@ -339,7 +316,9 @@ public class Main extends AppCompatActivity {
 
     View.OnClickListener click = new View.OnClickListener() {
         final Calendar calendar = Calendar.getInstance();
-        int screenImage; //
+        int dialogScreenImage; //
+        int dialogFrequency;
+        int dflt = 0; // defualt value for alert dialogs with radio buttons
 
         @SuppressLint("NonConstantResourceId")
         @Override
@@ -491,7 +470,6 @@ public class Main extends AppCompatActivity {
                         public void run() {
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
 
-                            //setBackground();
                             new ChangeWallpaper(settings).setWallpaper(getApplicationContext());
                             progressDialog.dismiss();
 
@@ -503,84 +481,63 @@ public class Main extends AppCompatActivity {
                     break;
 
                 // частота обновления обоев // wallpaper refresh frequency
-                case R.id.layout_radio_1:
-                    if (radioButton1.isChecked()) {
-                        return;
-                    }
-
-                    radioButton1.setChecked(true);
-                    radioButton2.setChecked(false);
-                    radioButton3.setChecked(false);
-                    settings.put(Pref.REFRESH_FREQUENCY_CURR_DAY, calendar.get(Calendar.DATE));
-                    settings.put(Pref.REFRESH_FREQUENCY, 1);
-                    if (checkBoxEnabled.isChecked()) {
-                        restartService();
-                    }
-                    break;
-
-                case R.id.layout_radio_2:
-                    if (radioButton2.isChecked()) {
-                        return;
-                    }
-
-                    radioButton1.setChecked(false);
-                    radioButton2.setChecked(true);
-                    radioButton3.setChecked(false);
-                    settings.put(Pref.REFRESH_FREQUENCY_CURR_WEEK, calendar.get(Calendar.WEEK_OF_YEAR));
-                    settings.put(Pref.REFRESH_FREQUENCY, 2);
-                    if (checkBoxEnabled.isChecked()) {
-                        restartService();
-                    }
-                    break;
-
-                case R.id.layout_radio_3:
-                    if (radioButton3.isChecked()) {
-                        return;
-                    }
-
-                    radioButton1.setChecked(false);
-                    radioButton2.setChecked(false);
-                    radioButton3.setChecked(true);
-                    settings.put(Pref.REFRESH_FREQUENCY_CURR_MONTH, calendar.get(Calendar.MONTH)); // current month
-                    settings.put(Pref.REFRESH_FREQUENCY, 3);
-                    if (checkBoxEnabled.isChecked()) {
-                        restartService();
-                    }
-                    break;
-
-                // change screen
-                case R.id.layout_set_screen:
-                    int dflt = 0;
-                    String[] vars = {
-                            getResources().getString(R.string.screen_both),
-                            getResources().getString(R.string.screen_homescreen),
-                            getResources().getString(R.string.screen_lockscreen),
+                case R.id.layout_set_frequency:
+                    String[] frq = {
+                        getResources().getString(R.string.frequency_once_a_day),
+                        getResources().getString(R.string.frequency_once_a_week),
+                        getResources().getString(R.string.frequency_once_a_month),
                     };
 
-                    if (settings.contains(Pref.SCREEN_IMAGE)) {
-                        dflt = settings.getInt(Pref.SCREEN_IMAGE, 0);
+                    dflt = 1; // "once a week" radio button
+                    if (settings.contains(Pref.REFRESH_FREQUENCY)) {
+                        dflt = settings.getInt(Pref.REFRESH_FREQUENCY, 2);
+                        --dflt;
                     }
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
-                    builder.setTitle(getResources().getString(R.string.screen_alert_title));
-                    builder.setSingleChoiceItems(vars, dflt, new DialogInterface.OnClickListener() {
+                    builder.setTitle(getResources().getString(R.string.frequency_changing));
+                    builder.setSingleChoiceItems(frq, dflt, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
-                            screenImage = which;
+                            dialogFrequency = which;
                         }
                     });
                     builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            settings.put(Pref.SCREEN_IMAGE, screenImage);
+                            if (settings.contains(Pref.REFRESH_FREQUENCY) && settings.getInt(Pref.REFRESH_FREQUENCY, 2) == dialogFrequency+1) {
+                                return;
+                            }
+
+                            switch (dialogFrequency) {
+                                case 0:
+                                    settings.put(Pref.REFRESH_FREQUENCY_CURR_DAY, calendar.get(Calendar.DATE));
+                                    settings.put(Pref.REFRESH_FREQUENCY, 1);
+                                    break;
+
+                                case 1:
+                                    settings.put(Pref.REFRESH_FREQUENCY_CURR_WEEK, calendar.get(Calendar.WEEK_OF_YEAR));
+                                    settings.put(Pref.REFRESH_FREQUENCY, 2);
+                                    break;
+
+                                case 2:
+                                    settings.put(Pref.REFRESH_FREQUENCY_CURR_MONTH, calendar.get(Calendar.MONTH));
+                                    settings.put(Pref.REFRESH_FREQUENCY, 3);
+                                    break;
+                            }
 
                             // update ui
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    setScreenImageText(screenImage);
+                                    setFrequencyText(dialogFrequency);
                                 }
                             });
+
+                            // if enabled, restart service
+                            if (settings.contains(Pref.ENABLED) && settings.getBoolean(Pref.ENABLED, false)) {
+                                restartService();
+                            }
 
                             dialog.dismiss();
                         }
@@ -594,6 +551,52 @@ public class Main extends AppCompatActivity {
                     builder.create().show();
 
                     break;
+
+                // change screen
+                case R.id.layout_set_screen:
+                    String[] vars = {
+                        getResources().getString(R.string.screen_both),
+                        getResources().getString(R.string.screen_homescreen),
+                        getResources().getString(R.string.screen_lockscreen),
+                    };
+
+                    if (settings.contains(Pref.SCREEN_IMAGE)) {
+                        dflt = settings.getInt(Pref.SCREEN_IMAGE, 0);
+                    }
+
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(Main.this);
+                    builder2.setTitle(getResources().getString(R.string.screen_alert_title));
+                    builder2.setSingleChoiceItems(vars, dflt, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            dialogScreenImage = which;
+                        }
+                    });
+                    builder2.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            settings.put(Pref.SCREEN_IMAGE, dialogScreenImage);
+
+                            // update ui
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setScreenImageText(dialogScreenImage);
+                                }
+                            });
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder2.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder2.create().show();
+
+                    break;
             }
         }
     };
@@ -605,13 +608,31 @@ public class Main extends AppCompatActivity {
     private void setScreenImageText(int screenImage){
         switch (screenImage){
             case 0: // both
-                screen_image.setText(getResources().getString(R.string.screen_both));
+                textScreenImage.setText(getResources().getString(R.string.screen_both));
                 break;
             case 1: // homescreen
-                screen_image.setText(getResources().getString(R.string.screen_homescreen));
+                textScreenImage.setText(getResources().getString(R.string.screen_homescreen));
                 break;
             case 2: // lockscreen
-                screen_image.setText(getResources().getString(R.string.screen_lockscreen));
+                textScreenImage.setText(getResources().getString(R.string.screen_lockscreen));
+                break;
+        }
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    //
+    private void setFrequencyText(int dialogFrequency){
+        switch (dialogFrequency) {
+            case 0:
+                textFrequency.setText(getResources().getString(R.string.frequency_once_a_day));
+                break;
+            case 1:
+                textFrequency.setText(getResources().getString(R.string.frequency_once_a_week));
+                break;
+            case 2:
+                textFrequency.setText(getResources().getString(R.string.frequency_once_a_month));
                 break;
         }
     }
@@ -798,9 +819,6 @@ public class Main extends AppCompatActivity {
         currentWallpaper = null;
         textviewDownloadUrl = null;
         settings = null;
-        radioButton1 = null;
-        radioButton2 = null;
-        radioButton3 = null;
 
         if (alertDialog != null) {
             alertDialog.dismiss();

@@ -170,16 +170,16 @@ public class ServiceRefresh extends Service {
         String text;
         switch (typeRefreshFrequency) {
             case 1:
-                text = getResources().getString(R.string.settings_radio_1);
+                text = getResources().getString(R.string.frequency_once_a_day);
                 break;
             case 2:
-                text = getResources().getString(R.string.settings_radio_2);
+                text = getResources().getString(R.string.frequency_once_a_week);
                 break;
             case 3:
-                text = getResources().getString(R.string.settings_radio_3);
+                text = getResources().getString(R.string.frequency_once_a_month);
                 break;
             default:
-                text = getResources().getString(R.string.settings_radio_2);
+                text = getResources().getString(R.string.frequency_once_a_week);
         }
 
         text = Helper.ucfirst(text);

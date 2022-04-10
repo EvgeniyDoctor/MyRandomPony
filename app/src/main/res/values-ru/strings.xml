@@ -8,9 +8,9 @@
     <string name="settings_enable">Включено</string>
     <string name="settings_only_mobile">Только с разрешением для мобильных устройств</string>
     <string name="settings_wifi_only">Только WiFi</string>
-    <string name="settings_radio_1">раз в сутки</string>
-    <string name="settings_radio_2">раз в неделю</string>
-    <string name="settings_radio_3">раз в месяц</string>
+    <string name="frequency_once_a_day">раз в сутки</string>
+    <string name="frequency_once_a_week">раз в неделю</string>
+    <string name="frequency_once_a_month">раз в месяц</string>
     <string name="settings_cancel_image">Отмена</string>
     <string name="settings_edit_image">Редакт.</string>
     <string name="settings_next_image">Дальше</string>
@@ -99,4 +99,5 @@
     <string name="screen_homescreen">домашний</string>
     <string name="screen_change">Менять изобр. на экране</string>
     <string name="screen_alert_title">Выберите экран</string>
+    <string name="frequency_changing">Частота изменения</string>
 </resources>

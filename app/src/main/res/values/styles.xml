@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="Spike" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">#9a5da2</item> <!-- top bar -->
         <item name="colorPrimary">#c590c9</item> <!-- app bar -->
         <item name="commonBackground">#fff</item>
@@ -10,13 +9,14 @@
         <item name="colorButtonSemitransparent">#60c590c9</item> <!-- disabled buttons -->
         <item name="colorAccent">#51c456</item> <!-- links, checkboxes, radios -->
         <item name="colorText">#000</item> <!-- text -->
+        <item name="colorTextValue">#686868</item> <!-- some text values, e.g. value for "Change image on" -->
         <item name="colorTextElement">#000</item> <!-- text on elements-->
         <item name="separator">#9a5da2</item> <!-- separator -->
         <item name="themePreviewBorder">#000</item> <!-- theme preview image border -->
         <item name="themeScrollviewBorder">#c590c9</item> <!-- themes scrollview -->
         <item name="themeScrollviewBackground">#FFFAFF</item>
         <item name="colorRadioCheckbox">@drawable/selector_spike</item> <!-- цвет кружка Radio и квадрата Checkbox -->
-<!--        <item name="colorButtonNormal" tools:targetApi="lollipop">#c590c9</item> &lt;!&ndash; чёрт знает, что такое &ndash;&gt;-->
+        <!-- <item name="android:colorControlHighlight">@color/white</item>-->
     </style>
 
     <style name="Chrysalis" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -25,8 +25,9 @@
         <item name="commonBackground">#2c2c2c</item>
         <item name="colorButton">#4093AF</item> <!-- buttons -->
         <item name="colorButtonSemitransparent">#604d96ad</item> <!-- disabled buttons -->
-        <item name="colorAccent">#89CBEA</item> <!-- links -->
+        <item name="colorAccent">#89CBEA</item> <!-- links, checkboxes, radios -->
         <item name="colorText">#fff</item> <!-- text -->
+        <item name="colorTextValue">#89CBEA</item> <!-- some text values, e.g. value for "Change image on" -->
         <item name="colorTextElement">#fff</item> <!-- text on elements-->
         <item name="separator">#539593</item> <!-- separator -->
         <item name="themePreviewBorder">#fff</item> <!-- theme preview image border -->
@@ -43,6 +44,7 @@
         <item name="colorButtonSemitransparent">#608852df</item> <!-- disabled buttons -->
         <item name="colorAccent">#BED4FF</item> <!-- links, checkboxes, radios -->
         <item name="colorText">#fff</item> <!-- text -->
+        <item name="colorTextValue">#BED4FF</item> <!-- some text values, e.g. value for "Change image on" -->
         <item name="colorTextElement">#fff</item> <!-- text on elements-->
         <item name="separator">#AFACCA</item> <!-- separator -->
         <item name="themePreviewBorder">#fff</item> <!-- theme preview image border -->
@@ -57,8 +59,9 @@
         <item name="commonBackground">#fff</item>
         <item name="colorButton">#f2c4fd</item> <!-- buttons -->
         <item name="colorButtonSemitransparent">#60f2c4fd</item> <!-- disabled buttons -->
-        <item name="colorAccent">#5271B3</item> <!-- links -->
+        <item name="colorAccent">#5271B3</item> <!-- links, checkboxes, radios -->
         <item name="colorText">#000</item> <!-- text -->
+        <item name="colorTextValue">#5271B3</item> <!-- some text values, e.g. value for "Change image on" -->
         <item name="colorTextElement">#000</item> <!-- text on elements-->
         <item name="separator">#eecfe1</item> <!-- separator -->
         <item name="themePreviewBorder">#000</item> <!-- theme preview image border -->
@@ -73,8 +76,9 @@
         <item name="commonBackground">#fff</item>
         <item name="colorButton">#262a31</item> <!-- buttons -->
         <item name="colorButtonSemitransparent">#60262a31</item> <!-- disabled buttons -->
-        <item name="colorAccent">#95212b</item> <!-- links -->
+        <item name="colorAccent">#95212b</item> <!-- links, checkboxes, radios -->
         <item name="colorText">#000</item> <!-- text -->
+        <item name="colorTextValue">#95212b</item> <!-- some text values, e.g. value for "Change image on" -->
         <item name="colorTextElement">#fff</item> <!-- text on elements-->
         <item name="separator">#36393e</item> <!-- separator -->
         <item name="themePreviewBorder">#000</item> <!-- theme preview image border -->

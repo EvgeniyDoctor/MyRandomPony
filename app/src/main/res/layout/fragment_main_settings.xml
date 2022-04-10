@@ -135,7 +135,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textColor="?attr/colorText"
+                android:textSize="12sp"
+                android:textColor="?attr/colorTextValue"
                 />
 
             <FrameLayout
@@ -157,95 +158,40 @@
 
 
     <LinearLayout
-        android:divider="@drawable/separator"
+        android:orientation="vertical"
+        android:showDividers="end"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="wrap_content">
 
-        <RadioGroup
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="75dp">
+
+            <TextView
+                android:id="@+id/text_frequency"
+                android:layout_gravity="end"
+                android:paddingEnd="@dimen/root_padding_8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorTextValue"
+                android:textSize="12sp"
+                />
 
             <FrameLayout
+                android:id="@+id/layout_set_frequency"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <RadioButton
-                    android:id="@+id/radio_1"
-                    android:layout_gravity="end"
-                    android:buttonTint="?attr/colorRadioCheckbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-
-                <FrameLayout
-                    android:id="@+id/layout_radio_1"
-                    style="?android:attr/buttonBarButtonStyle"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/colorText"
-                        android:text="@string/settings_radio_1"/>
-                </FrameLayout>
-            </FrameLayout>
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/radio_2"
-                    android:layout_gravity="end"
-                    android:buttonTint="?attr/colorRadioCheckbox"
-                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/frequency_changing"
                     />
-
-                <FrameLayout
-                    android:id="@+id/layout_radio_2"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/colorText"
-                        android:text="@string/settings_radio_2"/>
-                </FrameLayout>
             </FrameLayout>
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/radio_3"
-                    android:layout_gravity="end"
-                    android:buttonTint="?attr/colorRadioCheckbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-
-                <FrameLayout
-                    android:id="@+id/layout_radio_3"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/colorText"
-                        android:text="@string/settings_radio_3"/>
-                </FrameLayout>
-            </FrameLayout>
-        </RadioGroup>
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>
