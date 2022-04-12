@@ -6,4 +6,5 @@
     <dimen name="root_padding_8">8dp</dimen>
     <dimen name="root_padding_16">16dp</dimen>
     <dimen name="root_padding_24">24dp</dimen>
+    <dimen name="text_value">12sp</dimen>
 </resources>

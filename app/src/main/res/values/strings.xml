@@ -89,7 +89,7 @@
 
     <string name="screen_change">Change image on</string>
     <string name="screen_alert_title">Pick a screen</string>
-    <string name="screen_both">both</string>
+    <string name="screen_both">both screens</string>
     <string name="screen_homescreen">homescreen</string>
     <string name="screen_lockscreen">lockscreen</string>
 </resources>

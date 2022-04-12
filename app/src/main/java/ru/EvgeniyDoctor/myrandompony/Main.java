@@ -55,6 +55,7 @@ public class Main extends AppCompatActivity {
             btnEdit,
             btnNext;
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
+    private ChangeWallpaper changeWallpaper;
     private AlertDialog alertDialog = null;
     /*
         alertDialog - переменная для показа диалоговых окон.
@@ -68,6 +69,7 @@ public class Main extends AppCompatActivity {
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
     // todo 07.04.2022: add derpibooru?
+    // todo 10.04.2022: update help, help dialogs and readme
 
 
 
@@ -107,6 +109,7 @@ public class Main extends AppCompatActivity {
         layout_set_screen.setOnClickListener(click);
         layout_set_frequency.setOnClickListener(click);
 
+        changeWallpaper = new ChangeWallpaper(settings);
 
         // установка первоначальных данных. Если этого не сделать, то при смене пользователем стд настройки с "Раз в неделю" на любую другую произойдёт обновление обоев
         // setting the initial data. If this is not done, then when the user changes the std settings from "Once a week" to any other, the wallpaper will be updated
@@ -332,7 +335,7 @@ public class Main extends AppCompatActivity {
                     );
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
-                            currentWallpaper.setImageBitmap(ChangeWallpaper.loadWallpaper(getApplicationContext()));
+                            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
                             Helper.toggleViewState(Main.this, btnCancel, false);
                         }
                         else {
@@ -470,7 +473,7 @@ public class Main extends AppCompatActivity {
                         public void run() {
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
 
-                            new ChangeWallpaper(settings).setWallpaper(getApplicationContext());
+                            changeWallpaper.setWallpaper(getApplicationContext());
                             progressDialog.dismiss();
 
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
@@ -622,7 +625,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    //
+    // set text for frequency
     private void setFrequencyText(int dialogFrequency){
         switch (dialogFrequency) {
             case 0:
@@ -655,7 +658,7 @@ public class Main extends AppCompatActivity {
         }
 
         if (currentWallpaper != null) {
-            currentWallpaper.setImageBitmap(ChangeWallpaper.loadWallpaper(getApplicationContext())); // load wallpaper preview
+            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext())); // load wallpaper preview
             currentWallpaper.setVisibility(View.VISIBLE);
             textviewDownloadUrl.setVisibility(View.VISIBLE);
         }
@@ -752,7 +755,7 @@ public class Main extends AppCompatActivity {
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            currentWallpaper.setImageBitmap(ChangeWallpaper.loadWallpaper(getApplicationContext()));
+            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
 
             Helper.toggleViewState(Main.this, btnCancel, true);
 

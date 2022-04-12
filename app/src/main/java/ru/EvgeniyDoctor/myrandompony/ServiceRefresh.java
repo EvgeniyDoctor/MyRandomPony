@@ -313,6 +313,7 @@ public class ServiceRefresh extends Service {
 
 
     // opening the background
+    // todo
     private Bitmap openBackground() {
         File background = new File( // open bg.jpeg
             new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),

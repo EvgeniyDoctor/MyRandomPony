@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_value"
                 android:textColor="?attr/colorTextValue"
                 />
 
@@ -175,7 +175,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:textColor="?attr/colorTextValue"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_value"
                 />
 
             <FrameLayout

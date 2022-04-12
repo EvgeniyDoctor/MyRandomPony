@@ -75,7 +75,7 @@ public class ChangeWallpaper {
 
 
     // open background
-    public static Bitmap loadWallpaper(Context context) {
+    public Bitmap loadWallpaper(Context context) {
         // res. - http://www.vogella.com/tutorials/AndroidApplicationOptimization/article.html#handling-bitmaps
         // https://habrahabr.ru/post/161027/
 
@@ -109,5 +109,32 @@ public class ChangeWallpaper {
 
         return null;
     }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    /*
+    private Bitmap openBackground() {
+        File background = new File( // open bg.jpeg
+                new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                Pref.FILE_NAME
+        );
+        FileInputStream f = null;
+
+        try {
+            f = new FileInputStream(background);
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (f != null) {
+            return BitmapFactory.decodeStream(f);
+        }
+
+        return null;
+    }
+
+     */
     //----------------------------------------------------------------------------------------------
 }
