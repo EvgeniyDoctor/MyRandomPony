@@ -21,7 +21,6 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -109,7 +108,7 @@ public class Main extends AppCompatActivity {
         layout_set_screen.setOnClickListener(click);
         layout_set_frequency.setOnClickListener(click);
 
-        changeWallpaper = new ChangeWallpaper(settings);
+        changeWallpaper = new ChangeWallpaper(settings, Image.Edited);
 
         // установка первоначальных данных. Если этого не сделать, то при смене пользователем стд настройки с "Раз в неделю" на любую другую произойдёт обновление обоев
         // setting the initial data. If this is not done, then when the user changes the std settings from "Once a week" to any other, the wallpaper will be updated
@@ -321,7 +320,7 @@ public class Main extends AppCompatActivity {
         final Calendar calendar = Calendar.getInstance();
         int dialogScreenImage; //
         int dialogFrequency;
-        int dflt = 0; // defualt value for alert dialogs with radio buttons
+        int dflt = 0; // default value for alert dialogs with radio buttons
 
         @SuppressLint("NonConstantResourceId")
         @Override
@@ -563,6 +562,7 @@ public class Main extends AppCompatActivity {
                         getResources().getString(R.string.screen_lockscreen),
                     };
 
+                    dflt = 0;
                     if (settings.contains(Pref.SCREEN_IMAGE)) {
                         dflt = settings.getInt(Pref.SCREEN_IMAGE, 0);
                     }

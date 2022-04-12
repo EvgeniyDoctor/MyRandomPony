@@ -19,13 +19,23 @@ import java.io.IOException;
 
 
 
+// needed type of the image
+enum Image {
+    Original,
+    Edited,
+}
+
+
+
 public class ChangeWallpaper {
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
+    private final Image image;
 
 
 
-    public ChangeWallpaper(AppPreferences settings){
+    public ChangeWallpaper(AppPreferences settings, Image image){
         ChangeWallpaper.settings = settings;
+        this.image = image;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -33,7 +43,7 @@ public class ChangeWallpaper {
 
     public void setWallpaper(Context context){
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
-        int screen = 0;
+        int screen = 0; // both screens
 
         if (settings.contains(Pref.SCREEN_IMAGE)) {
             screen = settings.getInt(Pref.SCREEN_IMAGE, 0);
@@ -79,20 +89,30 @@ public class ChangeWallpaper {
         // res. - http://www.vogella.com/tutorials/AndroidApplicationOptimization/article.html#handling-bitmaps
         // https://habrahabr.ru/post/161027/
 
-        File background = new File(
-            new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-            Pref.FILE_NAME_EDITED
-        );
+        File background;
+        FileInputStream fileInputStream = null;
 
-        // если существует bg_edited.jpeg, то он и будет открыт, иначе - откроется исходное изо
-        // if there is bg_edited.jpeg, then it will be opened, otherwise - the original image will open
-        if (!background.exists()) {
-            background = new File( // bg.jpeg
+        if (image == Image.Edited) { // called in Main
+            background = new File(
+                new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                Pref.FILE_NAME_EDITED
+            );
+
+            // если существует bg_edited.jpeg, то он и будет открыт, иначе - откроется исходное изо
+            // if there is bg_edited.jpeg, then it will be opened, otherwise - the original image will open
+            if (!background.exists()) {
+                background = new File( // bg.jpeg
+                    new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                    Pref.FILE_NAME
+                );
+            }
+        }
+        else { // Priority.Original, called in ServiceRefresh only
+            background = new File( // open bg.jpeg
                 new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
                 Pref.FILE_NAME
             );
         }
-        FileInputStream fileInputStream = null;
 
         if (background.exists()) {
             try {
@@ -109,32 +129,5 @@ public class ChangeWallpaper {
 
         return null;
     }
-    //----------------------------------------------------------------------------------------------
-
-
-
-    /*
-    private Bitmap openBackground() {
-        File background = new File( // open bg.jpeg
-                new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                Pref.FILE_NAME
-        );
-        FileInputStream f = null;
-
-        try {
-            f = new FileInputStream(background);
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (f != null) {
-            return BitmapFactory.decodeStream(f);
-        }
-
-        return null;
-    }
-
-     */
     //----------------------------------------------------------------------------------------------
 }

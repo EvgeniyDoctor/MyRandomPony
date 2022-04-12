@@ -7,10 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
@@ -21,9 +18,6 @@ import androidx.core.app.NotificationCompat;
 import net.grandcentrix.tray.AppPreferences;
 import net.grandcentrix.tray.core.ItemNotFoundException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Timer;
@@ -284,7 +278,7 @@ public class ServiceRefresh extends Service {
             saveNew(unit);
 
             // установка фона
-            new ChangeWallpaper(settings).setWallpaper(getApplicationContext());
+            new ChangeWallpaper(settings, Image.Original).setWallpaper(getApplicationContext());
         }
         else {
             Helper.d("ServiceRefresh - startLoad - else: " + code);
@@ -309,32 +303,6 @@ public class ServiceRefresh extends Service {
         }
     }
     //-----------------------------------------------------------------------------------------------
-
-
-
-    // opening the background
-    // todo
-    private Bitmap openBackground() {
-        File background = new File( // open bg.jpeg
-            new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-            Pref.FILE_NAME
-        );
-        FileInputStream f = null;
-
-        try {
-            f = new FileInputStream(background);
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (f != null) {
-            return BitmapFactory.decodeStream(f);
-        }
-
-        return null;
-    }
-    //----------------------------------------------------------------------------------------------
 
 
 
