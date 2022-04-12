@@ -43,7 +43,7 @@ If you are impatient and you want to change the wallpaper right now, click on th
 
 ### Change image on
 Allows you to choose whether the image will change: on the **homescreen** only, on the **lockscreen** only, or on **both**.<br>
-Available only for Android 7.0 and higher.
+:exclamation:&nbsp;Available only for Android 7.0 and higher.
 
 ### Frequency of changing
 Allows you to choose the frequency of changing the wallpaper:
