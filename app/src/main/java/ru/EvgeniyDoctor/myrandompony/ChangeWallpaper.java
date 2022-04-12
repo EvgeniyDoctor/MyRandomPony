@@ -107,7 +107,7 @@ public class ChangeWallpaper {
                 );
             }
         }
-        else { // Priority.Original, called in ServiceRefresh only
+        else { // Image.Original, called in ServiceRefresh only
             background = new File( // open bg.jpeg
                 new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
                 Pref.FILE_NAME
