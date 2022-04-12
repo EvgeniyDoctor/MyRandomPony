@@ -31,7 +31,7 @@ You can download an APK file <a href='https://github.com/EvgeniyDoctor/MyRandomP
 
 # Get started
 When you first launch the application, you must enable it by clicking on the [**Enabled**](#buttons) button, and the application will start working in the background. That's it!<br>
-You can also choose the frequency of changing the wallpaper and choose whether it is necessary to change the wallpaper only when connected to a WiFi network. <br>
+You can also choose the frequency of changing the wallpaper and choose whether it is necessary to change the wallpaper only when connected to a WiFi network.<br>
 If you are impatient and you want to change the wallpaper right now, click on the [**Next**](#buttons) button, wait for the image to load, and then click on it to set it as a background!
 
 ## Checkboxes
@@ -42,18 +42,14 @@ If you are impatient and you want to change the wallpaper right now, click on th
 ## More settings
 
 ### Change image on
-Allows you to choose whether the image will change: on the **homescreen** only, on the **lockscreen** only, or on **both**.
+Allows you to choose whether the image will change: on the **homescreen** only, on the **lockscreen** only, or on **both**.<br>
+Available only for Android 7.0 and higher.
 
 ### Frequency of changing
 Allows you to choose the frequency of changing the wallpaper:
 - **once a day**: the wallpaper will change shortly after 00:00 of the next day
 - **once a week**: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week
 - **once a month**: the wallpaper will change shortly after 00:00 on the 1st of the next month
-
-Radio buttons allow you to choose the frequency of changing the wallpaper:
-- **Once a day**: the wallpaper will change shortly after 00:00 of the next day
-- **Once a week**: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week
-- **Once a month**: the wallpaper will change shortly after 00:00 on the 1st of the next month
 
 ## Buttons
 - **Cancel**: resetting all changes after the [**Edit**](#buttons) button. After that, you need to click on the image to set it as the background

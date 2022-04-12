@@ -50,7 +50,8 @@
         <h2>More settings</h2>
 
         <h3>Change image on</h3>
-        Allows you to choose whether the image will change: on the homescreen only, on the lockscreen only, or on both.
+        Allows you to choose whether the image will change: on the <i>homescreen</i> only, on the <i>lockscreen</i> only, or on <i>both</i>.<br/>
+        Available only for Android 7.0 and higher.
 
         <h3>Frequency of changing</h3>
         Allows you to choose the frequency of changing the wallpaper:
