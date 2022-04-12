@@ -29,25 +29,38 @@ You can download an APK file <a href='https://github.com/EvgeniyDoctor/MyRandomP
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png?raw=true" alt="The Google Play badge" width="180">
 </a>
 
-## Get started
-When you first launch the application, you must enable it by clicking on the **"Enabled"** button, and the application will start working in the background. That's it!<br>
+# Get started
+When you first launch the application, you must enable it by clicking on the [**Enabled**](#buttons) button, and the application will start working in the background. That's it!<br>
 You can also choose the frequency of changing the wallpaper and choose whether it is necessary to change the wallpaper only when connected to a WiFi network. <br>
-If you are impatient and you want to change the wallpaper right now, click on the **"Next"** button, wait for the image to load, and then click on it to set it as a background!
+If you are impatient and you want to change the wallpaper right now, click on the [**Next**](#buttons) button, wait for the image to load, and then click on it to set it as a background!
 
-Checkboxes:
+## Checkboxes
 - **Enabled**: enabling / disabling the wallpaper change
 - **Mobile screen resolution only**: search for images with mobile screen resolution only
-- **WiFi only**: download new wallpapers only via WiFi (applies to the **"Next"** button as well)
+- **WiFi only**: download new wallpapers only via WiFi (applies to the [**Next**](#buttons) button as well)
+
+## More settings
+
+### Change image on
+Allows you to choose whether the image will change: on the **homescreen** only, on the **lockscreen** only, or on **both**.
+
+### Frequency of changing
+Allows you to choose the frequency of changing the wallpaper:
+- **once a day**: the wallpaper will change shortly after 00:00 of the next day
+- **once a week**: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week
+- **once a month**: the wallpaper will change shortly after 00:00 on the 1st of the next month
 
 Radio buttons allow you to choose the frequency of changing the wallpaper:
 - **Once a day**: the wallpaper will change shortly after 00:00 of the next day
 - **Once a week**: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week
 - **Once a month**: the wallpaper will change shortly after 00:00 on the 1st of the next month
 
-Buttons:
-- **Cancel**: resetting all changes after the **"Edit"** button. After that, you need to click on the image to set it as the background
+## Buttons
+- **Cancel**: resetting all changes after the [**Edit**](#buttons) button. After that, you need to click on the image to set it as the background
 - **Edit**: allows you to crop the image if it is too large. After editing the image, you need to click it again to set it as the background
 - **Next**: download a new image right now. To set new image as a background just click on it
+
+## Other
 
 **Image**: wallpaper preview. Click on it to set it as the background!
 
@@ -55,11 +68,11 @@ Buttons:
 
 You can also change the theme of the application! There are currently 5 themes available: three light and two dark. Available in _3 dots_ menu.
 
-## Support me
+# Support me
 - [buy my music on Bandcamp](https://arklysis.bandcamp.com)
 - [give me some money on Paypal](https://paypal.me/evgeniydoctor)
 
-## License
+# License
 
 "My Random Pony" app is developed by Evgeniy Doctor. All rights reserved. ©<br>
 The app was released on November 24, 2016.<br>
