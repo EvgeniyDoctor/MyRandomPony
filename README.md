@@ -30,7 +30,7 @@ You can download an APK file <a href='https://github.com/EvgeniyDoctor/MyRandomP
 </a>
 
 # Get started
-When you first launch the application, you must enable it by clicking on the [**Enabled**](#buttons) button, and the application will start working in the background. That's it!<br>
+When you first launch the application, you must enable it by clicking on the [**Enabled**](#checkboxes) button, and the application will start working in the background. That's it!<br>
 You can also choose the frequency of changing the wallpaper and choose whether it is necessary to change the wallpaper only when connected to a WiFi network.<br>
 If you are impatient and you want to change the wallpaper right now, click on the [**Next**](#buttons) button, wait for the image to load, and then click on it to set it as a background!
 
