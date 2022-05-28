@@ -3,8 +3,11 @@ package ru.EvgeniyDoctor.myrandompony;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,15 +60,13 @@ public class Main extends AppCompatActivity {
             checkBoxWifiOnly;
     private ImageView previewWallpaper = null;
     private TextView
-            textviewDownloadUrl,
             textScreenImage,
             textFrequency;
     private ProgressDialog progressDialog = null;
     private Button
             btnCancel,
             btnEdit,
-            btnNext
-                    ;
+            btnNext;
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private ChangeWallpaper changeWallpaper;
     private AlertDialog alertDialog = null;
@@ -104,7 +105,6 @@ public class Main extends AppCompatActivity {
         checkBoxMobileOnly              = findViewById(R.id.only_mobile);
         checkBoxWifiOnly                = findViewById(R.id.only_wifi);
         previewWallpaper                = findViewById(R.id.preview_wallpaper);
-        textviewDownloadUrl             = findViewById(R.id.download_url);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
         FrameLayout layout_set_screen   = findViewById(R.id.layout_set_screen);
         FrameLayout layout_set_frequency   = findViewById(R.id.layout_set_frequency);
@@ -210,11 +210,10 @@ public class Main extends AppCompatActivity {
         }
 
         // установка ссылки // set link
-        if (settings.contains(Pref.DOWNLOAD_URL)) {
+        if (settings.contains(Pref.DOWNLOAD_URL)) { // todo: check image, not link
             String link = settings.getString(Pref.DOWNLOAD_URL, "");
             if (link != null && !link.isEmpty()) {
-                setLink(link);
-                setWallpaperPreview(); // todo
+                setWallpaperPreview();
             }
         }
 
@@ -301,16 +300,20 @@ public class Main extends AppCompatActivity {
                 return true;
 
             // image
-            case R.id.menu_item_image_share: // share
-                imageShare();
+            case R.id.menu_item_image_copy: // copy // todo check on real device
+                imageCopy();
+                return true;
+
+            case R.id.menu_item_image_open: // open
+                imageOpen();
                 return true;
 
             case R.id.menu_item_image_save: // save
                 imageSave();
                 return true;
 
-            case R.id.menu_item_image_open: // open
-                imageOpen();
+            case R.id.menu_item_image_share: // share
+                imageShare();
                 return true;
 
             default:
@@ -321,10 +324,19 @@ public class Main extends AppCompatActivity {
 
 
 
+    private void imageCopy(){
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("MRP_link", settings.getString(Pref.DOWNLOAD_URL, ""));
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(this, "Copied!", Toast.LENGTH_LONG).show();
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
     private void imageShare(){
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        Helper.d(settings.getString(Pref.DOWNLOAD_URL, ""));
         sendIntent.putExtra(Intent.EXTRA_TEXT, settings.getString(Pref.DOWNLOAD_URL, ""));
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, null));
@@ -735,7 +747,6 @@ public class Main extends AppCompatActivity {
         if (previewWallpaper != null) {
             previewWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext())); // load wallpaper preview
             previewWallpaper.setVisibility(View.VISIBLE);
-            textviewDownloadUrl.setVisibility(View.VISIBLE);
         }
         else {
             Toast.makeText(
@@ -746,7 +757,6 @@ public class Main extends AppCompatActivity {
                 ),
                 Toast.LENGTH_LONG)
             .show();
-            textviewDownloadUrl.setVisibility(View.GONE);
         }
     }
     //-----------------------------------------------------------------------------------------------
@@ -763,11 +773,6 @@ public class Main extends AppCompatActivity {
                         setWallpaperPreview();
                         Helper.toggleViewState(Main.this, btnCancel, false);
                         Helper.toggleViewState(Main.this, btnEdit,   true);
-
-                        // установка ссылки для загрузки // set link
-                        if (settings.contains(Pref.DOWNLOAD_URL)) {
-                            setLink(settings.getString(Pref.DOWNLOAD_URL, ""));
-                        }
 
                         if (progressDialog != null) {
                             progressDialog.cancel();
@@ -805,21 +810,6 @@ public class Main extends AppCompatActivity {
                 }
             }
         });
-    }
-    //-----------------------------------------------------------------------------------------------
-
-
-
-    // установка ссылки на текст под изображением // set link under the image
-    private void setLink (String link){
-        String text = String.format(
-            "<a href='%s'>%s</a>",
-            link,
-            getResources().getString(R.string.open_image_on_site)
-        );
-
-        textviewDownloadUrl.setText(Html.fromHtml(text));
-        textviewDownloadUrl.setMovementMethod(LinkMovementMethod.getInstance());
     }
     //-----------------------------------------------------------------------------------------------
 
@@ -895,7 +885,6 @@ public class Main extends AppCompatActivity {
         checkBoxMobileOnly = null;
         checkBoxWifiOnly = null;
         previewWallpaper = null;
-        textviewDownloadUrl = null;
         settings = null;
 
         if (alertDialog != null) {

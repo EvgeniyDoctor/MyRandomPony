@@ -20,6 +20,11 @@
 
     <group android:id="@+id/menu_group_image">
         <item
+            android:id="@+id/menu_item_image_copy"
+            android:orderInCategory="100"
+            android:title="Copy link"
+        />
+        <item
             android:id="@+id/menu_item_image_open"
             android:orderInCategory="100"
             android:title="Open in browser"
