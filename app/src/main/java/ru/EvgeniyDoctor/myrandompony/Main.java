@@ -16,6 +16,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,11 +45,17 @@ import net.grandcentrix.tray.AppPreferences;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 
 
@@ -283,7 +290,6 @@ public class Main extends AppCompatActivity {
     // 3-dot menu items
     @SuppressLint("NonConstantResourceId")
     @Override
-    // todo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // actions
@@ -464,7 +470,7 @@ public class Main extends AppCompatActivity {
                     break;
 
                 case R.id.btn_next: // Next button
-                    Helper.d("Main - Next");
+                    //new DownloadFile().execute("https://www.mylittlewallpaper.com/images/o_5bbb8e74e84398.86540959.png"); // progress bar todo
 
                     if (Helper.checkInternetConnection(Main.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
                         progressDialog = new ProgressDialog(Main.this);
@@ -495,6 +501,7 @@ public class Main extends AppCompatActivity {
                     else {
                         Toast.makeText(Main.this, R.string.settings_load_error, Toast.LENGTH_LONG).show();
                     }
+
                     break;
                 // <--- buttons
 
@@ -901,3 +908,77 @@ public class Main extends AppCompatActivity {
     }
     //----------------------------------------------------------------------------------------------
 }
+
+
+
+
+    /* progress bar. todo: server does not send file length. Wait for it.
+    private class DownloadFile extends AsyncTask<String, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(Main.this);
+            progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
+            progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(false);
+
+            progressDialog.setIndeterminate(false);
+            progressDialog.setMax(100);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+            progressDialog.show();
+        }
+        //---
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Helper.d(strings[0]);
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                connection.connect();
+                int size = connection.getContentLength();
+
+                Helper.d(connection.getResponseCode());
+                Helper.d(connection);
+                Helper.d(size);
+                //Helper.d(Long.parseLong(connection.getHeaderField("Content-Length")));
+
+                InputStream inputStream = new BufferedInputStream(url.openStream());
+                //OutputStream outputStream = getApplicationContext().openFileOutput(Pref.FILE_NAME, Context.MODE_PRIVATE);
+                //new FileOutputStream(mContext.getFilesDir() + "/file.mp4");
+                OutputStream outputStream = new FileOutputStream(getApplicationContext().getFilesDir() + "/" + Pref.FILE_NAME);
+
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while((count = inputStream.read(data)) != -1){
+                    total += count;
+                    publishProgress((int) (total * 100 / size));
+                    outputStream.write(data, 0, count);
+                }
+
+                outputStream.flush();
+                outputStream.close();
+                inputStream.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+        //---
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressDialog.setProgress(values[0]);
+            Helper.d(values[0]);
+        }
+        //---
+    }
+     */
