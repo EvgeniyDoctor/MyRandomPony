@@ -15,9 +15,9 @@ abstract class Pref {
         REFRESH_FREQUENCY_CURR_MONTH    = "refresh_frequency_curr_month",
 
         SAVE_PATH           = "My_Random_Pony", // path to save images
-        FILE_NAME           = "bg.png",
-        FILE_NAME_EDITED    = "bg_edited.png",
-        DOWNLOAD_URL        = "downloadurl", // link to the site under the image
+        IMAGE_ORIGINAL      = "bg.png",
+        IMAGE_EDITED        = "bg_edited.png",
+        IMAGE_URL           = "downloadurl", // link to the site under the image
         IMAGE_TITLE         = "image_title",
 
         HINT_FIRST_NEXT     = "settings_hint1_flag", // hint after the click on the "Next" button

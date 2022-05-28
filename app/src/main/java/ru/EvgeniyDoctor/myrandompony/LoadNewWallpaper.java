@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import net.grandcentrix.tray.AppPreferences;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -117,7 +116,7 @@ public class LoadNewWallpaper {
                     settings.put(Pref.IMAGE_TITLE, current_result.getString("title")); // title of the image
 
                     // сохранение ссылки для загрузки (откроется страница с картинкой) // saving the download link (a page with an image opens)
-                    settings.put(Pref.DOWNLOAD_URL, current_result.getString("downloadurl"));
+                    settings.put(Pref.IMAGE_URL, current_result.getString("downloadurl"));
                 }
             }
             catch (Exception e) {
@@ -159,7 +158,7 @@ public class LoadNewWallpaper {
                     // удаление отредактированного изо, если оно было // deleting the edited image
                     File bg_edited = new File(
                         new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_PRIVATE),
-                        Pref.FILE_NAME_EDITED
+                        Pref.IMAGE_EDITED
                     );
                     if (bg_edited.exists()) {
                         Helper.d("IntentService delete_bg_edited OK");
@@ -170,7 +169,7 @@ public class LoadNewWallpaper {
                     FileOutputStream fos = new FileOutputStream(
                         new File(
                             new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_PRIVATE),
-                            Pref.FILE_NAME
+                            Pref.IMAGE_ORIGINAL
                         )
                     ); // bg.png
                     img.compress(Bitmap.CompressFormat.PNG, 100, fos);

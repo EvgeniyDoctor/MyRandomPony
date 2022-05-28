@@ -14,15 +14,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,17 +40,8 @@ import net.grandcentrix.tray.AppPreferences;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Calendar;
 
 
@@ -75,7 +61,7 @@ public class Main extends AppCompatActivity {
             btnEdit,
             btnNext;
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
-    private ChangeWallpaper changeWallpaper;
+    private Wallpaper wallpaper;
     private AlertDialog alertDialog = null;
     /*
         alertDialog - переменная для показа диалоговых окон.
@@ -128,7 +114,7 @@ public class Main extends AppCompatActivity {
         layout_set_screen.setOnClickListener(click);
         layout_set_frequency.setOnClickListener(click);
 
-        changeWallpaper = new ChangeWallpaper(settings, Image.Edited);
+        wallpaper = new Wallpaper(getApplicationContext(), settings, Image.Edited);
 
         // установка первоначальных данных. Если этого не сделать, то при смене пользователем стд настройки с "Раз в неделю" на любую другую произойдёт обновление обоев
         // setting the initial data. If this is not done, then when the user changes the std settings from "Once a week" to any other, the wallpaper will be updated
@@ -216,12 +202,9 @@ public class Main extends AppCompatActivity {
             alertDialog.show();
         }
 
-        // установка ссылки // set link
-        if (settings.contains(Pref.DOWNLOAD_URL)) { // todo: check image, not link
-            String link = settings.getString(Pref.DOWNLOAD_URL, "");
-            if (link != null && !link.isEmpty()) {
-                setWallpaperPreview();
-            }
+        // load wallpaper preview
+        if (wallpaper.isExist(Image.Original)) {
+            setWallpaperPreview();
         }
 
         setButtonsState();
@@ -332,7 +315,7 @@ public class Main extends AppCompatActivity {
 
     private void imageCopy(){
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("MRP_link", settings.getString(Pref.DOWNLOAD_URL, ""));
+        ClipData clip = ClipData.newPlainText("MRP_link", settings.getString(Pref.IMAGE_URL, ""));
         clipboard.setPrimaryClip(clip);
         Toast.makeText(this, "Copied!", Toast.LENGTH_LONG).show();
     }
@@ -343,7 +326,7 @@ public class Main extends AppCompatActivity {
     private void imageShare(){
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, settings.getString(Pref.DOWNLOAD_URL, ""));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, settings.getString(Pref.IMAGE_URL, ""));
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, null));
     }
@@ -352,7 +335,7 @@ public class Main extends AppCompatActivity {
 
 
     private void imageOpen(){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(settings.getString(Pref.DOWNLOAD_URL, "")));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(settings.getString(Pref.IMAGE_URL, "")));
         startActivity(browserIntent);
     }
     //----------------------------------------------------------------------------------------------
@@ -361,7 +344,7 @@ public class Main extends AppCompatActivity {
 
     private void imageSave(){
         String name = settings.getString(Pref.IMAGE_TITLE, "MRP_" + System.currentTimeMillis() + ".png");
-        Bitmap bitmap = new ChangeWallpaper(settings, Image.Original).loadWallpaper(getApplicationContext());
+        Bitmap bitmap = new Wallpaper(getApplicationContext(), settings, Image.Original).load();
         if (bitmap == null) {
             Toast.makeText(this, "Uh-oh…", Toast.LENGTH_LONG).show();
             return;
@@ -423,11 +406,11 @@ public class Main extends AppCompatActivity {
                 case R.id.btn_cancel: // Cancel button
                     File bg_edited = new File(
                         new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                        Pref.FILE_NAME_EDITED
+                        Pref.IMAGE_EDITED
                     );
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
-                            previewWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
+                            previewWallpaper.setImageBitmap(wallpaper.load());
                             Helper.toggleViewState(Main.this, btnCancel, false);
                         }
                         else {
@@ -442,7 +425,7 @@ public class Main extends AppCompatActivity {
                 case R.id.btn_edit: // Edit button
                     File input = new File(
                         new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                        Pref.FILE_NAME
+                        Pref.IMAGE_ORIGINAL
                     );
 
                     if (!input.exists()) {
@@ -452,7 +435,7 @@ public class Main extends AppCompatActivity {
 
                     File output = new File(
                         new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                        Pref.FILE_NAME_EDITED
+                        Pref.IMAGE_EDITED
                     );
 
                     // res - https://github.com/Yalantis/uCrop
@@ -566,7 +549,7 @@ public class Main extends AppCompatActivity {
                         public void run() {
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
 
-                            changeWallpaper.setWallpaper(getApplicationContext());
+                            wallpaper.set();
                             progressDialog.dismiss();
 
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
@@ -752,7 +735,7 @@ public class Main extends AppCompatActivity {
         }
 
         if (previewWallpaper != null) {
-            previewWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext())); // load wallpaper preview
+            previewWallpaper.setImageBitmap(wallpaper.load()); // load wallpaper preview
             previewWallpaper.setVisibility(View.VISIBLE);
         }
         else {
@@ -827,7 +810,7 @@ public class Main extends AppCompatActivity {
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            previewWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
+            previewWallpaper.setImageBitmap(wallpaper.load());
 
             Helper.toggleViewState(Main.this, btnCancel, true);
 
@@ -863,7 +846,7 @@ public class Main extends AppCompatActivity {
     public boolean originalImageExists(){
         File input = new File(
             new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-            Pref.FILE_NAME
+            Pref.IMAGE_ORIGINAL
         );
 
         return input.exists();
@@ -876,7 +859,7 @@ public class Main extends AppCompatActivity {
     public boolean editedImageExists(){
         File bg_edited = new File(
             new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-            Pref.FILE_NAME_EDITED
+            Pref.IMAGE_EDITED
         );
         return bg_edited.exists();
     }

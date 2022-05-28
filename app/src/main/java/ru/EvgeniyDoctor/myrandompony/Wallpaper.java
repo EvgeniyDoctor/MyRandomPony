@@ -27,21 +27,23 @@ enum Image {
 
 
 
-public class ChangeWallpaper {
+public class Wallpaper {
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private final Image image;
+    private final Context context;
 
 
 
-    public ChangeWallpaper(AppPreferences settings, Image image){
-        ChangeWallpaper.settings = settings;
+    public Wallpaper(Context context, AppPreferences settings, Image image){
+        Wallpaper.settings = settings;
         this.image = image;
+        this.context = context;
     }
     //----------------------------------------------------------------------------------------------
 
 
 
-    public void setWallpaper(Context context){
+    public void set(){
         WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
         int screen = 0; // both screens
 
@@ -52,7 +54,7 @@ public class ChangeWallpaper {
         switch (screen) {
             case 0: // both
                 try {
-                    myWallpaperManager.setBitmap(loadWallpaper(context));
+                    myWallpaperManager.setBitmap(load());
                 }
                 catch (IOException e) {
                     e.printStackTrace();
@@ -61,7 +63,7 @@ public class ChangeWallpaper {
             case 1: // homescreen
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
                     try {
-                        myWallpaperManager.setBitmap(loadWallpaper(context), null, true, WallpaperManager.FLAG_SYSTEM);
+                        myWallpaperManager.setBitmap(load(), null, true, WallpaperManager.FLAG_SYSTEM);
                     }
                     catch (IOException e) {
                         e.printStackTrace();
@@ -71,7 +73,7 @@ public class ChangeWallpaper {
             case 2: // lockscreen
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
                     try {
-                        myWallpaperManager.setBitmap(loadWallpaper(context), null, true, WallpaperManager.FLAG_LOCK);
+                        myWallpaperManager.setBitmap(load(), null, true, WallpaperManager.FLAG_LOCK);
                     }
                     catch (IOException e) {
                         e.printStackTrace();
@@ -85,7 +87,7 @@ public class ChangeWallpaper {
 
 
     // open background
-    public Bitmap loadWallpaper(Context context) {
+    public Bitmap load() {
         // res. - http://www.vogella.com/tutorials/AndroidApplicationOptimization/article.html#handling-bitmaps
         // https://habrahabr.ru/post/161027/
 
@@ -95,7 +97,7 @@ public class ChangeWallpaper {
         if (image == Image.Edited) { // called in Main
             background = new File(
                 new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                Pref.FILE_NAME_EDITED
+                Pref.IMAGE_EDITED
             );
 
             // если существует bg_edited.jpeg, то он и будет открыт, иначе - откроется исходное изо
@@ -103,14 +105,14 @@ public class ChangeWallpaper {
             if (!background.exists()) {
                 background = new File( // bg.jpeg
                     new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                    Pref.FILE_NAME
+                    Pref.IMAGE_ORIGINAL
                 );
             }
         }
         else { // Image.Original, called in ServiceRefresh only
             background = new File( // open bg.jpeg
                 new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                Pref.FILE_NAME
+                Pref.IMAGE_ORIGINAL
             );
         }
 
@@ -128,6 +130,28 @@ public class ChangeWallpaper {
         }
 
         return null;
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    public boolean isExist(Image image){
+        File file;
+
+        if (image == Image.Original) {
+            file = new File(
+                new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                Pref.IMAGE_ORIGINAL
+            );
+        }
+        else {
+            file = new File(
+                new ContextWrapper(context).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
+                Pref.IMAGE_EDITED
+            );
+        }
+
+        return file.exists();
     }
     //----------------------------------------------------------------------------------------------
 }
