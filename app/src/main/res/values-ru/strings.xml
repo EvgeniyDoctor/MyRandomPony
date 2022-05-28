@@ -117,4 +117,11 @@
     <string name="screen_change">Менять изобр. на экране</string>
     <string name="screen_alert_title">Выберите экран</string>
     <string name="frequency_changing">Частота изменения</string>
+    <string name="menu_item_copy_success">Скопировано</string>
+    <string name="menu_item_save_success">Сохранено в галерее</string>
+    <string name="menu_item_save_error">Нечего сохранять</string>
+    <string name="menu_item_copy">Копировать ссылку</string>
+    <string name="menu_item_save">Сохранить</string>
+    <string name="menu_item_share">Поделиться ссылкой</string>
+    <string name="menu_item_open">Открыть в браузере</string>
 </resources>

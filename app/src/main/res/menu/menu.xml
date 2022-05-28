@@ -22,22 +22,22 @@
         <item
             android:id="@+id/menu_item_image_copy"
             android:orderInCategory="100"
-            android:title="Copy link"
+            android:title="@string/menu_item_copy"
         />
         <item
             android:id="@+id/menu_item_image_open"
             android:orderInCategory="100"
-            android:title="Open in browser"
+            android:title="@string/menu_item_open"
         />
         <item
             android:id="@+id/menu_item_image_save"
             android:orderInCategory="100"
-            android:title="Save"
+            android:title="@string/menu_item_save"
         />
         <item
             android:id="@+id/menu_item_image_share"
             android:orderInCategory="100"
-            android:title="Share image"
+            android:title="@string/menu_item_share"
         />
     </group>
 </menu>

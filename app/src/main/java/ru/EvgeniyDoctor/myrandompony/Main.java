@@ -317,7 +317,7 @@ public class Main extends AppCompatActivity {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("MRP_link", settings.getString(Pref.IMAGE_URL, ""));
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(this, "Copied!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getResources().getString(R.string.menu_item_copy_success), Toast.LENGTH_LONG).show();
     }
     //----------------------------------------------------------------------------------------------
 
@@ -346,7 +346,7 @@ public class Main extends AppCompatActivity {
         String name = settings.getString(Pref.IMAGE_TITLE, "MRP_" + System.currentTimeMillis() + ".png");
         Bitmap bitmap = new Wallpaper(getApplicationContext(), settings, Image.Original).load();
         if (bitmap == null) {
-            Toast.makeText(this, "Uh-oh…", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -363,7 +363,7 @@ public class Main extends AppCompatActivity {
                 OutputStream fos = resolver.openOutputStream(imageUri);
                 boolean saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 if (saved) {
-                    Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getResources().getString(R.string.menu_item_save_success), Toast.LENGTH_LONG).show();
                 }
 
                 fos.flush();
@@ -376,7 +376,7 @@ public class Main extends AppCompatActivity {
         else { // normal Android version
             String res = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, name, null);
             if (!res.isEmpty()) {
-                Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.menu_item_save_success), Toast.LENGTH_LONG).show();
             }
         }
     }
