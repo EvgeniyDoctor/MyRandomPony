@@ -135,7 +135,7 @@ public class Wallpaper {
 
 
 
-    public boolean isExist(Image image){
+    public boolean exists(Image image){
         File file;
 
         if (image == Image.Original) {

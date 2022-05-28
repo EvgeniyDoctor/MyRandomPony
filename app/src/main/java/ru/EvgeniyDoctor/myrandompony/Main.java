@@ -12,9 +12,11 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,9 +31,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 
 import com.yalantis.ucrop.UCrop;
@@ -63,6 +67,7 @@ public class Main extends AppCompatActivity {
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private Wallpaper wallpaper;
     private AlertDialog alertDialog = null;
+    SaveToGallery saveToGallery;
     /*
         alertDialog - переменная для показа диалоговых окон.
     Нужна, так как если делать напрямую - builder.show(); то если, например, во время показа диалога вёрстка экрана изменится
@@ -203,17 +208,13 @@ public class Main extends AppCompatActivity {
         }
 
         // load wallpaper preview
-        if (wallpaper.isExist(Image.Original)) {
+        if (wallpaper.exists(Image.Original)) {
             setWallpaperPreview();
         }
 
         setButtonsState();
 
         progressDialog = new ProgressDialog(Main.this);
-
-        // for saving images to gallery
-        ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},  1);
     } // onCreate
     //----------------------------------------------------------------------------------------------
 
@@ -229,10 +230,10 @@ public class Main extends AppCompatActivity {
         // Checks the orientation of the screen
         /*
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) { // album
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Main.this, "landscape", Toast.LENGTH_SHORT).show();
         }
         else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) { // normal
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Main.this, "portrait", Toast.LENGTH_SHORT).show();
         }
          */
     }
@@ -270,6 +271,32 @@ public class Main extends AppCompatActivity {
 
 
 
+    void askPermission(){
+        // for saving images to gallery
+        ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        //ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},  1);
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveToGallery = new SaveToGallery();
+                saveToGallery.execute();
+            }
+            else {
+                Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_perm_error), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
     // 3-dot menu items
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -298,7 +325,18 @@ public class Main extends AppCompatActivity {
                 return true;
 
             case R.id.menu_item_image_save: // save
-                imageSave();
+                if (!wallpaper.exists(Image.Original)) {
+                    Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+                    return true;
+                }
+
+                if (ContextCompat.checkSelfPermission(Main.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    saveToGallery = new SaveToGallery();
+                    saveToGallery.execute();
+                }
+                else {
+                    askPermission();
+                }
                 return true;
 
             case R.id.menu_item_image_share: // share
@@ -314,16 +352,26 @@ public class Main extends AppCompatActivity {
 
 
     private void imageCopy(){
+        if (!settings.contains(Pref.IMAGE_URL)) {
+            Toast.makeText(Main.this, getResources().getString(R.string.menu_item_link_error), Toast.LENGTH_LONG).show();
+            return;
+        }
+
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("MRP_link", settings.getString(Pref.IMAGE_URL, ""));
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(this, getResources().getString(R.string.menu_item_copy_success), Toast.LENGTH_LONG).show();
+        Toast.makeText(Main.this, getResources().getString(R.string.menu_item_copy_success), Toast.LENGTH_LONG).show();
     }
     //----------------------------------------------------------------------------------------------
 
 
 
     private void imageShare(){
+        if (!wallpaper.exists(Image.Original)) {
+            Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, settings.getString(Pref.IMAGE_URL, ""));
@@ -335,6 +383,11 @@ public class Main extends AppCompatActivity {
 
 
     private void imageOpen(){
+        if (!wallpaper.exists(Image.Original)) {
+            Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(settings.getString(Pref.IMAGE_URL, "")));
         startActivity(browserIntent);
     }
@@ -342,43 +395,74 @@ public class Main extends AppCompatActivity {
 
 
 
-    private void imageSave(){
+    private class SaveToGallery extends AsyncTask<Void, Void, Void> {
         String name = settings.getString(Pref.IMAGE_TITLE, "MRP_" + System.currentTimeMillis() + ".png");
-        Bitmap bitmap = new Wallpaper(getApplicationContext(), settings, Image.Original).load();
-        if (bitmap == null) {
-            Toast.makeText(this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
-            return;
+        boolean saved = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(Main.this);
+            progressDialog.setTitle(getResources().getString(R.string.settings_progress_title_saving));
+            progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
         }
+        //---
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // >= 10
-            final String IMAGES_FOLDER_NAME = "MRP";
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Bitmap bitmap = new Wallpaper(getApplicationContext(), settings, Image.Original).load();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // >= 10
+                final String IMAGES_FOLDER_NAME = getResources().getString(R.string.app_name);
 
-            ContentResolver resolver = getApplicationContext().getContentResolver();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + IMAGES_FOLDER_NAME);
-            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            try {
-                OutputStream fos = resolver.openOutputStream(imageUri);
-                boolean saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                if (saved) {
-                    Toast.makeText(this, getResources().getString(R.string.menu_item_save_success), Toast.LENGTH_LONG).show();
+                ContentResolver resolver = getApplicationContext().getContentResolver();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+                contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+                contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + IMAGES_FOLDER_NAME);
+                Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                try {
+                    OutputStream fos = resolver.openOutputStream(imageUri);
+                    saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.flush();
+                    fos.close();
                 }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else { // normal Android version
+                String res = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, name, null);
+                if (!res.isEmpty()) {
+                    saved = true;
+                }
+            }
+            return null;
+        }
+        //---
 
-                fos.flush();
-                fos.close();
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            progressDialog.dismiss();
+            if (saved) {
+                Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_success), Toast.LENGTH_LONG).show();
             }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else { // normal Android version
-            String res = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, name, null);
-            if (!res.isEmpty()) {
-                Toast.makeText(this, getResources().getString(R.string.menu_item_save_success), Toast.LENGTH_LONG).show();
+            else {
+                Toast.makeText(Main.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         }
+        //---
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            progressDialog.dismiss();
+        }
+        //---
     }
     //----------------------------------------------------------------------------------------------
 
@@ -457,7 +541,7 @@ public class Main extends AppCompatActivity {
 
                     if (Helper.checkInternetConnection(Main.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
                         progressDialog = new ProgressDialog(Main.this);
-                        progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
+                        progressDialog.setTitle(getResources().getString(R.string.settings_progress_title_downloading));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
                         progressDialog.setCanceledOnTouchOutside(false);
                         progressDialog.setCancelable(false);

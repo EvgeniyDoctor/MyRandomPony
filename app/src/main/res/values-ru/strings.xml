@@ -16,6 +16,8 @@
     <string name="settings_next_image">Дальше</string>
     <string name="settings_preview">Предпросмотр</string>
     <string name="settings_image_edit">Редактирование</string>
+    <string name="settings_progress_title_saving">Сохранение</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
 
 
     <!--menu-->
@@ -73,7 +75,7 @@
 
     <!--> Main java <-->
     <string name="settings_internet_warn">Запущено, но сеть недоступна</string>
-    <string name="settings_progress_title">Загрузка</string>
+    <string name="settings_progress_title_downloading">Загрузка</string>
     <string name="settings_progress_msg">Подождите…</string>
     <string name="settings_load_error">Сеть недоступна или требуется только WiFi</string>
     <string name="settings_preview_setbackground">Фоновое изображение изменено</string>
@@ -124,4 +126,6 @@
     <string name="menu_item_save">Сохранить</string>
     <string name="menu_item_share">Поделиться ссылкой</string>
     <string name="menu_item_open">Открыть в браузере</string>
+    <string name="menu_item_link_error">Пустая ссылка</string>
+    <string name="menu_item_save_perm_error">Предоставьте разрешение для сохранения в галерею</string>
 </resources>

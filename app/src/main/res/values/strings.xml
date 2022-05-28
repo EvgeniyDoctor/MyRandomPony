@@ -3,10 +3,12 @@
     <string name="settings_internet_warn">Enabled, but your network connection is unavailable</string>
     <string name="settings_load_error">Your network connection is unavailable or \"WiFi only\" mode is enabled</string>
     <string name="settings_progress_msg">Wait…</string>
-    <string name="settings_progress_title">Downloading</string>
+    <string name="settings_progress_title_downloading">Downloading</string>
+    <string name="settings_progress_title_saving">Saving</string>
     <string name="settings_enable">Enabled</string>
     <string name="settings_next_image">Next</string>
     <string name="settings_only_mobile">Mobile screen resolution only</string>
+    <string name="something_went_wrong">Something went wrong</string>
 
     <string name="frequency_changing">Frequency of changing</string>
     <string name="frequency_once_a_day">once a day</string>
@@ -97,12 +99,14 @@
         - by money transfer: https://paypal.me/evgeniydoctor
     </string>
     <string name="menu_item_copy">Copy link</string>
-    <string name="menu_item_save">Save</string>
+    <string name="menu_item_save">Save image</string>
+    <string name="menu_item_link_error">Empty link</string>
     <string name="menu_item_share">Share image</string>
     <string name="menu_item_open">Open in browser</string>
     <string name="menu_item_copy_success">Copied</string>
     <string name="menu_item_save_success">Saved in gallery</string>
-    <string name="menu_item_save_error">Nothing to save</string>
+    <string name="menu_item_save_error">No image</string>
+    <string name="menu_item_save_perm_error">Provide the permission to save the image in gallery</string>
 
     <string name="changing_wallpaper_progress_title">Changing</string>
     <string name="open_image_on_site">Open this image on the site</string>
