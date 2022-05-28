@@ -114,6 +114,8 @@ public class LoadNewWallpaper {
                     JSONArray jsonArray = dataJsonObj.getJSONArray("result");
                     current_result = jsonArray.getJSONObject(0);
 
+                    settings.put(Pref.IMAGE_TITLE, current_result.getString("title")); // title of the image
+
                     // сохранение ссылки для загрузки (откроется страница с картинкой) // saving the download link (a page with an image opens)
                     settings.put(Pref.DOWNLOAD_URL, current_result.getString("downloadurl"));
                 }
@@ -133,7 +135,9 @@ public class LoadNewWallpaper {
             try {
                 Helper.d("IntentService_LoadNewWallpaper execute");
 
-                URL url = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid")));
+                URL url = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid"))); // todo
+                //URL url = new URL("https://www.mylittlewallpaper.com/images/o_501fb9f9f196a3.82550842.png");
+                //URL url = new URL("https://www.mylittlewallpaper.com/images/o_5bbb8e74e84398.86540959.png");
 
                 // загрузка новой обоины // load new wallpaper --->
                 InputStream in = url.openStream();
@@ -182,7 +186,7 @@ public class LoadNewWallpaper {
                 }
                 // <--- загрузка новой обоины // load new wallpaper
             }
-            catch (IOException | JSONException e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }

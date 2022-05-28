@@ -1,16 +1,22 @@
 package ru.EvgeniyDoctor.myrandompony;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
@@ -26,6 +32,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.MenuCompat;
 
 import com.yalantis.ucrop.UCrop;
 
@@ -34,6 +42,10 @@ import net.grandcentrix.tray.AppPreferences;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 
@@ -43,7 +55,7 @@ public class Main extends AppCompatActivity {
             checkBoxEnabled,
             checkBoxMobileOnly,
             checkBoxWifiOnly;
-    private ImageView currentWallpaper = null;
+    private ImageView previewWallpaper = null;
     private TextView
             textviewDownloadUrl,
             textScreenImage,
@@ -52,7 +64,8 @@ public class Main extends AppCompatActivity {
     private Button
             btnCancel,
             btnEdit,
-            btnNext;
+            btnNext
+                    ;
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private ChangeWallpaper changeWallpaper;
     private AlertDialog alertDialog = null;
@@ -68,6 +81,7 @@ public class Main extends AppCompatActivity {
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
     // todo 07.04.2022: add derpibooru?
+    // todo 27.05.2022: change max from 1000 to 1500
 
 
 
@@ -89,7 +103,7 @@ public class Main extends AppCompatActivity {
         checkBoxEnabled                 = findViewById(R.id.enable_checkbox);
         checkBoxMobileOnly              = findViewById(R.id.only_mobile);
         checkBoxWifiOnly                = findViewById(R.id.only_wifi);
-        currentWallpaper                = findViewById(R.id.preview_wallpaper);
+        previewWallpaper                = findViewById(R.id.preview_wallpaper);
         textviewDownloadUrl             = findViewById(R.id.download_url);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
         FrameLayout layout_set_screen   = findViewById(R.id.layout_set_screen);
@@ -103,7 +117,7 @@ public class Main extends AppCompatActivity {
         layout_enable.setOnClickListener(click);
         layout_mobile_only.setOnClickListener(click);
         layout_wifi_only.setOnClickListener(click);
-        currentWallpaper.setOnClickListener(click);
+        previewWallpaper.setOnClickListener(click);
         layout_set_screen.setOnClickListener(click);
         layout_set_frequency.setOnClickListener(click);
 
@@ -200,13 +214,17 @@ public class Main extends AppCompatActivity {
             String link = settings.getString(Pref.DOWNLOAD_URL, "");
             if (link != null && !link.isEmpty()) {
                 setLink(link);
-                setWallpaperPreview();
+                setWallpaperPreview(); // todo
             }
         }
 
         setButtonsState();
 
         progressDialog = new ProgressDialog(Main.this);
+
+        // for saving images to gallery
+        ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},  1);
     } // onCreate
     //----------------------------------------------------------------------------------------------
 
@@ -256,6 +274,7 @@ public class Main extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true); // for dividers
         return true;
     }
     //----------------------------------------------------------------------------------------------
@@ -265,8 +284,10 @@ public class Main extends AppCompatActivity {
     // 3-dot menu items
     @SuppressLint("NonConstantResourceId")
     @Override
+    // todo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            // actions
             case R.id.menu_item_action_themes: // themes
                 menuShowActivity(Themes.class);
                 return true;
@@ -279,8 +300,83 @@ public class Main extends AppCompatActivity {
                 menuShowActivity(About.class);
                 return true;
 
+            // image
+            case R.id.menu_item_image_share: // share
+                imageShare();
+                return true;
+
+            case R.id.menu_item_image_save: // save
+                imageSave();
+                return true;
+
+            case R.id.menu_item_image_open: // open
+                imageOpen();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private void imageShare(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        Helper.d(settings.getString(Pref.DOWNLOAD_URL, ""));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, settings.getString(Pref.DOWNLOAD_URL, ""));
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, null));
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private void imageOpen(){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(settings.getString(Pref.DOWNLOAD_URL, "")));
+        startActivity(browserIntent);
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private void imageSave(){
+        String name = settings.getString(Pref.IMAGE_TITLE, "MRP_" + System.currentTimeMillis() + ".png");
+        Bitmap bitmap = new ChangeWallpaper(settings, Image.Original).loadWallpaper(getApplicationContext());
+        if (bitmap == null) {
+            Toast.makeText(this, "Uh-oh…", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // >= 10
+            final String IMAGES_FOLDER_NAME = "MRP";
+
+            ContentResolver resolver = getApplicationContext().getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + IMAGES_FOLDER_NAME);
+            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            try {
+                OutputStream fos = resolver.openOutputStream(imageUri);
+                boolean saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                if (saved) {
+                    Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show();
+                }
+
+                fos.flush();
+                fos.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else { // normal Android version
+            String res = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, name, null);
+            if (!res.isEmpty()) {
+                Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show();
+            }
         }
     }
     //----------------------------------------------------------------------------------------------
@@ -292,26 +388,6 @@ public class Main extends AppCompatActivity {
         startActivity(intent);
     }
     //----------------------------------------------------------------------------------------------
-
-
-
-    /*
-    // вызов диалогового окна
-    protected void callDialog(int title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setCancelable(true);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog = builder.create();
-        alertDialog.show();
-    }
-     */
 
 
 
@@ -333,7 +409,7 @@ public class Main extends AppCompatActivity {
                     );
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
-                            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
+                            previewWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
                             Helper.toggleViewState(Main.this, btnCancel, false);
                         }
                         else {
@@ -652,13 +728,13 @@ public class Main extends AppCompatActivity {
 
     // set wallpaper preview
     private void setWallpaperPreview () {
-        if (currentWallpaper == null) {
-            currentWallpaper = findViewById(R.id.preview_wallpaper);
+        if (previewWallpaper == null) {
+            previewWallpaper = findViewById(R.id.preview_wallpaper);
         }
 
-        if (currentWallpaper != null) {
-            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext())); // load wallpaper preview
-            currentWallpaper.setVisibility(View.VISIBLE);
+        if (previewWallpaper != null) {
+            previewWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext())); // load wallpaper preview
+            previewWallpaper.setVisibility(View.VISIBLE);
             textviewDownloadUrl.setVisibility(View.VISIBLE);
         }
         else {
@@ -754,7 +830,7 @@ public class Main extends AppCompatActivity {
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
+            previewWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
 
             Helper.toggleViewState(Main.this, btnCancel, true);
 
@@ -818,7 +894,7 @@ public class Main extends AppCompatActivity {
         checkBoxEnabled = null;
         checkBoxMobileOnly = null;
         checkBoxWifiOnly = null;
-        currentWallpaper = null;
+        previewWallpaper = null;
         textviewDownloadUrl = null;
         settings = null;
 

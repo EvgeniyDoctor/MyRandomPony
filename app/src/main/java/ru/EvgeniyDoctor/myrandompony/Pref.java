@@ -18,6 +18,7 @@ abstract class Pref {
         FILE_NAME           = "bg.png",
         FILE_NAME_EDITED    = "bg_edited.png",
         DOWNLOAD_URL        = "downloadurl", // link to the site under the image
+        IMAGE_TITLE         = "image_title",
 
         HINT_FIRST_NEXT     = "settings_hint1_flag", // hint after the click on the "Next" button
         HINT_FIRST_LAUNCH   = "settings_hint2_flag", // hint at the first launch
