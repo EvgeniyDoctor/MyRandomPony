@@ -77,7 +77,6 @@ public class Main extends AppCompatActivity {
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
     // todo 07.04.2022: add derpibooru?
-    // todo 27.05.2022: change max from 1000 to 1500
 
 
 
@@ -224,7 +223,6 @@ public class Main extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuCompat.setGroupDividerEnabled(menu, true); // for dividers
-
         return true;
     }
     //----------------------------------------------------------------------------------------------
@@ -234,7 +232,6 @@ public class Main extends AppCompatActivity {
     void askPermission(){
         // for saving images to gallery
         ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        //ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},  1);
     }
     //----------------------------------------------------------------------------------------------
 
@@ -258,54 +255,47 @@ public class Main extends AppCompatActivity {
 
 
     // 3-dot menu items
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // actions
-            case R.id.menu_item_action_themes: // themes
-                menuShowActivity(Themes.class);
-                return true;
+        int id = item.getItemId();
 
-            case R.id.menu_item_action_help: // help
-                menuShowActivity(Help.class);
-                return true;
-
-            case R.id.menu_item_action_about: // about
-                menuShowActivity(About.class);
-                return true;
-
-            // image
-            case R.id.menu_item_image_copy: // copy
-                imageCopy();
-                return true;
-
-            case R.id.menu_item_image_open: // open
-                imageOpen();
-                return true;
-
-            case R.id.menu_item_image_save: // save
-                if (!wallpaper.exists(Image.Original)) {
-                    Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
-                    return true;
-                }
-
-                if (ContextCompat.checkSelfPermission(Main.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    saveToGallery = new SaveToGallery();
-                    saveToGallery.execute();
-                }
-                else {
-                    askPermission();
-                }
-                return true;
-
-            case R.id.menu_item_image_share: // share
-                imageShare();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        // actions
+        if (id == R.id.menu_item_action_help) { // help
+            menuShowActivity(Help.class);
+            return true;
         }
+        else if (id == R.id.menu_item_action_about) { // about
+            menuShowActivity(About.class);
+            return true;
+        }
+        // image
+        else if (id == R.id.menu_item_image_copy) { // copy
+            imageCopy();
+            return true;
+        }
+        else if (id == R.id.menu_item_image_open) { // open
+            imageOpen();
+            return true;
+        }
+        else if (id == R.id.menu_item_image_save) { // save
+            if (!wallpaper.exists(Image.Original)) {
+                Toast.makeText(this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                new Main.SaveToGallery().execute();
+            }
+            else {
+                askPermission();
+            }
+            return true;
+        }
+        else if (id == R.id.menu_item_image_share) { // share
+            imageShare();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     //----------------------------------------------------------------------------------------------
 

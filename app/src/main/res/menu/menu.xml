@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/menu_group_actions">
         <item
-            android:id="@+id/menu_item_action_themes"
-            android:orderInCategory="100"
-            android:title="@string/activity_themes_title"
-        />
-        <item
             android:id="@+id/menu_item_action_help"
             android:orderInCategory="100"
             android:title="@string/activity_help_title"

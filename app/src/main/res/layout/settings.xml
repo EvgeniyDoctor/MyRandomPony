@@ -1,158 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:background="?attr/commonBackground"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:orientation="vertical"
-        android:divider="@drawable/separator"
-        android:showDividers="end"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+    >
 
-        <FrameLayout
+        <LinearLayout
+            android:orientation="vertical"
+            android:divider="@drawable/separator"
+            android:showDividers="end"
             android:layout_width="match_parent"
-            android:layout_height="75dp">
-
-            <CheckBox
-                android:layout_gravity="end"
-                android:id="@+id/only_mobile"
-                android:buttonTint="?attr/colorRadioCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:checked="true"/>
+            android:layout_height="wrap_content">
 
             <FrameLayout
-                android:id="@+id/layout_mobile_only"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="75dp">
 
-                <TextView
-                    android:layout_width="match_parent"
+                <CheckBox
+                    android:layout_gravity="end"
+                    android:id="@+id/only_mobile"
+                    android:buttonTint="?attr/colorRadioCheckbox"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/settings_only_mobile"/>
+                    android:checked="true"/>
+
+                <FrameLayout
+                    android:id="@+id/layout_mobile_only"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="?attr/colorText"
+                        android:text="@string/settings_only_mobile"/>
+                </FrameLayout>
             </FrameLayout>
-        </FrameLayout>
-    </LinearLayout>
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:divider="@drawable/separator"
-        android:showDividers="end"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
+        <LinearLayout
+            android:orientation="vertical"
+            android:divider="@drawable/separator"
+            android:showDividers="end"
             android:layout_width="match_parent"
-            android:layout_height="75dp">
-
-            <CheckBox
-                android:layout_gravity="end"
-                android:id="@+id/only_wifi"
-                android:buttonTint="?attr/colorRadioCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:checked="true"/>
+            android:layout_height="wrap_content">
 
             <FrameLayout
-                android:id="@+id/layout_wifi_only"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="75dp">
+
+                <CheckBox
+                    android:layout_gravity="end"
+                    android:id="@+id/only_wifi"
+                    android:buttonTint="?attr/colorRadioCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="true"/>
+
+                <FrameLayout
+                    android:id="@+id/layout_wifi_only"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="?attr/colorText"
+                        android:text="@string/settings_wifi_only"
+                        />
+                </FrameLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_root_set_screen"
+            android:orientation="vertical"
+            android:showDividers="end"
+            android:divider="@drawable/separator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="75dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/screen_image"
+                    android:layout_gravity="end"
+                    android:paddingEnd="@dimen/root_padding_8"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/settings_wifi_only"
+                    android:textSize="@dimen/text_value"
+                    android:textColor="?attr/colorTextValue"
                     />
+
+                <FrameLayout
+                    android:id="@+id/layout_set_screen"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="?attr/colorText"
+                        android:text="@string/screen_change"/>
+                </FrameLayout>
             </FrameLayout>
-        </FrameLayout>
-    </LinearLayout>
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/layout_root_set_screen"
-        android:orientation="vertical"
-        android:showDividers="end"
-        android:divider="@drawable/separator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/layout_root_screen_size"
+            android:orientation="vertical"
+            android:showDividers="end"
+            android:divider="@drawable/separator"
             android:layout_width="match_parent"
-            android:layout_height="75dp">
-
-            <TextView
-                android:id="@+id/screen_image"
-                android:layout_gravity="end"
-                android:paddingEnd="@dimen/root_padding_8"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/text_value"
-                android:textColor="?attr/colorTextValue"
-                />
+            android:layout_height="wrap_content">
 
             <FrameLayout
-                android:id="@+id/layout_set_screen"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="75dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/screen_size"
+                    android:layout_gravity="end"
+                    android:paddingEnd="@dimen/root_padding_8"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/screen_change"/>
+                    android:textSize="@dimen/text_value"
+                    android:textColor="?attr/colorTextValue"
+                    />
+
+                <FrameLayout
+                    android:id="@+id/layout_screen_size"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="?attr/colorText"
+                        android:text="@string/screen_size"/>
+                </FrameLayout>
             </FrameLayout>
-        </FrameLayout>
-    </LinearLayout>
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/layout_root_screen_size"
-        android:orientation="vertical"
-        android:showDividers="end"
-        android:divider="@drawable/separator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
+        <LinearLayout
+            android:orientation="vertical"
+            android:showDividers="end"
             android:layout_width="match_parent"
-            android:layout_height="75dp">
-
-            <TextView
-                android:id="@+id/screen_size"
-                android:layout_gravity="end"
-                android:paddingEnd="@dimen/root_padding_8"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/text_value"
-                android:textColor="?attr/colorTextValue"
-                />
+            android:layout_height="wrap_content">
 
             <FrameLayout
-                android:id="@+id/layout_screen_size"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="75dp">
 
-                <TextView
+                <FrameLayout
+                    android:id="@+id/layout_themes"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/screen_size"/>
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="?attr/colorText"
+                        android:text="@string/activity_themes_title"/>
+                </FrameLayout>
             </FrameLayout>
-        </FrameLayout>
+        </LinearLayout>
+
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

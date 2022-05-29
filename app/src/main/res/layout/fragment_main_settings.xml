@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
@@ -89,17 +91,6 @@
             android:layout_width="match_parent"
             android:layout_height="75dp">
 
-            <TextView
-                android:id="@+id/settings"
-                android:layout_gravity="end"
-                android:paddingEnd="@dimen/root_padding_8"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textColor="?attr/colorTextValue"
-                android:textSize="@dimen/text_value"
-                />
-
             <FrameLayout
                 android:id="@+id/layout_settings"
                 style="?android:attr/buttonBarButtonStyle"
@@ -111,7 +102,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorText"
-                    android:text="Settings"
+                    android:text="@string/settings"
                     />
             </FrameLayout>
         </FrameLayout>

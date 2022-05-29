@@ -2,11 +2,14 @@ package ru.EvgeniyDoctor.myrandompony;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.grandcentrix.tray.AppPreferences;
 
@@ -33,9 +37,12 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings);
 
         settings = new AppPreferences(getApplicationContext());
+        setTheme(Themes.loadTheme(settings));
+
+        setContentView(R.layout.settings);
+
 
         FrameLayout layout_mobile_only  = findViewById(R.id.layout_mobile_only);
         FrameLayout layout_wifi_only    = findViewById(R.id.layout_wifi_only);
@@ -43,6 +50,7 @@ public class Settings extends AppCompatActivity {
         checkBoxWifiOnly                = findViewById(R.id.only_wifi);
         FrameLayout layout_set_screen   = findViewById(R.id.layout_set_screen);
         FrameLayout layout_screen_size  = findViewById(R.id.layout_screen_size);
+        FrameLayout layout_themes       = findViewById(R.id.layout_themes);
         textScreenImage                 = findViewById(R.id.screen_image);
         textScreenSize                  = findViewById(R.id.screen_size);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
@@ -51,6 +59,7 @@ public class Settings extends AppCompatActivity {
         layout_wifi_only.setOnClickListener(click);
         layout_set_screen.setOnClickListener(click);
         layout_screen_size.setOnClickListener(click);
+        layout_themes.setOnClickListener(click);
 
         // разрешение обоев // wallpaper resolution
         if (settings.contains(Pref.MOBILE_ONLY)) {
@@ -99,11 +108,8 @@ public class Settings extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-
-        menu.setGroupVisible(R.id.menu_group_image, false);
-
+        menu.setGroupVisible(R.id.menu_group_image, false); // hide Image group
         MenuCompat.setGroupDividerEnabled(menu, true); // for dividers
-
         return true;
     }
     //----------------------------------------------------------------------------------------------
@@ -114,21 +120,18 @@ public class Settings extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // actions
-            case R.id.menu_item_action_themes: // themes
-                menuShowActivity(Themes.class);
-                return true;
+        int id = item.getItemId();
 
-            case R.id.menu_item_action_help: // help
-                menuShowActivity(Help.class);
-                return true;
-
-            case R.id.menu_item_action_about: // about
-                menuShowActivity(About.class);
-                return true;
+        // actions
+        if (id == R.id.menu_item_action_help) { // help
+            menuShowActivity(Help.class);
+            return true;
         }
-        return true;
+        else if (id == R.id.menu_item_action_about) { // about
+            menuShowActivity(About.class);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     //----------------------------------------------------------------------------------------------
 
@@ -164,7 +167,6 @@ public class Settings extends AppCompatActivity {
                     if (settings.contains(Pref.ENABLED) && settings.getBoolean(Pref.ENABLED, false)) {
                         restartService();
                     }
-
                     break;
 
                 case R.id.layout_wifi_only:
@@ -175,7 +177,12 @@ public class Settings extends AppCompatActivity {
                         checkBoxWifiOnly.setChecked(true);
                     }
                     settings.put(Pref.WIFI_ONLY, checkBoxWifiOnly.isChecked());
+                    break;
 
+                // themes
+                case R.id.layout_themes:
+                    Intent intent = new Intent(Settings.this, Themes.class);
+                    startActivity(intent);
                     break;
 
                 // change screen
