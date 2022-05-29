@@ -8,9 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
 
     <application
         android:allowBackup="true"
@@ -20,15 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/Spike"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity
+            android:name=".Settings"
+            android:exported="false" />
 
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.1" />
-
-        <!-- android:screenOrientation="portrait" -->
-        <activity
-            android:name=".Main"
-        >
+            android:value="2.1" /> <!-- android:screenOrientation="portrait" -->
+        <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,20 +34,16 @@
         </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:label="@string/activity_about_title"
             android:name=".About"
-        />
+            android:label="@string/activity_about_title" />
         <activity
-            android:label="@string/activity_themes_title"
             android:name=".Themes"
-        />
+            android:label="@string/activity_themes_title" />
         <activity
-            android:label="@string/activity_help_title"
             android:name=".Help"
-        />
+            android:label="@string/activity_help_title" />
 
         <service
             android:name=".ServiceRefresh"
@@ -75,4 +68,5 @@
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

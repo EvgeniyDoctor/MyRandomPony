@@ -86,7 +86,7 @@ public class LoadNewWallpaper {
             }
             catch (IOException e) {
                 Helper.d("HTTP answer != OK");
-                //e.printStackTrace();
+                e.printStackTrace();
                 return Codes.NOT_CONNECTED;
             }
 
@@ -134,7 +134,7 @@ public class LoadNewWallpaper {
             try {
                 Helper.d("IntentService_LoadNewWallpaper execute");
 
-                URL url = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid"))); // todo
+                URL url = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid")));
                 //URL url = new URL("https://www.mylittlewallpaper.com/images/o_501fb9f9f196a3.82550842.png");
                 //URL url = new URL("https://www.mylittlewallpaper.com/images/o_5bbb8e74e84398.86540959.png");
 
@@ -146,7 +146,8 @@ public class LoadNewWallpaper {
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeStream(in, null, options);
 
-                options.inSampleSize = calculateSize(options, 1000, 1000);
+                int maxSize = getMaxSize(); // 1000 by default
+                options.inSampleSize = calculateSize(options, maxSize, maxSize);
                 options.inJustDecodeBounds = false;
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
 
@@ -191,6 +192,29 @@ public class LoadNewWallpaper {
         }
 
         return Codes.NOT_CONNECTED;
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private int getMaxSize(){
+        int resolution = 0;
+        int max = 1000;
+
+        if (settings.contains(Pref.SCREEN_SIZE)) {
+            resolution = settings.getInt(Pref.SCREEN_SIZE, 0);
+        }
+
+        switch (resolution) {
+            case 0: // normal
+                max = 1000;
+                break;
+            case 1: // large
+                max = 1500;
+                break;
+        }
+
+        return max;
     }
     //----------------------------------------------------------------------------------------------
 

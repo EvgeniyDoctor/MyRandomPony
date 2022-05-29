@@ -52,12 +52,9 @@ import java.util.Calendar;
 
 public class Main extends AppCompatActivity {
     private CheckBox
-            checkBoxEnabled,
-            checkBoxMobileOnly,
-            checkBoxWifiOnly;
+            checkBoxEnabled;
     private ImageView previewWallpaper = null;
     private TextView
-            textScreenImage,
             textFrequency;
     private ProgressDialog progressDialog = null;
     private Button
@@ -97,27 +94,19 @@ public class Main extends AppCompatActivity {
         btnEdit                         = findViewById(R.id.btn_edit);
         btnNext                         = findViewById(R.id.btn_next);
         FrameLayout layout_enable       = findViewById(R.id.layout_enable);
-        FrameLayout layout_mobile_only  = findViewById(R.id.layout_mobile_only);
-        FrameLayout layout_wifi_only    = findViewById(R.id.layout_wifi_only);
         checkBoxEnabled                 = findViewById(R.id.enable_checkbox);
-        checkBoxMobileOnly              = findViewById(R.id.only_mobile);
-        checkBoxWifiOnly                = findViewById(R.id.only_wifi);
         previewWallpaper                = findViewById(R.id.preview_wallpaper);
-        LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
-        FrameLayout layout_set_screen   = findViewById(R.id.layout_set_screen);
+        FrameLayout layout_settings     = findViewById(R.id.layout_settings);
         FrameLayout layout_set_frequency   = findViewById(R.id.layout_set_frequency);
-        textScreenImage = findViewById(R.id.screen_image);
         textFrequency = findViewById(R.id.text_frequency);
 
         btnCancel.setOnClickListener(click);
         btnEdit.setOnClickListener(click);
         btnNext.setOnClickListener(click);
         layout_enable.setOnClickListener(click);
-        layout_mobile_only.setOnClickListener(click);
-        layout_wifi_only.setOnClickListener(click);
         previewWallpaper.setOnClickListener(click);
-        layout_set_screen.setOnClickListener(click);
         layout_set_frequency.setOnClickListener(click);
+        layout_settings.setOnClickListener(click);
 
         wallpaper = new Wallpaper(getApplicationContext(), settings, Image.Edited);
 
@@ -137,36 +126,6 @@ public class Main extends AppCompatActivity {
         // включено ли // is enabled
         if (settings.contains(Pref.ENABLED)) {
             checkBoxEnabled.setChecked(settings.getBoolean(Pref.ENABLED, false));
-        }
-
-        // разрешение обоев // wallpaper resolution
-        if (settings.contains(Pref.MOBILE_ONLY)) {
-            checkBoxMobileOnly.setChecked(settings.getBoolean(Pref.MOBILE_ONLY, true));
-        }
-        else {
-            settings.put(Pref.MOBILE_ONLY, true);
-        }
-
-        // WiFi only
-        if (settings.contains(Pref.WIFI_ONLY)) {
-            checkBoxWifiOnly.setChecked(settings.getBoolean(Pref.WIFI_ONLY, true));
-        }
-        else {
-            settings.put(Pref.WIFI_ONLY, true);
-        }
-
-        // change image on screen
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
-            if (settings.contains(Pref.SCREEN_IMAGE)) {
-                setScreenImageText(settings.getInt(Pref.SCREEN_IMAGE, 0));
-            }
-            else {
-                settings.put(Pref.SCREEN_IMAGE, 0);
-                textScreenImage.setText(getResources().getString(R.string.screen_both));
-            }
-        }
-        else {
-            layout_root_set_screen.setVisibility(View.GONE); // hide, if Android version < 7.0
         }
 
         // refresh frequency
@@ -265,6 +224,7 @@ public class Main extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuCompat.setGroupDividerEnabled(menu, true); // for dividers
+
         return true;
     }
     //----------------------------------------------------------------------------------------------
@@ -316,7 +276,7 @@ public class Main extends AppCompatActivity {
                 return true;
 
             // image
-            case R.id.menu_item_image_copy: // copy // todo check on real device
+            case R.id.menu_item_image_copy: // copy
                 imageCopy();
                 return true;
 
@@ -478,7 +438,6 @@ public class Main extends AppCompatActivity {
 
     View.OnClickListener click = new View.OnClickListener() {
         final Calendar calendar = Calendar.getInstance();
-        int dialogScreenImage; //
         int dialogFrequency;
         int dflt = 0; // default value for alert dialogs with radio buttons
 
@@ -593,30 +552,9 @@ public class Main extends AppCompatActivity {
                     settings.put(Pref.ENABLED, checkBoxEnabled.isChecked());
                     break;
 
-                case R.id.layout_mobile_only:
-                    if (checkBoxMobileOnly.isChecked()) {
-                        checkBoxMobileOnly.setChecked(false);
-                    }
-                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
-                        checkBoxMobileOnly.setChecked(true);
-                    }
-                    settings.put(Pref.MOBILE_ONLY, checkBoxMobileOnly.isChecked());
-
-                    if (checkBoxEnabled.isChecked()) {
-                        restartService();
-                    }
-
-                    break;
-
-                case R.id.layout_wifi_only:
-                    if (checkBoxWifiOnly.isChecked()) {
-                        checkBoxWifiOnly.setChecked(false);
-                    }
-                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
-                        checkBoxWifiOnly.setChecked(true);
-                    }
-                    settings.put(Pref.WIFI_ONLY, checkBoxWifiOnly.isChecked());
-
+                case R.id.layout_settings:
+                    Intent intent = new Intent(Main.this, Settings.class);
+                    startActivity(intent);
                     break;
                 // <--- layers
 
@@ -714,74 +652,9 @@ public class Main extends AppCompatActivity {
                     builder.create().show();
 
                     break;
-
-                // change screen
-                case R.id.layout_set_screen:
-                    String[] vars = {
-                        getResources().getString(R.string.screen_both),
-                        getResources().getString(R.string.screen_homescreen),
-                        getResources().getString(R.string.screen_lockscreen),
-                    };
-
-                    dflt = 0;
-                    if (settings.contains(Pref.SCREEN_IMAGE)) {
-                        dflt = settings.getInt(Pref.SCREEN_IMAGE, 0);
-                    }
-
-                    AlertDialog.Builder builder2 = new AlertDialog.Builder(Main.this);
-                    builder2.setTitle(getResources().getString(R.string.screen_alert_title));
-                    builder2.setSingleChoiceItems(vars, dflt, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            dialogScreenImage = which;
-                        }
-                    });
-                    builder2.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            settings.put(Pref.SCREEN_IMAGE, dialogScreenImage);
-
-                            // update ui
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setScreenImageText(dialogScreenImage);
-                                }
-                            });
-
-                            dialog.dismiss();
-                        }
-                    });
-                    builder2.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder2.create().show();
-
-                    break;
             }
         }
     };
-    //----------------------------------------------------------------------------------------------
-
-
-
-    // set text for screen
-    private void setScreenImageText(int screenImage){
-        switch (screenImage){
-            case 0: // both
-                textScreenImage.setText(getResources().getString(R.string.screen_both));
-                break;
-            case 1: // homescreen
-                textScreenImage.setText(getResources().getString(R.string.screen_homescreen));
-                break;
-            case 2: // lockscreen
-                textScreenImage.setText(getResources().getString(R.string.screen_lockscreen));
-                break;
-        }
-    }
     //----------------------------------------------------------------------------------------------
 
 
@@ -956,8 +829,6 @@ public class Main extends AppCompatActivity {
         super.onDestroy();
 
         checkBoxEnabled = null;
-        checkBoxMobileOnly = null;
-        checkBoxWifiOnly = null;
         previewWallpaper = null;
         settings = null;
 

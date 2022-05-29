@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="60dp"
         android:gravity="center_vertical">
 
         <Button
@@ -42,7 +41,6 @@
             android:textColor="?attr/colorTextElement"
             android:text="@string/settings_next_image" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_gravity="center"

@@ -121,4 +121,12 @@
     <string name="screen_both">both screens</string>
     <string name="screen_homescreen">homescreen</string>
     <string name="screen_lockscreen">lockscreen</string>
+
+    <string name="settings">Settings</string>
+    <string name="screen_size">Screen resolution</string>
+    <string name="screen_size_alert_title">Pick a resolution</string>
+    <string name="screen_size_normal">normal</string>
+    <string name="screen_size_large">large</string>
+
+
 </resources>

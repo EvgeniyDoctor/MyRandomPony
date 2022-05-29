@@ -6,7 +6,7 @@
 
     <!--> Main lay <-->
     <string name="settings_enable">Включено</string>
-    <string name="settings_only_mobile">Только с разрешением для мобильных устройств</string>
+    <string name="settings_only_mobile">Только с разрешением для мобильных</string>
     <string name="settings_wifi_only">Только WiFi</string>
     <string name="frequency_once_a_day">раз в сутки</string>
     <string name="frequency_once_a_week">раз в неделю</string>
@@ -128,4 +128,9 @@
     <string name="menu_item_open">Открыть в браузере</string>
     <string name="menu_item_link_error">Пустая ссылка</string>
     <string name="menu_item_save_perm_error">Предоставьте разрешение для сохранения в галерею</string>
+    <string name="settings">Настройки</string>
+    <string name="screen_size">Разрешение экрана</string>
+    <string name="screen_size_alert_title">Выберите разрешение</string>
+    <string name="screen_size_normal">обычное</string>
+    <string name="screen_size_large">больше</string>
 </resources>
