@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,16 +44,15 @@ public class Settings extends AppCompatActivity {
 
         setContentView(R.layout.settings);
 
-
-        FrameLayout layout_mobile_only  = findViewById(R.id.layout_mobile_only);
-        FrameLayout layout_wifi_only    = findViewById(R.id.layout_wifi_only);
-        checkBoxMobileOnly              = findViewById(R.id.only_mobile);
-        checkBoxWifiOnly                = findViewById(R.id.only_wifi);
-        FrameLayout layout_set_screen   = findViewById(R.id.layout_set_screen);
-        FrameLayout layout_screen_size  = findViewById(R.id.layout_screen_size);
-        FrameLayout layout_themes       = findViewById(R.id.layout_themes);
-        textScreenImage                 = findViewById(R.id.screen_image);
-        textScreenSize                  = findViewById(R.id.screen_size);
+        RelativeLayout layout_mobile_only   = findViewById(R.id.layout_mobile_only);
+        RelativeLayout layout_wifi_only     = findViewById(R.id.layout_wifi_only);
+        checkBoxMobileOnly                  = findViewById(R.id.only_mobile);
+        checkBoxWifiOnly                    = findViewById(R.id.only_wifi);
+        RelativeLayout layout_set_screen    = findViewById(R.id.layout_set_screen);
+        RelativeLayout layout_screen_size   = findViewById(R.id.layout_screen_size);
+        RelativeLayout layout_themes        = findViewById(R.id.layout_themes);
+        textScreenImage                     = findViewById(R.id.screen_image);
+        textScreenSize                      = findViewById(R.id.screen_size);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
 
         layout_mobile_only.setOnClickListener(click);

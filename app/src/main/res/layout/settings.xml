@@ -18,34 +18,33 @@
             android:divider="@drawable/separator"
             android:showDividers="end"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
-            <FrameLayout
+            <RelativeLayout
+                android:id="@+id/layout_mobile_only"
                 android:layout_width="match_parent"
-                android:layout_height="75dp">
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                android:paddingEnd="@dimen/relative_layout_padding_end_checkbox"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/settings_only_mobile"/>
 
                 <CheckBox
-                    android:layout_gravity="end"
                     android:id="@+id/only_mobile"
                     android:buttonTint="?attr/colorRadioCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:checked="true"/>
-
-                <FrameLayout
-                    android:id="@+id/layout_mobile_only"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/colorText"
-                        android:text="@string/settings_only_mobile"/>
-                </FrameLayout>
-            </FrameLayout>
+                    android:layout_alignParentEnd="true"
+                    android:checked="true"
+                    />
+            </RelativeLayout>
         </LinearLayout>
 
 
@@ -54,115 +53,103 @@
             android:divider="@drawable/separator"
             android:showDividers="end"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
-            <FrameLayout
+            <RelativeLayout
+                android:id="@+id/layout_wifi_only"
                 android:layout_width="match_parent"
-                android:layout_height="75dp">
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                android:paddingEnd="@dimen/relative_layout_padding_end_checkbox"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/settings_wifi_only"/>
 
                 <CheckBox
-                    android:layout_gravity="end"
                     android:id="@+id/only_wifi"
                     android:buttonTint="?attr/colorRadioCheckbox"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:checked="true"/>
-
-                <FrameLayout
-                    android:id="@+id/layout_wifi_only"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/colorText"
-                        android:text="@string/settings_wifi_only"
-                        />
-                </FrameLayout>
-            </FrameLayout>
+                    android:layout_alignParentEnd="true"
+                    android:checked="true"
+                    />
+            </RelativeLayout>
         </LinearLayout>
 
 
         <LinearLayout
             android:id="@+id/layout_root_set_screen"
             android:orientation="vertical"
-            android:showDividers="end"
             android:divider="@drawable/separator"
+            android:showDividers="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
+            <RelativeLayout
+                android:id="@+id/layout_set_screen"
                 android:layout_width="match_parent"
-                android:layout_height="75dp">
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/screen_change"
+                    android:textColor="?attr/colorText" />
 
                 <TextView
                     android:id="@+id/screen_image"
-                    android:layout_gravity="end"
-                    android:paddingEnd="@dimen/root_padding_8"
+                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textSize="@dimen/text_value"
                     android:textColor="?attr/colorTextValue"
+                    android:textSize="@dimen/text_value"
                     />
-
-                <FrameLayout
-                    android:id="@+id/layout_set_screen"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/colorText"
-                        android:text="@string/screen_change"/>
-                </FrameLayout>
-            </FrameLayout>
+            </RelativeLayout>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/layout_root_screen_size"
             android:orientation="vertical"
-            android:showDividers="end"
             android:divider="@drawable/separator"
+            android:showDividers="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
+            <RelativeLayout
+                android:id="@+id/layout_screen_size"
                 android:layout_width="match_parent"
-                android:layout_height="75dp">
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/screen_size"
+                    />
 
                 <TextView
                     android:id="@+id/screen_size"
-                    android:layout_gravity="end"
-                    android:paddingEnd="@dimen/root_padding_8"
+                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textSize="@dimen/text_value"
                     android:textColor="?attr/colorTextValue"
+                    android:textSize="@dimen/text_value"
                     />
-
-                <FrameLayout
-                    android:id="@+id/layout_screen_size"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/colorText"
-                        android:text="@string/screen_size"/>
-                </FrameLayout>
-            </FrameLayout>
+            </RelativeLayout>
         </LinearLayout>
 
 
@@ -170,27 +157,35 @@
             android:orientation="vertical"
             android:showDividers="end"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
-            <FrameLayout
+            <RelativeLayout
+                android:id="@+id/layout_themes"
                 android:layout_width="match_parent"
-                android:layout_height="75dp">
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                android:paddingEnd="@dimen/relative_layout_padding_end_imageview"
+                >
 
-                <FrameLayout
-                    android:id="@+id/layout_themes"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/activity_themes_title"
+                    />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/colorText"
-                        android:text="@string/activity_themes_title"/>
-                </FrameLayout>
-            </FrameLayout>
+                <ImageView
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    app:tint="?attr/colorRadioCheckbox"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_baseline_open_in_new_24"
+                    />
+            </RelativeLayout>
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

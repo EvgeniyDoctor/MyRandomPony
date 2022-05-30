@@ -28,6 +28,7 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,12 +93,12 @@ public class Main extends AppCompatActivity {
         btnCancel                       = findViewById(R.id.btn_cancel);
         btnEdit                         = findViewById(R.id.btn_edit);
         btnNext                         = findViewById(R.id.btn_next);
-        FrameLayout layout_enable       = findViewById(R.id.layout_enable);
+        RelativeLayout layout_enable            = findViewById(R.id.layout_enable);
+        RelativeLayout layout_settings          = findViewById(R.id.layout_settings);
+        RelativeLayout layout_set_frequency     = findViewById(R.id.layout_set_frequency);
         checkBoxEnabled                 = findViewById(R.id.enable_checkbox);
         previewWallpaper                = findViewById(R.id.preview_wallpaper);
-        FrameLayout layout_settings     = findViewById(R.id.layout_settings);
-        FrameLayout layout_set_frequency   = findViewById(R.id.layout_set_frequency);
-        textFrequency = findViewById(R.id.text_frequency);
+        textFrequency                   = findViewById(R.id.text_frequency);
 
         btnCancel.setOnClickListener(click);
         btnEdit.setOnClickListener(click);
