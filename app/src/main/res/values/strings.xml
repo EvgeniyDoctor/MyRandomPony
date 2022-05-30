@@ -39,21 +39,12 @@
         <h2>Get started</h2>
 
         When you first launch the application, you must enable it by clicking on the <b>Enabled</b> button, and the application will start working in the background. That\'s it!<br/>
-        You can also choose the frequency of changing the wallpaper and choose whether it is necessary to change the wallpaper only when connected to a WiFi network.<br/>
-        If you are impatient and you want to change the wallpaper right now, click on the <b>Next</b> button, wait for the image to load, and then click on it to set it as a background!<br/>
+        If you are impatient and you want to change the wallpaper right now, click on the <b>Next</b> button, wait for the image to load, and then click on it to set it as a background.<br/>
 
-        <h2>Checkboxes</h2>
-        <ul>
-            <li><b>Enabled</b>: enabling / disabling the wallpaper change</li>
-            <li><b>Mobile screen resolution only</b>: search for images with mobile screen resolution only</li>
-            <li><b>WiFi only</b>: download new wallpapers only via WiFi (applies to the <b>Next</b> button as well)</li>
-        </ul>
+        <h2>Main screen</h2>
 
-        <h2>More settings</h2>
-
-        <h3>Change image on</h3>
-        Allows you to choose whether the image will change: on the <i>homescreen</i> only, on the <i>lockscreen</i> only, or on <i>both</i>.<br/>
-        Available only for Android 7.0 and higher.
+        <h3>Enabled</h3>
+        Enabling / disabling the wallpaper change.
 
         <h3>Frequency of changing</h3>
         Allows you to choose the frequency of changing the wallpaper:
@@ -63,20 +54,50 @@
             <li><b>once a month</b>: the wallpaper will change shortly after 00:00 on the 1st of the next month</li>
         </ul>
 
-        <h2>Buttons</h2>
+        <h3>Buttons</h3>
         <ul>
             <li><b>Cancel</b>: resetting all changes after the <b>Edit</b> button. After that, you need to click on the image to set it as the background</li>
             <li><b>Edit</b>: allows you to crop the image if it is too large. After editing the image, you need to click it again to set it as the background<</li>
             <li><b>Next</b>: download a new image right now. To set new image as a background just click on it</li>
         </ul>
 
-        <h2>Other</h2>
+        <h3>Image</h3>
+        Wallpaper preview. Click on it to set it as the background.
 
-        <b>Image</b>: wallpaper preview. Click on it to set it as the background!<br/><br/>
 
-        <b>Link under the image</b>: after successfully downloading the image, a link will appear under it leading to page on http://mylittlewallpaper.com, where you can download this image<br/><br/>
+        <h2>Settings</h2>
 
-        You can also change the theme of the application! Themes available in 3-dot menu.<br/>
+        <h3>Mobile screen resolution only</h3>
+        Search for images with mobile screen resolution only.
+
+        <h3>WiFi only</h3>
+        Download new wallpapers only via WiFi (applies to the <b>Next</b> button as well)
+
+        <h3>Change image on</h3>
+        Allows you to choose whether the image will change: on the <i>homescreen</i> only, on the <i>lockscreen</i> only, or on <i>both</i>.<br/>
+        Available only for Android 7.0 and higher.
+
+        <h3>Screen resolution</h3>
+        Affects the resolution at which images will be stored.
+        For example, if you select the <b>normal</b> option, an image with a size of 15360*8640 and a weight of 6.5 MB will be compressed to a size of 1920*1080 and a weight of 289 Kb;
+        if you select the <b>large</b> option, the same image will be compressed to a size of 3840*2160 and a weight of 791 Kb.
+        <br>Does not affect the consumption of Internet traffic!
+        <ul>
+            <li><b>normal</b>: for normal resolution screens</li>
+            <li><b>large</b>: for large resolution screens</li>
+        </ul>
+
+        <h3>Themes</h3>
+        You can change the theme of the application.
+
+
+        <h2>Additional menu</h2>
+        <ul>
+            <li><b>Copy link</b>: copy the image link to the clipboard</li>
+            <li><b>Open in browser</b>: open the image on the site</li>
+            <li><b>Save</b>: save the <i>original</i> version of the image to the gallery. For this function to work, the application must be granted the necessary permission</li>
+            <li><b>Share link</b>: send a link to an image</li>
+        </ul>
         ]]>
     </string>
     <string name="menu_item_help">Help</string>
