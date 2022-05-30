@@ -172,7 +172,7 @@
         android:id="@+id/layout_btn_theme_save"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_height="@dimen/layout_height"
+        android:layout_height="@dimen/layout_buttons_height"
         android:layout_width="match_parent"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"

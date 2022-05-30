@@ -95,7 +95,7 @@
         <ul>
             <li><b>Copy link</b>: copy the image link to the clipboard</li>
             <li><b>Open in browser</b>: open the image on the site</li>
-            <li><b>Save</b>: save the <i>original</i> version of the image to the gallery. For this function to work, the application must be granted the necessary permission</li>
+            <li><b>Save</b>: save the <i>original</i> version of the image to the gallery in \"My Random Pony\" folder. For this function to work, the application must be granted the necessary permission</li>
             <li><b>Share link</b>: send a link to an image</li>
         </ul>
         ]]>

@@ -168,26 +168,25 @@
 
 
     <LinearLayout
-        android:layout_below="@+id/layout_theme_select"
         android:id="@+id/layout_btn_theme_save"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_height="@dimen/layout_height"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_buttons_height"
+        android:layout_below="@+id/layout_theme_select"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        >
+        android:paddingRight="40dp">
 
         <Button
             android:id="@+id/btn_theme_apply"
-            android:layout_weight="1"
-            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="themeApply"
             android:layout_margin="6dp"
+            android:layout_weight="1"
             android:background="?attr/colorButtonSemitransparent"
-            android:textColor="?attr/colorTextElement"
-            android:text="@string/theme_apply" />
+            android:enabled="false"
+            android:onClick="themeApply"
+            android:text="@string/theme_apply"
+            android:textColor="?attr/colorTextElement" />
     </LinearLayout>
 </RelativeLayout>
