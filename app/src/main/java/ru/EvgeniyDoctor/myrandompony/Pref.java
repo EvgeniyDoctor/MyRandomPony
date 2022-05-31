@@ -10,6 +10,7 @@ abstract class Pref {
         SCREEN_IMAGE        = "screen_image",
         SCREEN_SIZE         = "screen_size",
         REFRESH_FREQUENCY   = "refresh_frequency",
+        SCREEN_SIZE_SMALL_OR_NORMAL = "screen_size_small_or_normal",
 
         REFRESH_FREQUENCY_CURR_DAY      = "refresh_frequency_curr_day",
         REFRESH_FREQUENCY_CURR_WEEK     = "refresh_frequency_curr_week",

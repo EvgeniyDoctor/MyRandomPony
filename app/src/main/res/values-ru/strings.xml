@@ -6,7 +6,7 @@
 
     <!--> Main lay <-->
     <string name="settings_enable">Включено</string>
-    <string name="settings_only_mobile">Только с разрешением для мобильных</string>
+    <string name="settings_only_mobile">Мобильное разрешение</string>
     <string name="settings_wifi_only">Только WiFi</string>
     <string name="frequency_once_a_day">раз в сутки</string>
     <string name="frequency_once_a_week">раз в неделю</string>
@@ -60,7 +60,7 @@
 
         <h2>Настройки</h2>
 
-        <h3>Только с разрешением для мобильных</h3>
+        <h3>Мобильное разрешение</h3>
         Искать изображения только с разрешением для мобильных устройств.
 
         <h3>Только WiFi</h3>

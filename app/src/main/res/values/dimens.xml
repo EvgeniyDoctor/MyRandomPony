@@ -11,4 +11,5 @@
     <dimen name="relative_layout_padding_end_imageview">10dp</dimen>
     <dimen name="layout_height">75dp</dimen>
     <dimen name="layout_buttons_height">60dp</dimen>
+    <dimen name="preview_max_height">350dp</dimen>
 </resources>

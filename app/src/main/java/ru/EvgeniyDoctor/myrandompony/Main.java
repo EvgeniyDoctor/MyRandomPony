@@ -20,9 +20,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
@@ -66,13 +69,6 @@ public class Main extends AppCompatActivity {
     private Wallpaper wallpaper;
     private AlertDialog alertDialog = null;
     SaveToGallery saveToGallery;
-    /*
-        alertDialog - переменная для показа диалоговых окон.
-    Нужна, так как если делать напрямую - builder.show(); то если, например, во время показа диалога вёрстка экрана изменится
-    ориентация экрана, это вызовет Activity ... has leaked.
-    Обнуляется в onDestroy.
-    res. - http://stackoverflow.com/questions/11051172/progressdialog-and-alertdialog-cause-leaked-window
-     */
 
 
 
@@ -173,8 +169,40 @@ public class Main extends AppCompatActivity {
 
         setButtonsState();
 
+        // set max height for imageview
+        if (settings.contains(Pref.SCREEN_SIZE_SMALL_OR_NORMAL) && settings.getBoolean(Pref.SCREEN_SIZE_SMALL_OR_NORMAL, false)) {
+            previewWallpaper.setMaxHeight((int) getResources().getDimension(R.dimen.preview_max_height));
+        }
+        else {
+            ScreenSize screenSize = getScreenSize();
+            if (screenSize == ScreenSize.SMALL || screenSize == ScreenSize.NORMAL) {
+                previewWallpaper.setMaxHeight((int) getResources().getDimension(R.dimen.preview_max_height));
+                settings.put(Pref.SCREEN_SIZE_SMALL_OR_NORMAL, true);
+            }
+        }
+
         progressDialog = new ProgressDialog(Main.this);
     } // onCreate
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private ScreenSize getScreenSize(){
+        // https://stackoverflow.com/questions/10689259/how-to-programatically-determine-which-xml-layout-my-android-apps-is-using
+        int screen = (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK);
+        switch (screen){
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                return ScreenSize.SMALL;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return ScreenSize.NORMAL;
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                return ScreenSize.LARGE;
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                return ScreenSize.XLARGE;
+            default:
+                return ScreenSize.UNKNOWN;
+        }
+    }
     //----------------------------------------------------------------------------------------------
 
 

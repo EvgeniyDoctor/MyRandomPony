@@ -98,7 +98,7 @@ public class Helper {
 
     // старт сервиса в зависимости от платформы // start of the service depending on the platform
     public static void startService (Context context){
-        d("Helper - startService - startForegroundService");
+        //d("Helper - startService - startForegroundService");
         ContextCompat.startForegroundService(context, new Intent(context, ServiceRefresh.class)); // res: https://stackoverflow.com/questions/64932667/android-workmanager-start-delay-after-killing-app
     }
     //--------------------------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ public class Helper {
 
     // for Autostart
     public static void startService (Context context, Intent intent){
-        d("Helper - startService + intent - startForegroundService");
+        //d("Helper - startService + intent - startForegroundService");
         ContextCompat.startForegroundService(context, intent);
     }
     //--------------------------------------------------------------------------------------------------
