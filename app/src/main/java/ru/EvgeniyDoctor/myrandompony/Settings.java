@@ -2,25 +2,20 @@ package ru.EvgeniyDoctor.myrandompony;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.grandcentrix.tray.AppPreferences;
 
@@ -92,11 +87,11 @@ public class Settings extends AppCompatActivity {
         }
 
         // screen size
-        if (settings.contains(Pref.SCREEN_SIZE)) {
-            setScreenImageSize(settings.getInt(Pref.SCREEN_SIZE, 0));
+        if (settings.contains(Pref.SCREEN_RESOLUTION)) {
+            setScreenImageSize(settings.getInt(Pref.SCREEN_RESOLUTION, 0));
         }
         else {
-            settings.put(Pref.SCREEN_SIZE, 0);
+            settings.put(Pref.SCREEN_RESOLUTION, 0);
             textScreenSize.setText(getResources().getString(R.string.screen_size_normal));
         }
     }
@@ -164,9 +159,9 @@ public class Settings extends AppCompatActivity {
                     }
                     settings.put(Pref.MOBILE_ONLY, checkBoxMobileOnly.isChecked());
 
-                    if (settings.contains(Pref.ENABLED) && settings.getBoolean(Pref.ENABLED, false)) {
-                        restartService();
-                    }
+//                    if (settings.contains(Pref.ENABLED) && settings.getBoolean(Pref.ENABLED, false)) {
+//                        restartService();
+//                    }
                     break;
 
                 case R.id.layout_wifi_only:
@@ -239,8 +234,8 @@ public class Settings extends AppCompatActivity {
                     };
 
                     dflt = 0;
-                    if (settings.contains(Pref.SCREEN_SIZE)) {
-                        dflt = settings.getInt(Pref.SCREEN_SIZE, 0);
+                    if (settings.contains(Pref.SCREEN_RESOLUTION)) {
+                        dflt = settings.getInt(Pref.SCREEN_RESOLUTION, 0);
                     }
 
                     builder = new AlertDialog.Builder(Settings.this);
@@ -254,7 +249,7 @@ public class Settings extends AppCompatActivity {
                     builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            settings.put(Pref.SCREEN_SIZE, dialogScreenSize);
+                            settings.put(Pref.SCREEN_RESOLUTION, dialogScreenSize);
 
                             // update ui
                             runOnUiThread(new Runnable() {
@@ -283,10 +278,10 @@ public class Settings extends AppCompatActivity {
 
 
 
-    private void restartService(){
-        stopService(new Intent(Settings.this, ServiceRefresh.class));
-        Helper.startService(Settings.this);
-    }
+//    private void restartService(){
+//        stopService(new Intent(Settings.this, ServiceRefresh.class));
+//        Helper.startService(Settings.this);
+//    }
     //-----------------------------------------------------------------------------------------------
 
 

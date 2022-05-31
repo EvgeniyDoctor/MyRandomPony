@@ -71,7 +71,7 @@
         Search for images with mobile screen resolution only.
 
         <h3>WiFi only</h3>
-        Download new wallpapers only via WiFi (applies to the <b>Next</b> button as well)
+        Download new wallpapers only via WiFi (applies to the <b>Next</b> button as well).
 
         <h3>Change image on</h3>
         Allows you to choose whether the image will change: on the <i>homescreen</i> only, on the <i>lockscreen</i> only, or on <i>both</i>.<br/>
@@ -95,7 +95,7 @@
         <ul>
             <li><b>Copy link</b>: copy the image link to the clipboard</li>
             <li><b>Open in browser</b>: open the image on the site</li>
-            <li><b>Save</b>: save the <i>original</i> version of the image to the gallery in \"My Random Pony\" folder. For this function to work, the application must be granted the necessary permission</li>
+            <li><b>Save</b>: save the <i>original</i> version of the image to the gallery in \"My Random Pony\" folder. For this function to work, the app must be granted the necessary permission</li>
             <li><b>Share link</b>: send a link to an image</li>
         </ul>
         ]]>

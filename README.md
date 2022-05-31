@@ -30,20 +30,14 @@ You can download an APK file <a href='https://github.com/EvgeniyDoctor/MyRandomP
 </a>
 
 # Get started
-When you first launch the application, you must enable it by clicking on the [**Enabled**](#buttons) button, and the application will start working in the background. That's it!<br>
-You can also choose the frequency of changing the wallpaper and choose whether it is necessary to change the wallpaper only when connected to a WiFi network.<br>
-If you are impatient and you want to change the wallpaper right now, click on the [**Next**](#buttons) button, wait for the image to load, and then click on it to set it as a background!
+When you first launch the application, you must enable it by clicking on the [**Enabled**](#checkboxes) button, and the application will start working in the background. That's it!<br>
+If you are impatient and you want to change the wallpaper right now, click on the [**Next**](#buttons) button, wait for the image to load, and then click on it to set it as a background.
 
-## Checkboxes
-- **Enabled**: enabling / disabling the wallpaper change
-- **Mobile screen resolution only**: search for images with mobile screen resolution only
-- **WiFi only**: download new wallpapers only via WiFi (applies to the [**Next**](#buttons) button as well)
 
-## More settings
+## Main screen
 
-### Change image on
-Allows you to choose whether the image will change: on the **homescreen** only, on the **lockscreen** only, or on **both**.<br>
-Available only for Android 7.0 and higher.
+### Enabled
+Enabling / disabling the wallpaper change.
 
 ### Frequency of changing
 Allows you to choose the frequency of changing the wallpaper:
@@ -51,18 +45,43 @@ Allows you to choose the frequency of changing the wallpaper:
 - **once a week**: the wallpaper will change shortly after 00:00 on Sunday or Monday (it depends on your system settings) of the next week
 - **once a month**: the wallpaper will change shortly after 00:00 on the 1st of the next month
 
-## Buttons
+### Buttons
 - **Cancel**: resetting all changes after the [**Edit**](#buttons) button. After that, you need to click on the image to set it as the background
 - **Edit**: allows you to crop the image if it is too large. After editing the image, you need to click it again to set it as the background
 - **Next**: download a new image right now. To set new image as a background just click on it
 
-## Other
+### Image
+Wallpaper preview. Click on it to set it as the background.
 
-**Image**: wallpaper preview. Click on it to set it as the background!
+## Settings
 
-**Link under the image**: after successfully downloading the image, a link will appear under it leading to page on http://mylittlewallpaper.com, where you can download this image
+### Mobile screen resolution only
+Search for images with mobile screen resolution only.
 
-You can also change the theme of the application! There are currently 5 themes available: three light and two dark. Available in _3 dots_ menu.
+### WiFi only
+Download new wallpapers only via WiFi (applies to the [**Next**](#buttons) button as well).
+
+### Change image on
+Allows you to choose whether the image will change: on the **homescreen** only, on the **lockscreen** only, or on **both**.
+<br>:exclamation:&nbsp;Available only for Android 7.0 and higher.
+
+### Screen resolution
+Affects the resolution at which images will be stored.
+For example, if you select the **normal** option, an image with a size of 15360\*8640 and a weight of 6.5 MB will be compressed to a size of 1920\*1080 and a weight of 289 Kb;
+if you select the **large** option, the same image will be compressed to a size of 3840\*2160 and a weight of 791 Kb.
+<br>:exclamation:&nbsp;Does not affect the consumption of Internet traffic!
+- **normal**: for normal resolution screens
+- **large**: for large resolution screens
+
+### Themes
+You can change the theme of the application.
+
+## Additional menu
+
+- **Copy link**: copy the image link to the clipboard
+- **Open in browser**: open the image on the site
+- **Save**: save the <i>original</i> version of the image to the gallery in "My Random Pony" folder. For this function to work, the app must be granted the necessary permission
+- **Share link**: send a link to an image
 
 # Support me
 - [buy my music on Bandcamp](https://arklysis.bandcamp.com)

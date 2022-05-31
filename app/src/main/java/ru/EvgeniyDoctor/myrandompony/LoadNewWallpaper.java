@@ -201,8 +201,8 @@ public class LoadNewWallpaper {
         int resolution = 0;
         int max = 1000;
 
-        if (settings.contains(Pref.SCREEN_SIZE)) {
-            resolution = settings.getInt(Pref.SCREEN_SIZE, 0);
+        if (settings.contains(Pref.SCREEN_RESOLUTION)) {
+            resolution = settings.getInt(Pref.SCREEN_RESOLUTION, 0);
         }
 
         switch (resolution) {
