@@ -55,9 +55,6 @@ Wallpaper preview. Click on it to set it as the background.
 
 ## Settings
 
-### Mobile screen resolution only
-Search for images with mobile screen resolution only.
-
 ### WiFi only
 Download new wallpapers only via WiFi (applies to the [**Next**](#buttons) button as well).
 

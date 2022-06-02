@@ -22,41 +22,6 @@
             >
 
             <RelativeLayout
-                android:id="@+id/layout_mobile_only"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_height"
-                style="?android:attr/buttonBarButtonStyle"
-                android:paddingEnd="@dimen/relative_layout_padding_end_checkbox"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/settings_only_mobile"/>
-
-                <CheckBox
-                    android:id="@+id/only_mobile"
-                    android:buttonTint="?attr/colorRadioCheckbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:checked="true"
-                    />
-            </RelativeLayout>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:divider="@drawable/separator"
-            android:showDividers="end"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <RelativeLayout
                 android:id="@+id/layout_wifi_only"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/layout_height"

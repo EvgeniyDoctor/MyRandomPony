@@ -39,9 +39,7 @@ public class Settings extends AppCompatActivity {
 
         setContentView(R.layout.settings);
 
-        RelativeLayout layout_mobile_only   = findViewById(R.id.layout_mobile_only);
         RelativeLayout layout_wifi_only     = findViewById(R.id.layout_wifi_only);
-        checkBoxMobileOnly                  = findViewById(R.id.only_mobile);
         checkBoxWifiOnly                    = findViewById(R.id.only_wifi);
         RelativeLayout layout_set_screen    = findViewById(R.id.layout_set_screen);
         RelativeLayout layout_screen_size   = findViewById(R.id.layout_screen_size);
@@ -50,19 +48,10 @@ public class Settings extends AppCompatActivity {
         textScreenSize                      = findViewById(R.id.screen_size);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
 
-        layout_mobile_only.setOnClickListener(click);
         layout_wifi_only.setOnClickListener(click);
         layout_set_screen.setOnClickListener(click);
         layout_screen_size.setOnClickListener(click);
         layout_themes.setOnClickListener(click);
-
-        // разрешение обоев // wallpaper resolution
-        if (settings.contains(Pref.MOBILE_ONLY)) {
-            checkBoxMobileOnly.setChecked(settings.getBoolean(Pref.MOBILE_ONLY, true));
-        }
-        else {
-            settings.put(Pref.MOBILE_ONLY, true);
-        }
 
         // WiFi only
         if (settings.contains(Pref.WIFI_ONLY)) {
@@ -150,20 +139,6 @@ public class Settings extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.layout_mobile_only:
-                    if (checkBoxMobileOnly.isChecked()) {
-                        checkBoxMobileOnly.setChecked(false);
-                    }
-                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
-                        checkBoxMobileOnly.setChecked(true);
-                    }
-                    settings.put(Pref.MOBILE_ONLY, checkBoxMobileOnly.isChecked());
-
-//                    if (settings.contains(Pref.ENABLED) && settings.getBoolean(Pref.ENABLED, false)) {
-//                        restartService();
-//                    }
-                    break;
-
                 case R.id.layout_wifi_only:
                     if (checkBoxWifiOnly.isChecked()) {
                         checkBoxWifiOnly.setChecked(false);

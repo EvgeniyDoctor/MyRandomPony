@@ -5,7 +5,6 @@ package ru.EvgeniyDoctor.myrandompony;
 abstract class Pref {
     public static final String
         ENABLED             = "enabled_pony_wallpapers",
-        MOBILE_ONLY         = "mobile_pony_wallpapers",
         WIFI_ONLY           = "wifi_only",
         SCREEN_IMAGE        = "screen_image",
         SCREEN_RESOLUTION   = "screen_resolution",

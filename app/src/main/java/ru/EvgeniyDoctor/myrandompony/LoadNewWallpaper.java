@@ -37,7 +37,6 @@ public class LoadNewWallpaper {
     private final AppPreferences settings;
     private final boolean needChangeBg;
 
-    private final String URL_GET_MOBILE_ONLY = "https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?search=platform%3AMobile&limit=1";
     private final String URL_GET_ALL = "https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?limit=1&search=";
     private final String URL_NEW_WALLPAPER = "https://www.mylittlewallpaper.com/images/o_%s.png"; // url full size download
 
@@ -60,17 +59,9 @@ public class LoadNewWallpaper {
 
         // загрузка данные с внешнего ресурса // loading data from an external resource
         try {
-            Helper.d("ParseTask execute");
+            //Helper.d("ParseTask execute");
 
-            URL url;
-
-            // нужное разрешение // required screen resolution
-            if (settings.getBoolean(Pref.MOBILE_ONLY, true)) { // только с разрешением для мобильных // mobile screen resolution only
-                url = new URL(URL_GET_MOBILE_ONLY);
-            }
-            else {
-                url = new URL(URL_GET_ALL);
-            }
+            URL url = new URL(URL_GET_ALL);
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
