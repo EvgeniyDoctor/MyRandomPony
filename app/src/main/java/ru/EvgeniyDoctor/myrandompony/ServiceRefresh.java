@@ -278,7 +278,7 @@ public class ServiceRefresh extends Service {
             saveNew(unit);
 
             // установка фона
-            new ChangeWallpaper(settings, Image.Original).setWallpaper(getApplicationContext());
+            new Wallpaper(getApplicationContext(), settings, Image.Original).set();
         }
         else {
             Helper.d("ServiceRefresh - startLoad - else: " + code);

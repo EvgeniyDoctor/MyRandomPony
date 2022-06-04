@@ -17,6 +17,7 @@
             android:autoLink="web"
             android:textSize="16sp"
             android:gravity="start"
+            android:justificationMode="inter_word"
             android:textColor="?attr/colorText"
             android:text="@string/about_text">
         </TextView>

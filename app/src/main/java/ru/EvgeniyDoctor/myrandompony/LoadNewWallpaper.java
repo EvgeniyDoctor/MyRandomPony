@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import net.grandcentrix.tray.AppPreferences;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -38,7 +37,6 @@ public class LoadNewWallpaper {
     private final AppPreferences settings;
     private final boolean needChangeBg;
 
-    private final String URL_GET_MOBILE_ONLY = "https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?search=platform%3AMobile&limit=1";
     private final String URL_GET_ALL = "https://www.mylittlewallpaper.com/c/my-little-pony/api/v1/random.json?limit=1&search=";
     private final String URL_NEW_WALLPAPER = "https://www.mylittlewallpaper.com/images/o_%s.png"; // url full size download
 
@@ -61,17 +59,9 @@ public class LoadNewWallpaper {
 
         // загрузка данные с внешнего ресурса // loading data from an external resource
         try {
-            Helper.d("ParseTask execute");
+            //Helper.d("ParseTask execute");
 
-            URL url;
-
-            // нужное разрешение // required screen resolution
-            if (settings.getBoolean(Pref.MOBILE_ONLY, true)) { // только с разрешением для мобильных // mobile screen resolution only
-                url = new URL(URL_GET_MOBILE_ONLY);
-            }
-            else {
-                url = new URL(URL_GET_ALL);
-            }
+            URL url = new URL(URL_GET_ALL);
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
@@ -87,7 +77,7 @@ public class LoadNewWallpaper {
             }
             catch (IOException e) {
                 Helper.d("HTTP answer != OK");
-                //e.printStackTrace();
+                e.printStackTrace();
                 return Codes.NOT_CONNECTED;
             }
 
@@ -114,8 +104,10 @@ public class LoadNewWallpaper {
                     JSONArray jsonArray = dataJsonObj.getJSONArray("result");
                     current_result = jsonArray.getJSONObject(0);
 
+                    settings.put(Pref.IMAGE_TITLE, current_result.getString("title")); // title of the image
+
                     // сохранение ссылки для загрузки (откроется страница с картинкой) // saving the download link (a page with an image opens)
-                    settings.put(Pref.DOWNLOAD_URL, current_result.getString("downloadurl"));
+                    settings.put(Pref.IMAGE_URL, current_result.getString("downloadurl"));
                 }
             }
             catch (Exception e) {
@@ -134,6 +126,8 @@ public class LoadNewWallpaper {
                 Helper.d("IntentService_LoadNewWallpaper execute");
 
                 URL url = new URL(String.format(URL_NEW_WALLPAPER, current_result.getString("imageid")));
+                //URL url = new URL("https://www.mylittlewallpaper.com/images/o_501fb9f9f196a3.82550842.png");
+                //URL url = new URL("https://www.mylittlewallpaper.com/images/o_5bbb8e74e84398.86540959.png");
 
                 // загрузка новой обоины // load new wallpaper --->
                 InputStream in = url.openStream();
@@ -143,7 +137,8 @@ public class LoadNewWallpaper {
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeStream(in, null, options);
 
-                options.inSampleSize = calculateSize(options, 1000, 1000);
+                int maxSize = getMaxSize(); // 1000 by default
+                options.inSampleSize = calculateSize(options, maxSize, maxSize);
                 options.inJustDecodeBounds = false;
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
 
@@ -155,7 +150,7 @@ public class LoadNewWallpaper {
                     // удаление отредактированного изо, если оно было // deleting the edited image
                     File bg_edited = new File(
                         new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_PRIVATE),
-                        Pref.FILE_NAME_EDITED
+                        Pref.IMAGE_EDITED
                     );
                     if (bg_edited.exists()) {
                         Helper.d("IntentService delete_bg_edited OK");
@@ -166,7 +161,7 @@ public class LoadNewWallpaper {
                     FileOutputStream fos = new FileOutputStream(
                         new File(
                             new ContextWrapper(context).getDir(Pref.SAVE_PATH, Context.MODE_PRIVATE),
-                            Pref.FILE_NAME
+                            Pref.IMAGE_ORIGINAL
                         )
                     ); // bg.png
                     img.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -182,12 +177,35 @@ public class LoadNewWallpaper {
                 }
                 // <--- загрузка новой обоины // load new wallpaper
             }
-            catch (IOException | JSONException e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         return Codes.NOT_CONNECTED;
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private int getMaxSize(){
+        int resolution = 0;
+        int max = 1000;
+
+        if (settings.contains(Pref.SCREEN_RESOLUTION)) {
+            resolution = settings.getInt(Pref.SCREEN_RESOLUTION, 0);
+        }
+
+        switch (resolution) {
+            case 0: // normal
+                max = 1000;
+                break;
+            case 1: // large
+                max = 1500;
+                break;
+        }
+
+        return max;
     }
     //----------------------------------------------------------------------------------------------
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
@@ -9,36 +11,35 @@
         android:divider="@drawable/separator"
         android:showDividers="end"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
-        <FrameLayout
+        <RelativeLayout
+            android:id="@+id/layout_enable"
             android:layout_width="match_parent"
-            android:layout_height="75dp">
+            android:layout_height="@dimen/layout_height"
+            style="?android:attr/buttonBarButtonStyle"
+            android:paddingEnd="@dimen/relative_layout_padding_end_checkbox"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorText"
+                android:text="@string/settings_enable"
+                />
 
             <CheckBox
-                android:layout_gravity="end"
                 android:id="@+id/enable_checkbox"
                 android:buttonTint="?attr/colorRadioCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:checked="false"/>
-
-            <FrameLayout
-                android:id="@+id/layout_enable"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="?android:attr/buttonBarButtonStyle">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/settings_enable"/>
-            </FrameLayout>
-        </FrameLayout>
+                android:checked="false"
+                android:layout_alignParentEnd="true"
+                />
+        </RelativeLayout>
     </LinearLayout>
-
 
 
     <LinearLayout
@@ -48,150 +49,65 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <FrameLayout
+        <RelativeLayout
+            android:id="@+id/layout_set_frequency"
             android:layout_width="match_parent"
-            android:layout_height="75dp">
-
-            <CheckBox
-                android:layout_gravity="end"
-                android:id="@+id/only_mobile"
-                android:buttonTint="?attr/colorRadioCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:checked="true"/>
-
-            <FrameLayout
-                android:id="@+id/layout_mobile_only"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/settings_only_mobile"/>
-            </FrameLayout>
-        </FrameLayout>
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:divider="@drawable/separator"
-        android:showDividers="end"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="75dp">
-
-            <CheckBox
-                android:layout_gravity="end"
-                android:id="@+id/only_wifi"
-                android:buttonTint="?attr/colorRadioCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:checked="true"/>
-
-            <FrameLayout
-                android:id="@+id/layout_wifi_only"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/settings_wifi_only"
-                    />
-            </FrameLayout>
-        </FrameLayout>
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:id="@+id/layout_root_set_screen"
-        android:orientation="vertical"
-        android:showDividers="end"
-        android:divider="@drawable/separator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="75dp">
+            android:layout_height="@dimen/layout_height"
+            style="?android:attr/buttonBarButtonStyle"
+            >
 
             <TextView
-                android:id="@+id/screen_image"
-                android:layout_gravity="end"
-                android:paddingEnd="@dimen/root_padding_8"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/text_value"
-                android:textColor="?attr/colorTextValue"
-                />
-
-            <FrameLayout
-                android:id="@+id/layout_set_screen"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/screen_change"/>
-            </FrameLayout>
-        </FrameLayout>
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:showDividers="end"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="75dp">
+                android:text="@string/frequency_changing"
+                android:textColor="?attr/colorText" />
 
             <TextView
                 android:id="@+id/text_frequency"
-                android:layout_gravity="end"
-                android:paddingEnd="@dimen/root_padding_8"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:textColor="?attr/colorTextValue"
                 android:textSize="@dimen/text_value"
                 />
+        </RelativeLayout>
+    </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/layout_set_frequency"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/frequency_changing"
-                    />
-            </FrameLayout>
-        </FrameLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:showDividers="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:id="@+id/layout_settings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_height"
+            style="?android:attr/buttonBarButtonStyle"
+            android:paddingEnd="@dimen/relative_layout_padding_end_imageview"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorText"
+                android:text="@string/settings"
+                />
+
+            <ImageView
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                app:tint="?attr/colorRadioCheckbox"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_baseline_open_in_new_24"
+                />
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

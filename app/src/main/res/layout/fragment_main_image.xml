@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="@dimen/layout_buttons_height"
         android:gravity="center_vertical">
 
         <Button
@@ -43,7 +42,6 @@
             android:text="@string/settings_next_image" />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
@@ -60,23 +58,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/settings_preview" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        >
-
-        <TextView
-            android:id="@+id/download_url"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:textSize="16sp"
-            />
     </LinearLayout>
 </LinearLayout>

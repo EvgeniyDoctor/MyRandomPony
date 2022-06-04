@@ -1,31 +1,46 @@
 package ru.EvgeniyDoctor.myrandompony;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
+import android.provider.MediaStore;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuCompat;
 
 import com.yalantis.ucrop.UCrop;
 
@@ -34,19 +49,16 @@ import net.grandcentrix.tray.AppPreferences;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 
 
 public class Main extends AppCompatActivity {
     private CheckBox
-            checkBoxEnabled,
-            checkBoxMobileOnly,
-            checkBoxWifiOnly;
-    private ImageView currentWallpaper = null;
+            checkBoxEnabled;
+    private ImageView previewWallpaper = null;
     private TextView
-            textviewDownloadUrl,
-            textScreenImage,
             textFrequency;
     private ProgressDialog progressDialog = null;
     private Button
@@ -54,15 +66,9 @@ public class Main extends AppCompatActivity {
             btnEdit,
             btnNext;
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
-    private ChangeWallpaper changeWallpaper;
+    private Wallpaper wallpaper;
     private AlertDialog alertDialog = null;
-    /*
-        alertDialog - переменная для показа диалоговых окон.
-    Нужна, так как если делать напрямую - builder.show(); то если, например, во время показа диалога вёрстка экрана изменится
-    ориентация экрана, это вызовет Activity ... has leaked.
-    Обнуляется в onDestroy.
-    res. - http://stackoverflow.com/questions/11051172/progressdialog-and-alertdialog-cause-leaked-window
-     */
+    SaveToGallery saveToGallery;
 
 
 
@@ -83,31 +89,22 @@ public class Main extends AppCompatActivity {
         btnCancel                       = findViewById(R.id.btn_cancel);
         btnEdit                         = findViewById(R.id.btn_edit);
         btnNext                         = findViewById(R.id.btn_next);
-        FrameLayout layout_enable       = findViewById(R.id.layout_enable);
-        FrameLayout layout_mobile_only  = findViewById(R.id.layout_mobile_only);
-        FrameLayout layout_wifi_only    = findViewById(R.id.layout_wifi_only);
+        RelativeLayout layout_enable            = findViewById(R.id.layout_enable);
+        RelativeLayout layout_settings          = findViewById(R.id.layout_settings);
+        RelativeLayout layout_set_frequency     = findViewById(R.id.layout_set_frequency);
         checkBoxEnabled                 = findViewById(R.id.enable_checkbox);
-        checkBoxMobileOnly              = findViewById(R.id.only_mobile);
-        checkBoxWifiOnly                = findViewById(R.id.only_wifi);
-        currentWallpaper                = findViewById(R.id.preview_wallpaper);
-        textviewDownloadUrl             = findViewById(R.id.download_url);
-        LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
-        FrameLayout layout_set_screen   = findViewById(R.id.layout_set_screen);
-        FrameLayout layout_set_frequency   = findViewById(R.id.layout_set_frequency);
-        textScreenImage = findViewById(R.id.screen_image);
-        textFrequency = findViewById(R.id.text_frequency);
+        previewWallpaper                = findViewById(R.id.preview_wallpaper);
+        textFrequency                   = findViewById(R.id.text_frequency);
 
         btnCancel.setOnClickListener(click);
         btnEdit.setOnClickListener(click);
         btnNext.setOnClickListener(click);
         layout_enable.setOnClickListener(click);
-        layout_mobile_only.setOnClickListener(click);
-        layout_wifi_only.setOnClickListener(click);
-        currentWallpaper.setOnClickListener(click);
-        layout_set_screen.setOnClickListener(click);
+        previewWallpaper.setOnClickListener(click);
         layout_set_frequency.setOnClickListener(click);
+        layout_settings.setOnClickListener(click);
 
-        changeWallpaper = new ChangeWallpaper(settings, Image.Edited);
+        wallpaper = new Wallpaper(getApplicationContext(), settings, Image.Edited);
 
         // установка первоначальных данных. Если этого не сделать, то при смене пользователем стд настройки с "Раз в неделю" на любую другую произойдёт обновление обоев
         // setting the initial data. If this is not done, then when the user changes the std settings from "Once a week" to any other, the wallpaper will be updated
@@ -125,36 +122,6 @@ public class Main extends AppCompatActivity {
         // включено ли // is enabled
         if (settings.contains(Pref.ENABLED)) {
             checkBoxEnabled.setChecked(settings.getBoolean(Pref.ENABLED, false));
-        }
-
-        // разрешение обоев // wallpaper resolution
-        if (settings.contains(Pref.MOBILE_ONLY)) {
-            checkBoxMobileOnly.setChecked(settings.getBoolean(Pref.MOBILE_ONLY, true));
-        }
-        else {
-            settings.put(Pref.MOBILE_ONLY, true);
-        }
-
-        // WiFi only
-        if (settings.contains(Pref.WIFI_ONLY)) {
-            checkBoxWifiOnly.setChecked(settings.getBoolean(Pref.WIFI_ONLY, true));
-        }
-        else {
-            settings.put(Pref.WIFI_ONLY, true);
-        }
-
-        // change image on screen
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
-            if (settings.contains(Pref.SCREEN_IMAGE)) {
-                setScreenImageText(settings.getInt(Pref.SCREEN_IMAGE, 0));
-            }
-            else {
-                settings.put(Pref.SCREEN_IMAGE, 0);
-                textScreenImage.setText(getResources().getString(R.string.screen_both));
-            }
-        }
-        else {
-            layout_root_set_screen.setVisibility(View.GONE); // hide, if Android version < 7.0
         }
 
         // refresh frequency
@@ -195,19 +162,47 @@ public class Main extends AppCompatActivity {
             alertDialog.show();
         }
 
-        // установка ссылки // set link
-        if (settings.contains(Pref.DOWNLOAD_URL)) {
-            String link = settings.getString(Pref.DOWNLOAD_URL, "");
-            if (link != null && !link.isEmpty()) {
-                setLink(link);
-                setWallpaperPreview();
-            }
+        // load wallpaper preview
+        if (wallpaper.exists(Image.Original)) {
+            setWallpaperPreview();
         }
 
         setButtonsState();
 
+        // set max height for imageview
+        if (settings.contains(Pref.SCREEN_SIZE_SMALL_OR_NORMAL) && settings.getBoolean(Pref.SCREEN_SIZE_SMALL_OR_NORMAL, false)) {
+            previewWallpaper.setMaxHeight((int) getResources().getDimension(R.dimen.preview_max_height));
+        }
+        else {
+            ScreenSize screenSize = getScreenSize();
+            if (screenSize == ScreenSize.SMALL || screenSize == ScreenSize.NORMAL) {
+                previewWallpaper.setMaxHeight((int) getResources().getDimension(R.dimen.preview_max_height));
+                settings.put(Pref.SCREEN_SIZE_SMALL_OR_NORMAL, true);
+            }
+        }
+
         progressDialog = new ProgressDialog(Main.this);
     } // onCreate
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private ScreenSize getScreenSize(){
+        // https://stackoverflow.com/questions/10689259/how-to-programatically-determine-which-xml-layout-my-android-apps-is-using
+        int screen = (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK);
+        switch (screen){
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                return ScreenSize.SMALL;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return ScreenSize.NORMAL;
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                return ScreenSize.LARGE;
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                return ScreenSize.XLARGE;
+            default:
+                return ScreenSize.UNKNOWN;
+        }
+    }
     //----------------------------------------------------------------------------------------------
 
 
@@ -222,10 +217,10 @@ public class Main extends AppCompatActivity {
         // Checks the orientation of the screen
         /*
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) { // album
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Main.this, "landscape", Toast.LENGTH_SHORT).show();
         }
         else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) { // normal
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Main.this, "portrait", Toast.LENGTH_SHORT).show();
         }
          */
     }
@@ -256,32 +251,197 @@ public class Main extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true); // for dividers
         return true;
     }
     //----------------------------------------------------------------------------------------------
 
 
 
+    void askPermission(){
+        // for saving images to gallery
+        ActivityCompat.requestPermissions(Main.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveToGallery = new SaveToGallery();
+                saveToGallery.execute();
+            }
+            else {
+                Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_perm_error), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
     // 3-dot menu items
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_action_themes: // themes
-                menuShowActivity(Themes.class);
-                return true;
+        int id = item.getItemId();
 
-            case R.id.menu_item_action_help: // help
-                menuShowActivity(Help.class);
-                return true;
-
-            case R.id.menu_item_action_about: // about
-                menuShowActivity(About.class);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        // actions
+        if (id == R.id.menu_item_action_help) { // help
+            menuShowActivity(Help.class);
+            return true;
         }
+        else if (id == R.id.menu_item_action_about) { // about
+            menuShowActivity(About.class);
+            return true;
+        }
+        // image
+        else if (id == R.id.menu_item_image_copy) { // copy
+            imageCopy();
+            return true;
+        }
+        else if (id == R.id.menu_item_image_open) { // open
+            imageOpen();
+            return true;
+        }
+        else if (id == R.id.menu_item_image_save) { // save
+            if (!wallpaper.exists(Image.Original)) {
+                Toast.makeText(this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                new Main.SaveToGallery().execute();
+            }
+            else {
+                askPermission();
+            }
+            return true;
+        }
+        else if (id == R.id.menu_item_image_share) { // share
+            imageShare();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private void imageCopy(){
+        if (!settings.contains(Pref.IMAGE_URL)) {
+            Toast.makeText(Main.this, getResources().getString(R.string.menu_item_link_error), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("MRP_link", settings.getString(Pref.IMAGE_URL, ""));
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(Main.this, getResources().getString(R.string.menu_item_copy_success), Toast.LENGTH_LONG).show();
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private void imageShare(){
+        if (!wallpaper.exists(Image.Original)) {
+            Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, settings.getString(Pref.IMAGE_URL, ""));
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, null));
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private void imageOpen(){
+        if (!wallpaper.exists(Image.Original)) {
+            Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(settings.getString(Pref.IMAGE_URL, "")));
+        startActivity(browserIntent);
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private class SaveToGallery extends AsyncTask<Void, Void, Void> {
+        String name = settings.getString(Pref.IMAGE_TITLE, "MRP_" + System.currentTimeMillis() + ".png");
+        boolean saved = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(Main.this);
+            progressDialog.setTitle(getResources().getString(R.string.settings_progress_title_saving));
+            progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+        //---
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Bitmap bitmap = new Wallpaper(getApplicationContext(), settings, Image.Original).load();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // >= 10
+                final String IMAGES_FOLDER_NAME = getResources().getString(R.string.app_name);
+
+                ContentResolver resolver = getApplicationContext().getContentResolver();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+                contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+                contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + IMAGES_FOLDER_NAME);
+                Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                try {
+                    OutputStream fos = resolver.openOutputStream(imageUri);
+                    saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.flush();
+                    fos.close();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else { // normal Android version
+                String res = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, name, null);
+                if (!res.isEmpty()) {
+                    saved = true;
+                }
+            }
+            return null;
+        }
+        //---
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            progressDialog.dismiss();
+            if (saved) {
+                Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_success), Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(Main.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+            }
+        }
+        //---
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            progressDialog.dismiss();
+        }
+        //---
     }
     //----------------------------------------------------------------------------------------------
 
@@ -295,29 +455,8 @@ public class Main extends AppCompatActivity {
 
 
 
-    /*
-    // вызов диалогового окна
-    protected void callDialog(int title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setCancelable(true);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog = builder.create();
-        alertDialog.show();
-    }
-     */
-
-
-
     View.OnClickListener click = new View.OnClickListener() {
         final Calendar calendar = Calendar.getInstance();
-        int dialogScreenImage; //
         int dialogFrequency;
         int dflt = 0; // default value for alert dialogs with radio buttons
 
@@ -329,11 +468,11 @@ public class Main extends AppCompatActivity {
                 case R.id.btn_cancel: // Cancel button
                     File bg_edited = new File(
                         new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                        Pref.FILE_NAME_EDITED
+                        Pref.IMAGE_EDITED
                     );
                     if (bg_edited.exists()) {
                         if (bg_edited.delete()) {
-                            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
+                            previewWallpaper.setImageBitmap(wallpaper.load());
                             Helper.toggleViewState(Main.this, btnCancel, false);
                         }
                         else {
@@ -348,7 +487,7 @@ public class Main extends AppCompatActivity {
                 case R.id.btn_edit: // Edit button
                     File input = new File(
                         new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                        Pref.FILE_NAME
+                        Pref.IMAGE_ORIGINAL
                     );
 
                     if (!input.exists()) {
@@ -358,7 +497,7 @@ public class Main extends AppCompatActivity {
 
                     File output = new File(
                         new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-                        Pref.FILE_NAME_EDITED
+                        Pref.IMAGE_EDITED
                     );
 
                     // res - https://github.com/Yalantis/uCrop
@@ -376,11 +515,11 @@ public class Main extends AppCompatActivity {
                     break;
 
                 case R.id.btn_next: // Next button
-                    Helper.d("Main - Next");
+                    //new DownloadFile().execute("https://www.mylittlewallpaper.com/images/o_5bbb8e74e84398.86540959.png"); // progress bar todo
 
                     if (Helper.checkInternetConnection(Main.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
                         progressDialog = new ProgressDialog(Main.this);
-                        progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
+                        progressDialog.setTitle(getResources().getString(R.string.settings_progress_title_downloading));
                         progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
                         progressDialog.setCanceledOnTouchOutside(false);
                         progressDialog.setCancelable(false);
@@ -407,6 +546,7 @@ public class Main extends AppCompatActivity {
                     else {
                         Toast.makeText(Main.this, R.string.settings_load_error, Toast.LENGTH_LONG).show();
                     }
+
                     break;
                 // <--- buttons
 
@@ -431,30 +571,9 @@ public class Main extends AppCompatActivity {
                     settings.put(Pref.ENABLED, checkBoxEnabled.isChecked());
                     break;
 
-                case R.id.layout_mobile_only:
-                    if (checkBoxMobileOnly.isChecked()) {
-                        checkBoxMobileOnly.setChecked(false);
-                    }
-                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
-                        checkBoxMobileOnly.setChecked(true);
-                    }
-                    settings.put(Pref.MOBILE_ONLY, checkBoxMobileOnly.isChecked());
-
-                    if (checkBoxEnabled.isChecked()) {
-                        restartService();
-                    }
-
-                    break;
-
-                case R.id.layout_wifi_only:
-                    if (checkBoxWifiOnly.isChecked()) {
-                        checkBoxWifiOnly.setChecked(false);
-                    }
-                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
-                        checkBoxWifiOnly.setChecked(true);
-                    }
-                    settings.put(Pref.WIFI_ONLY, checkBoxWifiOnly.isChecked());
-
+                case R.id.layout_settings:
+                    Intent intent = new Intent(Main.this, Settings.class);
+                    startActivity(intent);
                     break;
                 // <--- layers
 
@@ -471,7 +590,7 @@ public class Main extends AppCompatActivity {
                         public void run() {
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
 
-                            changeWallpaper.setWallpaper(getApplicationContext());
+                            wallpaper.set();
                             progressDialog.dismiss();
 
                             Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
@@ -552,74 +671,9 @@ public class Main extends AppCompatActivity {
                     builder.create().show();
 
                     break;
-
-                // change screen
-                case R.id.layout_set_screen:
-                    String[] vars = {
-                        getResources().getString(R.string.screen_both),
-                        getResources().getString(R.string.screen_homescreen),
-                        getResources().getString(R.string.screen_lockscreen),
-                    };
-
-                    dflt = 0;
-                    if (settings.contains(Pref.SCREEN_IMAGE)) {
-                        dflt = settings.getInt(Pref.SCREEN_IMAGE, 0);
-                    }
-
-                    AlertDialog.Builder builder2 = new AlertDialog.Builder(Main.this);
-                    builder2.setTitle(getResources().getString(R.string.screen_alert_title));
-                    builder2.setSingleChoiceItems(vars, dflt, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            dialogScreenImage = which;
-                        }
-                    });
-                    builder2.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            settings.put(Pref.SCREEN_IMAGE, dialogScreenImage);
-
-                            // update ui
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setScreenImageText(dialogScreenImage);
-                                }
-                            });
-
-                            dialog.dismiss();
-                        }
-                    });
-                    builder2.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder2.create().show();
-
-                    break;
             }
         }
     };
-    //----------------------------------------------------------------------------------------------
-
-
-
-    // set text for screen
-    private void setScreenImageText(int screenImage){
-        switch (screenImage){
-            case 0: // both
-                textScreenImage.setText(getResources().getString(R.string.screen_both));
-                break;
-            case 1: // homescreen
-                textScreenImage.setText(getResources().getString(R.string.screen_homescreen));
-                break;
-            case 2: // lockscreen
-                textScreenImage.setText(getResources().getString(R.string.screen_lockscreen));
-                break;
-        }
-    }
     //----------------------------------------------------------------------------------------------
 
 
@@ -652,14 +706,13 @@ public class Main extends AppCompatActivity {
 
     // set wallpaper preview
     private void setWallpaperPreview () {
-        if (currentWallpaper == null) {
-            currentWallpaper = findViewById(R.id.preview_wallpaper);
+        if (previewWallpaper == null) {
+            previewWallpaper = findViewById(R.id.preview_wallpaper);
         }
 
-        if (currentWallpaper != null) {
-            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext())); // load wallpaper preview
-            currentWallpaper.setVisibility(View.VISIBLE);
-            textviewDownloadUrl.setVisibility(View.VISIBLE);
+        if (previewWallpaper != null) {
+            previewWallpaper.setImageBitmap(wallpaper.load()); // load wallpaper preview
+            previewWallpaper.setVisibility(View.VISIBLE);
         }
         else {
             Toast.makeText(
@@ -670,7 +723,6 @@ public class Main extends AppCompatActivity {
                 ),
                 Toast.LENGTH_LONG)
             .show();
-            textviewDownloadUrl.setVisibility(View.GONE);
         }
     }
     //-----------------------------------------------------------------------------------------------
@@ -687,11 +739,6 @@ public class Main extends AppCompatActivity {
                         setWallpaperPreview();
                         Helper.toggleViewState(Main.this, btnCancel, false);
                         Helper.toggleViewState(Main.this, btnEdit,   true);
-
-                        // установка ссылки для загрузки // set link
-                        if (settings.contains(Pref.DOWNLOAD_URL)) {
-                            setLink(settings.getString(Pref.DOWNLOAD_URL, ""));
-                        }
 
                         if (progressDialog != null) {
                             progressDialog.cancel();
@@ -734,27 +781,12 @@ public class Main extends AppCompatActivity {
 
 
 
-    // установка ссылки на текст под изображением // set link under the image
-    private void setLink (String link){
-        String text = String.format(
-            "<a href='%s'>%s</a>",
-            link,
-            getResources().getString(R.string.open_image_on_site)
-        );
-
-        textviewDownloadUrl.setText(Html.fromHtml(text));
-        textviewDownloadUrl.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-    //-----------------------------------------------------------------------------------------------
-
-
-
     // результат активити редактирования изо // result of the activity for image editing
     @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            currentWallpaper.setImageBitmap(changeWallpaper.loadWallpaper(getApplicationContext()));
+            previewWallpaper.setImageBitmap(wallpaper.load());
 
             Helper.toggleViewState(Main.this, btnCancel, true);
 
@@ -790,7 +822,7 @@ public class Main extends AppCompatActivity {
     public boolean originalImageExists(){
         File input = new File(
             new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-            Pref.FILE_NAME
+            Pref.IMAGE_ORIGINAL
         );
 
         return input.exists();
@@ -803,7 +835,7 @@ public class Main extends AppCompatActivity {
     public boolean editedImageExists(){
         File bg_edited = new File(
             new ContextWrapper(getApplicationContext()).getDir(Pref.SAVE_PATH, MODE_PRIVATE),
-            Pref.FILE_NAME_EDITED
+            Pref.IMAGE_EDITED
         );
         return bg_edited.exists();
     }
@@ -816,10 +848,7 @@ public class Main extends AppCompatActivity {
         super.onDestroy();
 
         checkBoxEnabled = null;
-        checkBoxMobileOnly = null;
-        checkBoxWifiOnly = null;
-        currentWallpaper = null;
-        textviewDownloadUrl = null;
+        previewWallpaper = null;
         settings = null;
 
         if (alertDialog != null) {
@@ -836,3 +865,77 @@ public class Main extends AppCompatActivity {
     }
     //----------------------------------------------------------------------------------------------
 }
+
+
+
+
+    /* progress bar. todo: server does not send file length. Wait for it.
+    private class DownloadFile extends AsyncTask<String, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(Main.this);
+            progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
+            progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(false);
+
+            progressDialog.setIndeterminate(false);
+            progressDialog.setMax(100);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+            progressDialog.show();
+        }
+        //---
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Helper.d(strings[0]);
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                connection.connect();
+                int size = connection.getContentLength();
+
+                Helper.d(connection.getResponseCode());
+                Helper.d(connection);
+                Helper.d(size);
+                //Helper.d(Long.parseLong(connection.getHeaderField("Content-Length")));
+
+                InputStream inputStream = new BufferedInputStream(url.openStream());
+                //OutputStream outputStream = getApplicationContext().openFileOutput(Pref.FILE_NAME, Context.MODE_PRIVATE);
+                //new FileOutputStream(mContext.getFilesDir() + "/file.mp4");
+                OutputStream outputStream = new FileOutputStream(getApplicationContext().getFilesDir() + "/" + Pref.FILE_NAME);
+
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while((count = inputStream.read(data)) != -1){
+                    total += count;
+                    publishProgress((int) (total * 100 / size));
+                    outputStream.write(data, 0, count);
+                }
+
+                outputStream.flush();
+                outputStream.close();
+                inputStream.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+        //---
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressDialog.setProgress(values[0]);
+            Helper.d(values[0]);
+        }
+        //---
+    }
+     */

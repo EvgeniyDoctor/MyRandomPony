@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:background="?attr/commonBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:divider="@drawable/separator"
+            android:showDividers="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <RelativeLayout
+                android:id="@+id/layout_wifi_only"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                android:paddingEnd="@dimen/relative_layout_padding_end_checkbox"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/settings_wifi_only"/>
+
+                <CheckBox
+                    android:id="@+id/only_wifi"
+                    android:buttonTint="?attr/colorRadioCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:checked="true"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_root_set_screen"
+            android:orientation="vertical"
+            android:divider="@drawable/separator"
+            android:showDividers="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/layout_set_screen"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/screen_change"
+                    android:textColor="?attr/colorText" />
+
+                <TextView
+                    android:id="@+id/screen_image"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorTextValue"
+                    android:textSize="@dimen/text_value"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:divider="@drawable/separator"
+            android:showDividers="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/layout_screen_size"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/screen_size"
+                    />
+
+                <TextView
+                    android:id="@+id/screen_size"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorTextValue"
+                    android:textSize="@dimen/text_value"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:showDividers="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <RelativeLayout
+                android:id="@+id/layout_themes"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                android:paddingEnd="@dimen/relative_layout_padding_end_imageview"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/activity_themes_title"
+                    />
+
+                <ImageView
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    app:tint="?attr/colorRadioCheckbox"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_baseline_open_in_new_24"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
