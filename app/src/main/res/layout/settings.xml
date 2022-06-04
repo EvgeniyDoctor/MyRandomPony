@@ -120,6 +120,41 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:divider="@drawable/separator"
+            android:showDividers="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/layout_image_source"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="Image source"
+                    />
+
+                <TextView
+                    android:id="@+id/image_source"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorTextValue"
+                    android:textSize="@dimen/text_value"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
             android:showDividers="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

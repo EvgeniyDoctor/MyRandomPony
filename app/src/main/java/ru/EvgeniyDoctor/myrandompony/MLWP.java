@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 
 
-public class MLWP extends ImageProvider {
+public class MLWP extends ImageProviders {
     MLWP(Context context, AppPreferences settings) {
         super(context, settings); // abstract constructor
     }

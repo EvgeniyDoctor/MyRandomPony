@@ -32,15 +32,24 @@ enum DownloadResult {
 
 
 
-public abstract class ImageProvider {
+public abstract class ImageProviders {
     public final Context context;
     public final AppPreferences settings;
+
+    // like enum
+    public static final int DERPIBOORU  = 1;
+    public static final int MLWP        = 2;
+
+    public static final String[] PROVIDERS = {"Derpibooru", "MLWP"};
+    public static final int TOTAL_PROVIDERS = 2; // count of providers
+    public static final int PROVIDERS_DEFAULT = 0b0011; // checked all
+
     private final int connectTimeout = 5000; // 5 sec
     private final int readTimeout    = 10000; // 10 sec
 
 
 
-    ImageProvider(Context context, AppPreferences settings) {
+    ImageProviders(Context context, AppPreferences settings) {
         this.context = context;
         this.settings = settings;
     }
@@ -243,7 +252,7 @@ public abstract class ImageProvider {
 
 
 
-    // вычисление размеров картинки // calculating the size of the image
+    // calculating max size of the image
     private static int calculateSize (BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
@@ -254,14 +263,26 @@ public abstract class ImageProvider {
             final int halfHeight = height >> 1;
             final int halfWidth = width >> 1;
 
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both height and width larger than the requested height and width.
             while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
                 inSampleSize <<= 1;
             }
         }
 
         return inSampleSize;
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    // load values on Settings dialog with providers
+    public static boolean[] toBitsArray(int defaultImageSource){
+        int size = ImageProviders.TOTAL_PROVIDERS;
+        boolean[] bits = new boolean[size];
+        for (int i = size-1; i >= 0; --i) {
+            bits[i] = (defaultImageSource & (1 << i)) != 0;
+        }
+        return bits;
     }
     //----------------------------------------------------------------------------------------------
 }

@@ -152,4 +152,5 @@
     <string name="screen_size_alert_title">Выберите разрешение</string>
     <string name="screen_size_normal">обычное</string>
     <string name="screen_size_large">большое</string>
+    <string name="image_source_no_one_checked">Выбран первый пункт</string>
 </resources>

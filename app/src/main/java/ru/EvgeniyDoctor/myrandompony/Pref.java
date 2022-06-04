@@ -10,6 +10,7 @@ public abstract class Pref {
         SCREEN_RESOLUTION   = "screen_resolution",
         REFRESH_FREQUENCY   = "refresh_frequency",
         SCREEN_SIZE_SMALL_OR_NORMAL = "screen_size_small_or_normal",
+        IMAGE_SOURCES       = "image_sources",
 
         REFRESH_FREQUENCY_CURR_DAY      = "refresh_frequency_curr_day",
         REFRESH_FREQUENCY_CURR_WEEK     = "refresh_frequency_curr_week",

@@ -16,13 +16,13 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.grandcentrix.tray.AppPreferences;
 
 public class Settings extends AppCompatActivity {
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private CheckBox
-        checkBoxMobileOnly,
         checkBoxWifiOnly;
     private TextView
         textScreenImage,
@@ -44,6 +44,7 @@ public class Settings extends AppCompatActivity {
         RelativeLayout layout_set_screen    = findViewById(R.id.layout_set_screen);
         RelativeLayout layout_screen_size   = findViewById(R.id.layout_screen_size);
         RelativeLayout layout_themes        = findViewById(R.id.layout_themes);
+        RelativeLayout layout_image_source  = findViewById(R.id.layout_image_source);
         textScreenImage                     = findViewById(R.id.screen_image);
         textScreenSize                      = findViewById(R.id.screen_size);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
@@ -52,6 +53,7 @@ public class Settings extends AppCompatActivity {
         layout_set_screen.setOnClickListener(click);
         layout_screen_size.setOnClickListener(click);
         layout_themes.setOnClickListener(click);
+        layout_image_source.setOnClickListener(click);
 
         // WiFi only
         if (settings.contains(Pref.WIFI_ONLY)) {
@@ -133,6 +135,7 @@ public class Settings extends AppCompatActivity {
         int dialogScreenImage;
         int dialogScreenSize;
         int dflt = 0; // default value for alert dialogs with radio buttons
+        int defaultImageSource;
         AlertDialog.Builder builder;
 
         @SuppressLint("NonConstantResourceId")
@@ -244,7 +247,46 @@ public class Settings extends AppCompatActivity {
                         }
                     });
                     builder.create().show();
+                    break;
 
+                case R.id.layout_image_source:
+                    defaultImageSource = ImageProviders.PROVIDERS_DEFAULT; // 0b11
+                    if(settings.contains(Pref.IMAGE_SOURCES)){
+                        defaultImageSource = settings.getInt(Pref.IMAGE_SOURCES, ImageProviders.PROVIDERS_DEFAULT);
+                    }
+
+                    builder = new AlertDialog.Builder(Settings.this);
+                    builder.setTitle(getResources().getString(R.string.screen_size_alert_title)); // todo
+                    builder.setMultiChoiceItems(
+                        ImageProviders.PROVIDERS,
+                        ImageProviders.toBitsArray(defaultImageSource), // bools
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
+                            defaultImageSource ^= (1 << which); // xor. 0b01 - derpi; 0b10 - mlwp; 0b11 - all
+                        }
+                    });
+                    builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (defaultImageSource <= 0) { // if no one checked
+                                Toast.makeText(Settings.this, getResources().getString(R.string.image_source_no_one_checked), Toast.LENGTH_SHORT).show();
+                                settings.put(Pref.IMAGE_SOURCES, ImageProviders.DERPIBOORU);
+                            }
+                            else {
+                                settings.put(Pref.IMAGE_SOURCES, defaultImageSource);
+                            }
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
                     break;
             }
         }

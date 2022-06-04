@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 
 
-public class Derpibooru extends ImageProvider{
+public class Derpibooru extends ImageProviders {
     Derpibooru(Context context, AppPreferences settings) {
         super(context, settings); // abstract constructor
     }
