@@ -21,7 +21,6 @@ import java.net.URL;
 
 enum DownloadResult {
     SUCCESS,
-    CONNECTED,                    // successful load, the background will NOT be changed;
     SUCCESS_CHANGE_WALLPAPER,   // successful load, the background will be changed;
     NOT_CONNECTED,              // url does not exist or connect timeout
     NOT_JSON,                   // the response is not json
@@ -36,8 +35,8 @@ enum DownloadResult {
 public abstract class ImageProvider {
     public final Context context;
     public final AppPreferences settings;
-    public final int connectTimeout = 5000; // 5 sec
-    public final int setReadTimeout = 10000; // 10 sec
+    private final int connectTimeout = 5000; // 5 sec
+    private final int readTimeout    = 10000; // 10 sec
 
 
 
@@ -87,14 +86,19 @@ public abstract class ImageProvider {
 
 
 
-    public HttpURLConnection checkConnection(String urlString) {
+    public abstract DownloadResult load();
+    //----------------------------------------------------------------------------------------------
+
+
+
+    private HttpURLConnection checkConnection(String urlString) {
         try {
             URL url = new URL(urlString);
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.setConnectTimeout(connectTimeout);
-            urlConnection.setReadTimeout(setReadTimeout);
+            urlConnection.setReadTimeout(readTimeout);
 
             // connect
             if (urlConnection.getResponseCode() == 200) { // restful code 200 (OK)
@@ -113,7 +117,7 @@ public abstract class ImageProvider {
 
 
 
-    public JSONObject getJson(HttpURLConnection httpURLConnection){
+    private JSONObject getJson(HttpURLConnection httpURLConnection){
         try {
             InputStream inputStream = httpURLConnection.getInputStream();
             StringBuilder buffer = new StringBuilder();
@@ -153,7 +157,7 @@ public abstract class ImageProvider {
 
 
 
-    public Bitmap downloadImage(String urlString){
+    private Bitmap downloadImage(String urlString){
         try {
             URL url = new URL(urlString);
 
@@ -183,7 +187,7 @@ public abstract class ImageProvider {
 
 
 
-    public boolean saveImage(Bitmap bitmap){
+    private boolean saveImage(Bitmap bitmap){
         try {
             // deleting the edited image
             File bg_edited = new File(
@@ -211,20 +215,12 @@ public abstract class ImageProvider {
         }
 
         return false;
-
-        // send result
-//        if (!needChangeBg) { // не нужно менять фон
-//            return Codes.CONNECTED;
-//        }
-//        else { // нужно изменить фон // change wallpaper
-//            return Codes.SUCCESS_CHANGE_WALLPAPER;
-//        }
     }
     //----------------------------------------------------------------------------------------------
 
 
 
-    public int getMaxSize(){
+    private int getMaxSize(){
         int resolution = 0;
         int max = 1000;
 
@@ -248,7 +244,7 @@ public abstract class ImageProvider {
 
 
     // вычисление размеров картинки // calculating the size of the image
-    public static int calculateSize (BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    private static int calculateSize (BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
