@@ -70,6 +70,14 @@ if you select the **large** option, the same image will be compressed to a size 
 - **normal**: for normal resolution screens
 - **large**: for large resolution screens
 
+### Image sources
+You can choose which site you want to get images from:
+- **Derpibooru**: [https://derpibooru.org/](https://derpibooru.org/)
+- **MLWP**: [https://www.mylittlewallpaper.com/](https://www.mylittlewallpaper.com/)
+
+### Derpibooru: safe search
+On / off mature content search.
+
 ### Themes
 You can change the theme of the application.
 
@@ -88,11 +96,13 @@ You can change the theme of the application.
 
 "My Random Pony" app is developed by Evgeniy Doctor. All rights reserved. ©<br>
 The app was released on November 24, 2016.<br>
-This is a third-party mobile app for accessing the images on http://mylittlewallpaper.com. The developer has no control over what images are available.
+This is a third party application for accessing images on the following sites:
+- https://derpibooru.org/
+- http://mylittlewallpaper.com/
+<br>The developer has no control over what images are available.
 
 My Little Pony © Hasbro<br>
 All wallpapers © to their respective artists<br>
-All wallpapers are located at: http://mylittlewallpaper.com
 
 ## Screenshots
 

@@ -77,6 +77,16 @@
             <li><b>большое</b>: подходит для экранов с большим разрешением</li>
         </ul>
 
+        <h3>Источники изображений</h3>
+        Вы можете выбрать, с какого сайта вы хотите получать изображения:
+        <ul>
+            <li><b>Derpibooru</b>: https://derpibooru.org/</li>
+            <li><b>MLWP</b>: https://www.mylittlewallpaper.com/</li>
+        </ul>
+
+        <h3>Derpibooru: безопасный поиск</h3>
+        Включить / отключить поиск с материалами для взрослых.
+
         <h3>Темы</h3>
         Можно сменить тему приложения.
 
@@ -101,7 +111,7 @@
     <string name="hint_first_next_alert_msg">Если Вам понравится изображение, нажмите на него, чтобы установить как фон!\n\nЧтобы изменить размер или обрезать, нажмите \"Редакт.\", вернуть прежний вид - \"Отмена\".</string>
     <string name="hint_first_launch_alert_title">Привет!</string>
     <string name="hint_first_launch_alert_msg">Вы можете установить новый фон прямо сейчас, нажав на кнопку \"Дальше\", или отметить галочкой пункт \"Включено\" и подождать нового дня!\n\nЕсли у Вас появятся вопросы, загляните в \"Помощь\"!</string>
-    <string name="settings_update_error">mylittlewallpaper.com: недоступен</string>
+    <string name="settings_update_error">Сайт недоступен</string>
     <string name="settings_download_error">При загрузке произошла ошибка</string>
     <string name="settings_image_cancel1">Нет отредактированного изображения</string>
     <string name="settings_image_cancel2">Отмена: неизвестная ошибка</string>
@@ -111,11 +121,12 @@
     <string name="about_text">
         My Little Pony © Hasbro\n\n
 
-        Все изображения расположены на сайте mylittlewallpaper.com и принадлежат их авторам.\n\n
-
         Приложение \"My Random Pony\" разработал Евгений Доктор. Все права защищены. ©\n
         Релиз приложения состоялся 24 ноября 2016 года.
-        Это приложение третьей стороны для доступа к изображениям на сайте http://mylittlewallpaper.com. Разработчик не несёт ответственности за содержимое изображений.\n\n
+        Это приложение третьей стороны для доступа к изображениям на следующих сайтах:
+        - https://derpibooru.org/
+        - http://mylittlewallpaper.com/
+        \n\nРазработчик не несёт ответственности за содержимое изображений.\n\n
 
         Исходный код: https://github.com/EvgeniyDoctor/MyRandomPony\n\n
 
@@ -152,7 +163,7 @@
     <string name="screen_size_alert_title">Выберите разрешение</string>
     <string name="screen_size_normal">обычное</string>
     <string name="screen_size_large">большое</string>
-    <string name="derpibooru_safe_search">Derpibooru: тег safe</string>
+    <string name="derpibooru_safe_search">Derpibooru: безопасный поиск</string>
     <string name="image_source_alert_title">Выберите источники</string>
     <string name="image_source">Источники изображений</string>
     <string name="image_source_no_one_checked">Выбран первый пункт</string>

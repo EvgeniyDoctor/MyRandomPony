@@ -20,7 +20,7 @@
     <string name="ok">OK</string>
     <string name="about">About</string>
     <string name="cancel">Cancel</string>
-    <string name="settings_update_error">mylittlewallpaper.com: cannot be reached</string>
+    <string name="settings_update_error">Website cannot be reached</string>
     <string name="settings_download_error">Downloading error</string>
     <string name="settings_cancel_image">Cancel</string>
     <string name="settings_edit_image">Edit</string>
@@ -84,6 +84,16 @@
             <li><b>large</b>: for large resolution screens</li>
         </ul>
 
+        <h3>Image sources</h3>
+        You can choose which site you want to get images from:
+        <ul>
+            <li><b>Derpibooru</b>: https://derpibooru.org/</li>
+            <li><b>MLWP</b>: https://www.mylittlewallpaper.com/</li>
+        </ul>
+
+        <h3>Derpibooru: safe search</h3>
+        On / off mature content search.
+
         <h3>Themes</h3>
         You can change the theme of the application.
 
@@ -102,11 +112,12 @@
     <string name="about_text">
         My Little Pony © Hasbro\n\n
 
-        All images are located on mylittlewallpaper.com and belong to their authors.\n\n
-
         \"My Random Pony\" app is developed by Evgeniy Doctor. All rights reserved. ©\n
         The app was released on November 24, 2016.\n
-        This is a third-party mobile app for accessing the images on http://mylittlewallpaper.com. The developer is not responsible for the content of the images.\n\n
+        This is a third party application for accessing images on the following sites:
+        - https://derpibooru.org/
+        - http://mylittlewallpaper.com/
+        \n\nThe developer is not responsible for the content of the images.\n\n
 
         Open source: https://github.com/EvgeniyDoctor/MyRandomPony\n\n
 
@@ -146,7 +157,7 @@
     <string name="screen_size_normal">normal</string>
     <string name="screen_size_large">large</string>
 
-    <string name="derpibooru_safe_search">Derpibooru safe search</string>
+    <string name="derpibooru_safe_search">Derpibooru: safe search</string>
 
     <string name="image_source_alert_title">Select sources</string>
     <string name="image_source">Image sources</string>
