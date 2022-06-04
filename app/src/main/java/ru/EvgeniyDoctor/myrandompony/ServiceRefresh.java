@@ -271,8 +271,8 @@ public class ServiceRefresh extends Service {
 
 
     private void startLoad (int unit) {
-        LoadNewWallpaper.Codes code = loadNewWallpaper.load();
-        if (code == LoadNewWallpaper.Codes.SUCCESS_CHANGE_WALLPAPER) { // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
+        DownloadResult code = loadNewWallpaper.load();
+        if (code == DownloadResult.SUCCESS_CHANGE_WALLPAPER) { // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
             Helper.d("setting new bg!");
 
             saveNew(unit);

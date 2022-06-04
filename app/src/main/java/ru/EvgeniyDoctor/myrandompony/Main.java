@@ -20,17 +20,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +48,6 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 
-
 public class Main extends AppCompatActivity {
     private CheckBox
             checkBoxEnabled;
@@ -74,6 +68,7 @@ public class Main extends AppCompatActivity {
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
     // todo 07.04.2022: add derpibooru?
+    // todo 04.06.2022: add "rate me"
 
 
 
@@ -535,7 +530,7 @@ public class Main extends AppCompatActivity {
                                     settings,
                                     false // no need to change the background
                                 );
-                                LoadNewWallpaper.Codes code = loadNewWallpaper.load();
+                                DownloadResult code = loadNewWallpaper.load();
                                 nextButtonProcessing(code); // processing the result and update UI
 
                                 Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
@@ -729,7 +724,7 @@ public class Main extends AppCompatActivity {
 
 
 
-    private void nextButtonProcessing(LoadNewWallpaper.Codes code){
+    private void nextButtonProcessing(DownloadResult code){
         // update UI in Thread
         runOnUiThread(new Runnable() {
             @Override

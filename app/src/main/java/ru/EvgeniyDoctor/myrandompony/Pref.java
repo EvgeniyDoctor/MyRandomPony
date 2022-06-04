@@ -2,7 +2,7 @@ package ru.EvgeniyDoctor.myrandompony;
 
 // class with keys names in app prefs
 
-abstract class Pref {
+public abstract class Pref {
     public static final String
         ENABLED             = "enabled_pony_wallpapers",
         WIFI_ONLY           = "wifi_only",
