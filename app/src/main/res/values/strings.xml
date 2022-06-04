@@ -145,5 +145,10 @@
     <string name="screen_size_alert_title">Pick a resolution</string>
     <string name="screen_size_normal">normal</string>
     <string name="screen_size_large">large</string>
+
+    <string name="derpibooru_safe_search">Derpibooru safe search</string>
+
+    <string name="image_source_alert_title">Select sources</string>
+    <string name="image_source">Image sources</string>
     <string name="image_source_no_one_checked">First item selected</string>
 </resources>

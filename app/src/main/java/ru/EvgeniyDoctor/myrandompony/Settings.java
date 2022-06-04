@@ -23,6 +23,7 @@ import net.grandcentrix.tray.AppPreferences;
 public class Settings extends AppCompatActivity {
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private CheckBox
+        derpibooruSafeSearch,
         checkBoxWifiOnly;
     private TextView
         textScreenImage,
@@ -41,12 +42,14 @@ public class Settings extends AppCompatActivity {
 
         RelativeLayout layout_wifi_only     = findViewById(R.id.layout_wifi_only);
         checkBoxWifiOnly                    = findViewById(R.id.only_wifi);
+        derpibooruSafeSearch                = findViewById(R.id.derpibooru_safe_search);
         RelativeLayout layout_set_screen    = findViewById(R.id.layout_set_screen);
         RelativeLayout layout_screen_size   = findViewById(R.id.layout_screen_size);
         RelativeLayout layout_themes        = findViewById(R.id.layout_themes);
         RelativeLayout layout_image_source  = findViewById(R.id.layout_image_source);
         textScreenImage                     = findViewById(R.id.screen_image);
         textScreenSize                      = findViewById(R.id.screen_size);
+        RelativeLayout layout_derpibooru_safe_search     = findViewById(R.id.layout_derpibooru_safe_search);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
 
         layout_wifi_only.setOnClickListener(click);
@@ -54,6 +57,8 @@ public class Settings extends AppCompatActivity {
         layout_screen_size.setOnClickListener(click);
         layout_themes.setOnClickListener(click);
         layout_image_source.setOnClickListener(click);
+        layout_image_source.setOnClickListener(click);
+        layout_derpibooru_safe_search.setOnClickListener(click);
 
         // WiFi only
         if (settings.contains(Pref.WIFI_ONLY)) {
@@ -61,6 +66,14 @@ public class Settings extends AppCompatActivity {
         }
         else {
             settings.put(Pref.WIFI_ONLY, true);
+        }
+
+        // derpibooru safe search
+        if (settings.contains(Pref.DERPIBOORU_SAFE_SEARCH)) {
+            derpibooruSafeSearch.setChecked(settings.getBoolean(Pref.DERPIBOORU_SAFE_SEARCH, true));
+        }
+        else {
+            settings.put(Pref.DERPIBOORU_SAFE_SEARCH, true);
         }
 
         // change image on screen
@@ -142,14 +155,26 @@ public class Settings extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                // WiFi only
                 case R.id.layout_wifi_only:
                     if (checkBoxWifiOnly.isChecked()) {
                         checkBoxWifiOnly.setChecked(false);
                     }
-                    else { // чекбокс был ВЫключен при нажатии // checkbox was unchecked when you clicked
+                    else { // checkbox was unchecked
                         checkBoxWifiOnly.setChecked(true);
                     }
                     settings.put(Pref.WIFI_ONLY, checkBoxWifiOnly.isChecked());
+                    break;
+
+                // derpibooru safe search
+                case R.id.layout_derpibooru_safe_search:
+                    if (derpibooruSafeSearch.isChecked()) {
+                        derpibooruSafeSearch.setChecked(false);
+                    }
+                    else { // checkbox was unchecked
+                        derpibooruSafeSearch.setChecked(true);
+                    }
+                    settings.put(Pref.DERPIBOORU_SAFE_SEARCH, derpibooruSafeSearch.isChecked());
                     break;
 
                 // themes
@@ -256,7 +281,7 @@ public class Settings extends AppCompatActivity {
                     }
 
                     builder = new AlertDialog.Builder(Settings.this);
-                    builder.setTitle(getResources().getString(R.string.screen_size_alert_title)); // todo
+                    builder.setTitle(getResources().getString(R.string.image_source_alert_title));
                     builder.setMultiChoiceItems(
                         ImageProviders.PROVIDERS,
                         ImageProviders.toBitsArray(defaultImageSource), // bools

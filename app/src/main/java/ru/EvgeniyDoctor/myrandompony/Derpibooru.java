@@ -20,7 +20,14 @@ public class Derpibooru extends ImageProviders {
 
     @Override
     public DownloadResult load() {
-        return super.load("https://derpibooru.org/api/v1/json/search/images?q=wallpaper,safe&sf=random&per_page=1"); // api request
+        String url = "https://derpibooru.org/api/v1/json/search/images?q=wallpaper%s&sf=random&per_page=1";
+        if (settings.contains(Pref.DERPIBOORU_SAFE_SEARCH) && settings.getBoolean(Pref.DERPIBOORU_SAFE_SEARCH, true)) {
+            url = String.format(url, ",safe");
+        }
+        else {
+            url = String.format(url, "");
+        }
+        return super.load(url); // api request
     }
     //----------------------------------------------------------------------------------------------
 

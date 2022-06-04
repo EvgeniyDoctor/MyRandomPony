@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
     >
 
+
         <LinearLayout
             android:orientation="vertical"
             android:divider="@drawable/separator"
@@ -137,7 +138,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorText"
-                    android:text="Image source"
+                    android:text="@string/image_source"
                     />
 
                 <TextView
@@ -148,6 +149,41 @@
                     android:gravity="center_vertical"
                     android:textColor="?attr/colorTextValue"
                     android:textSize="@dimen/text_value"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:divider="@drawable/separator"
+            android:showDividers="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <RelativeLayout
+                android:id="@+id/layout_derpibooru_safe_search"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height"
+                style="?android:attr/buttonBarButtonStyle"
+                android:paddingEnd="@dimen/relative_layout_padding_end_checkbox"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/derpibooru_safe_search"/>
+
+                <CheckBox
+                    android:id="@+id/derpibooru_safe_search"
+                    android:buttonTint="?attr/colorRadioCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:checked="true"
                     />
             </RelativeLayout>
         </LinearLayout>
