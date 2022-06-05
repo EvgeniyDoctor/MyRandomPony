@@ -15,6 +15,8 @@
     <string name="frequency_once_a_week">once a week</string>
     <string name="frequency_once_a_month">once a month</string>
 
+
+    <string name="image">Image</string>
     <string name="settings_preview">Preview</string>
     <string name="settings_preview_setbackground">Background has been changed</string>
     <string name="ok">OK</string>
@@ -133,14 +135,16 @@
         - by money transfer: https://paypal.me/evgeniydoctor
     </string>
     <string name="menu_item_copy">Copy link</string>
-    <string name="menu_item_save">Save image</string>
+    <string name="menu_item_save">Save</string>
     <string name="menu_item_link_error">Empty link</string>
-    <string name="menu_item_share">Share image</string>
+    <string name="menu_item_share">Share</string>
     <string name="menu_item_open">Open in browser</string>
     <string name="menu_item_copy_success">Copied</string>
     <string name="menu_item_save_success">Saved in gallery</string>
     <string name="menu_item_save_error">No image</string>
     <string name="menu_item_save_perm_error">Provide the permission to save the image in gallery</string>
+    <string name="menu_item_app_share">Share this app</string>
+    <string name="menu_item_app_rate">Rate this app</string>
 
     <string name="changing_wallpaper_progress_title">Changing</string>
     <string name="open_image_on_site">Open this image on the site</string>

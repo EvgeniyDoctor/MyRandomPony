@@ -97,7 +97,10 @@ public class Settings extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
         menu.setGroupVisible(R.id.menu_group_image, false); // hide Image group
+        menu.setGroupVisible(R.id.menu_group_app, false);
+
         MenuCompat.setGroupDividerEnabled(menu, true); // for dividers
         return true;
     }

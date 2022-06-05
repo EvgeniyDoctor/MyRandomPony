@@ -18,6 +18,7 @@
     <string name="settings_image_edit">Редактирование</string>
     <string name="settings_progress_title_saving">Сохранение</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="image">Изображение</string>
 
 
     <!--menu-->
@@ -159,7 +160,7 @@
     <string name="menu_item_save_error">Нечего сохранять</string>
     <string name="menu_item_copy">Копировать ссылку</string>
     <string name="menu_item_save">Сохранить</string>
-    <string name="menu_item_share">Поделиться ссылкой</string>
+    <string name="menu_item_share">Поделиться</string>
     <string name="menu_item_open">Открыть в браузере</string>
     <string name="menu_item_link_error">Пустая ссылка</string>
     <string name="menu_item_save_perm_error">Предоставьте разрешение для сохранения в галерею</string>
@@ -173,4 +174,6 @@
     <string name="image_source_alert_title">Выберите источники</string>
     <string name="image_source">Источники изображений</string>
     <string name="image_source_no_one_checked">Выбран первый пункт</string>
+    <string name="menu_item_app_share">Поделиться</string>
+    <string name="menu_item_app_rate">Оценить</string>
 </resources>

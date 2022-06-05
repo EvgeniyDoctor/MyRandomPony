@@ -292,13 +292,29 @@ public class Main extends AppCompatActivity {
             menuShowActivity(About.class);
             return true;
         }
+
+        // app
+        else if (id == R.id.menu_item_app_rate) { // rate app
+            imageOpen(Pref.APP_LINK);
+            return true;
+        }
+        else if (id == R.id.menu_item_app_share) { // share app
+            imageShare(Pref.APP_LINK);
+            return true;
+        }
+
         // image
         else if (id == R.id.menu_item_image_copy) { // copy
             imageCopy();
             return true;
         }
         else if (id == R.id.menu_item_image_open) { // open
-            imageOpen();
+            if (!wallpaper.exists(Image.Original)) {
+                Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+            imageOpen(settings.getString(Pref.IMAGE_URL, ""));
             return true;
         }
         else if (id == R.id.menu_item_image_save) { // save
@@ -316,7 +332,12 @@ public class Main extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.menu_item_image_share) { // share
-            imageShare();
+            if (!wallpaper.exists(Image.Original)) {
+                Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+            imageShare(settings.getString(Pref.IMAGE_URL, ""));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -340,15 +361,10 @@ public class Main extends AppCompatActivity {
 
 
 
-    private void imageShare(){
-        if (!wallpaper.exists(Image.Original)) {
-            Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
-            return;
-        }
-
+    private void imageShare(String text){
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, settings.getString(Pref.IMAGE_URL, ""));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, null));
     }
@@ -356,13 +372,8 @@ public class Main extends AppCompatActivity {
 
 
 
-    private void imageOpen(){
-        if (!wallpaper.exists(Image.Original)) {
-            Toast.makeText(Main.this, getResources().getString(R.string.menu_item_save_error), Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(settings.getString(Pref.IMAGE_URL, "")));
+    private void imageOpen(String url){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
     }
     //----------------------------------------------------------------------------------------------

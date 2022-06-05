@@ -4,6 +4,8 @@ package ru.EvgeniyDoctor.myrandompony;
 
 public abstract class Pref {
     public static final String
+        APP_LINK            = "https://play.google.com/store/apps/details?id=ru.EvgeniyDoctor.myrandompony",
+
         ENABLED             = "enabled_pony_wallpapers",
         WIFI_ONLY           = "wifi_only",
         SCREEN_IMAGE        = "screen_image",
