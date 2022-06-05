@@ -127,7 +127,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/layout_image_source"
+                android:id="@+id/layout_image_sources"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/layout_height"
                 style="?android:attr/buttonBarButtonStyle"
@@ -142,7 +142,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/image_source"
+                    android:id="@+id/image_sources"
                     android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -173,9 +173,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textColor="?attr/colorText"
                     android:text="@string/derpibooru_tags"
-                    />
+                    android:textColor="?attr/colorText" />
 
                 <TextView
                     android:id="@+id/derpibooru_tags"

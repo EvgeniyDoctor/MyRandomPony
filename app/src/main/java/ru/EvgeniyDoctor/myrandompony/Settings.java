@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,13 +21,19 @@ import android.widget.Toast;
 
 import net.grandcentrix.tray.AppPreferences;
 
+
+
+@SuppressLint("DefaultLocale")
 public class Settings extends AppCompatActivity {
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private CheckBox
         checkBoxWifiOnly;
     private TextView
+        textImageSources,
+        textDerpibooruTags,
         textScreenImage,
         textScreenSize;
+    private final String dd = "%d / %d";
 
 
 
@@ -44,9 +51,11 @@ public class Settings extends AppCompatActivity {
         RelativeLayout layout_set_screen    = findViewById(R.id.layout_set_screen);
         RelativeLayout layout_screen_size   = findViewById(R.id.layout_screen_size);
         RelativeLayout layout_themes        = findViewById(R.id.layout_themes);
-        RelativeLayout layout_image_source  = findViewById(R.id.layout_image_source);
+        RelativeLayout layout_image_sources = findViewById(R.id.layout_image_sources);
         textScreenImage                     = findViewById(R.id.screen_image);
+        textImageSources                    = findViewById(R.id.image_sources);
         textScreenSize                      = findViewById(R.id.screen_size);
+        textDerpibooruTags                  = findViewById(R.id.derpibooru_tags);
         RelativeLayout layout_derpibooru_safe_search     = findViewById(R.id.layout_derpibooru_tags);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
 
@@ -54,8 +63,8 @@ public class Settings extends AppCompatActivity {
         layout_set_screen.setOnClickListener(click);
         layout_screen_size.setOnClickListener(click);
         layout_themes.setOnClickListener(click);
-        layout_image_source.setOnClickListener(click);
-        layout_image_source.setOnClickListener(click);
+        layout_image_sources.setOnClickListener(click);
+        layout_image_sources.setOnClickListener(click);
         layout_derpibooru_safe_search.setOnClickListener(click);
 
         // WiFi only
@@ -69,7 +78,7 @@ public class Settings extends AppCompatActivity {
         // change image on screen
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
             if (settings.contains(Pref.SCREEN_IMAGE)) {
-                setScreenImageText(settings.getInt(Pref.SCREEN_IMAGE, 0));
+                setTextScreenImage(settings.getInt(Pref.SCREEN_IMAGE, 0));
             }
             else {
                 settings.put(Pref.SCREEN_IMAGE, 0);
@@ -80,9 +89,27 @@ public class Settings extends AppCompatActivity {
             layout_root_set_screen.setVisibility(View.GONE); // hide, if Android version < 7.0
         }
 
+        // image sources
+        if (settings.contains(Pref.IMAGE_SOURCES)) {
+            setTextImageSources(settings.getInt(Pref.IMAGE_SOURCES, ImageProviders.PROVIDERS_DEFAULT));
+        }
+        else {
+            settings.put(Pref.IMAGE_SOURCES, ImageProviders.PROVIDERS_DEFAULT);
+            textImageSources.setText(String.format(dd, ImageProviders.TOTAL_PROVIDERS, ImageProviders.TOTAL_PROVIDERS));
+        }
+
+        // derp tags
+        if (settings.contains(Pref.DERPIBOORU_TAGS)) {
+            setTextDerpibooruTags(settings.getInt(Pref.DERPIBOORU_TAGS, 0b11));
+        }
+        else {
+            settings.put(Pref.DERPIBOORU_TAGS, 0b11);
+            textImageSources.setText(String.format(dd, 2, 2));
+        }
+
         // screen size
         if (settings.contains(Pref.SCREEN_RESOLUTION)) {
-            setScreenImageSize(settings.getInt(Pref.SCREEN_RESOLUTION, 0));
+            setTextScreenImageSize(settings.getInt(Pref.SCREEN_RESOLUTION, 0));
         }
         else {
             settings.put(Pref.SCREEN_RESOLUTION, 0);
@@ -196,7 +223,7 @@ public class Settings extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    setScreenImageText(dialogScreenImage);
+                                    setTextScreenImage(dialogScreenImage);
                                 }
                             });
                             dialog.dismiss();
@@ -241,7 +268,7 @@ public class Settings extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    setScreenImageSize(dialogScreenSize);
+                                    setTextScreenImageSize(dialogScreenSize);
                                 }
                             });
 
@@ -257,7 +284,8 @@ public class Settings extends AppCompatActivity {
                     builder.create().show();
                     break;
 
-                case R.id.layout_image_source:
+                // image sources
+                case R.id.layout_image_sources:
                     defaultImageSource = ImageProviders.PROVIDERS_DEFAULT; // 0b11
                     if(settings.contains(Pref.IMAGE_SOURCES)){
                         defaultImageSource = settings.getInt(Pref.IMAGE_SOURCES, ImageProviders.PROVIDERS_DEFAULT);
@@ -284,6 +312,13 @@ public class Settings extends AppCompatActivity {
                             else {
                                 settings.put(Pref.IMAGE_SOURCES, defaultImageSource);
                             }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setTextImageSources(defaultImageSource);
+                                }
+                            });
 
                             dialog.dismiss();
                         }
@@ -344,6 +379,14 @@ public class Settings extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             settings.put(Pref.DERPIBOORU_TAGS, defaultDerpTags);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setTextDerpibooruTags(defaultDerpTags);
+                                }
+                            });
+
                             dialog.dismiss();
                         }
                     });
@@ -362,16 +405,49 @@ public class Settings extends AppCompatActivity {
 
 
 
-//    private void restartService(){
-//        stopService(new Intent(Settings.this, ServiceRefresh.class));
-//        Helper.startService(Settings.this);
-//    }
-    //-----------------------------------------------------------------------------------------------
+    private void setTextDerpibooruTags(int i) {
+        switch (i) {
+            case Derpibooru.TAG_WALLPAPER | Derpibooru.TAG_SAFE:
+                textDerpibooruTags.setText(String.format(dd, 2, 2));
+                break;
+            case Derpibooru.TAG_WALLPAPER:
+            case Derpibooru.TAG_SAFE:
+                textDerpibooruTags.setText(String.format(dd, 1, 2));
+                break;
+            default:
+                textDerpibooruTags.setText(String.format(dd, 0, 2));
+        }
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+    void setTextImageSources(int i){
+        boolean[] b = ImageProviders.toBitsArray(i);
+        int count = 0;
+        for (boolean a : b) {
+            if (a) {
+                ++count;
+            }
+        }
+
+        if (count == 0) {
+            // cannot be 0
+            textImageSources.setText(String.format(dd, 1, ImageProviders.TOTAL_PROVIDERS));
+        }
+        else if (count == ImageProviders.TOTAL_PROVIDERS){
+            textImageSources.setText(String.format(dd, ImageProviders.TOTAL_PROVIDERS, ImageProviders.TOTAL_PROVIDERS));
+        }
+        else {
+            textImageSources.setText(String.format(dd, count, ImageProviders.TOTAL_PROVIDERS));
+        }
+    }
+    //----------------------------------------------------------------------------------------------
 
 
 
     // set text for screen
-    private void setScreenImageText(int screenImage){
+    private void setTextScreenImage (int screenImage){
         switch (screenImage){
             case 0: // both
                 textScreenImage.setText(getResources().getString(R.string.screen_both));
@@ -388,7 +464,7 @@ public class Settings extends AppCompatActivity {
 
 
 
-    private void setScreenImageSize(int dialogScreenSize) {
+    private void setTextScreenImageSize (int dialogScreenSize) {
         switch (dialogScreenSize) {
             case 0: // normal
                 textScreenSize.setText(getResources().getString(R.string.screen_size_normal));
