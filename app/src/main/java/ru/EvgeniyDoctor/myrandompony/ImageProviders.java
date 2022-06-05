@@ -40,9 +40,9 @@ public abstract class ImageProviders {
     public static final int DERPIBOORU  = 1;
     public static final int MLWP        = 2;
 
-    public static final String[] PROVIDERS = {"Derpibooru", "MLWP"};
-    public static final int TOTAL_PROVIDERS = 2; // count of providers
-    public static final int PROVIDERS_DEFAULT = 0b0011; // checked all
+    public static final String[] PROVIDERS      = {"Derpibooru", "MLWP"};
+    public static final int TOTAL_PROVIDERS     = PROVIDERS.length; // count of providers
+    public static final int PROVIDERS_DEFAULT   = 0b0011; // checked all
 
     private final int connectTimeout = 5000; // 5 sec
     private final int readTimeout    = 10000; // 10 sec

@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 public class Derpibooru extends ImageProviders {
     public static final int TAG_WALLPAPER = 1;
-    public static final int TAG_SAFE = 2;
+    public static final int TAG_SAFE      = 2;
 
 
 

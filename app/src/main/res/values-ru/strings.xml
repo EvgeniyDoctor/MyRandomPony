@@ -80,12 +80,17 @@
         <h3>Источники изображений</h3>
         Вы можете выбрать, с какого сайта вы хотите получать изображения:
         <ul>
-            <li><b>Derpibooru</b>: https://derpibooru.org/</li>
-            <li><b>MLWP</b>: https://www.mylittlewallpaper.com/</li>
+            <li><b>Derpibooru</b>: https://derpibooru.org</li>
+            <li><b>MLWP</b>: https://www.mylittlewallpaper.com</li>
         </ul>
 
-        <h3>Derpibooru: безопасный поиск</h3>
-        Включить / отключить поиск с материалами для взрослых.
+        <h3>Derpibooru: теги поиска</h3>
+        Вы можете выбрать поисковые теги:
+        <ul>
+            <li><b>Wallpaper</b>: изображения с тегом \"Wallpaper\"</li>
+            <li><b>Safe</b>: когда отключено, материалы для взрослых разрешены</li>
+        </ul>
+        Не рекомендуется отключать тег <b>Wallpaper</b>.
 
         <h3>Темы</h3>
         Можно сменить тему приложения.

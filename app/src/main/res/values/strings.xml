@@ -87,12 +87,17 @@
         <h3>Image sources</h3>
         You can choose which site you want to get images from:
         <ul>
-            <li><b>Derpibooru</b>: https://derpibooru.org/</li>
-            <li><b>MLWP</b>: https://www.mylittlewallpaper.com/</li>
+            <li><b>Derpibooru</b>: https://derpibooru.org</li>
+            <li><b>MLWP</b>: https://www.mylittlewallpaper.com</li>
         </ul>
 
-        <h3>Derpibooru: safe search</h3>
-        On / off mature content search.
+        <h3>Derpibooru: search tags</h3>
+        You can select search tags:
+        <ul>
+            <li><b>Wallpaper</b>: images with \"Wallpaper\" tag</li>
+            <li><b>Safe</b>: when disabled, mature content is allowed</li>
+        </ul>
+        It is not recommended to disable the <b>Wallpaper</b> tag.
 
         <h3>Themes</h3>
         You can change the theme of the application.

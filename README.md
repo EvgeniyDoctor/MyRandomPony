@@ -72,11 +72,14 @@ if you select the **large** option, the same image will be compressed to a size 
 
 ### Image sources
 You can choose which site you want to get images from:
-- **Derpibooru**: [https://derpibooru.org/](https://derpibooru.org/)
-- **MLWP**: [https://www.mylittlewallpaper.com/](https://www.mylittlewallpaper.com/)
+- **Derpibooru**: [https://derpibooru.org](https://derpibooru.org)
+- **MLWP**: [https://www.mylittlewallpaper.com](https://www.mylittlewallpaper.com)
 
-### Derpibooru: safe search
-On / off mature content search.
+### Derpibooru: search tags
+You can select search tags:
+- **Wallpaper**: images with \"Wallpaper\" tag
+- **Safe**: when disabled, mature content is allowed
+It is not recommended to disable the **Wallpaper** tag.
 
 ### Themes
 You can change the theme of the application.
