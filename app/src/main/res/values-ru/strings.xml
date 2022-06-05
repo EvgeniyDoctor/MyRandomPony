@@ -163,7 +163,8 @@
     <string name="screen_size_alert_title">Выберите разрешение</string>
     <string name="screen_size_normal">обычное</string>
     <string name="screen_size_large">большое</string>
-    <string name="derpibooru_safe_search">Derpibooru: безопасный поиск</string>
+    <string name="derpibooru_tags">Derpibooru: теги поиска</string>
+    <string name="derpibooru_tags_alert_title">Выберите теги</string>
     <string name="image_source_alert_title">Выберите источники</string>
     <string name="image_source">Источники изображений</string>
     <string name="image_source_no_one_checked">Выбран первый пункт</string>

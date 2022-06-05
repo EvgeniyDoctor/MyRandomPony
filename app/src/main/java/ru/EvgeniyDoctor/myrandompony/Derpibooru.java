@@ -11,6 +11,11 @@ import org.json.JSONObject;
 
 
 public class Derpibooru extends ImageProviders {
+    public static final int TAG_WALLPAPER = 1;
+    public static final int TAG_SAFE = 2;
+
+
+
     Derpibooru(Context context, AppPreferences settings) {
         super(context, settings); // abstract constructor
     }
@@ -20,13 +25,28 @@ public class Derpibooru extends ImageProviders {
 
     @Override
     public DownloadResult load() {
-        String url = "https://derpibooru.org/api/v1/json/search/images?q=wallpaper%s&sf=random&per_page=1";
-        if (settings.contains(Pref.DERPIBOORU_SAFE_SEARCH) && settings.getBoolean(Pref.DERPIBOORU_SAFE_SEARCH, true)) {
-            url = String.format(url, ",safe");
+        String url = "https://derpibooru.org/api/v1/json/search/images?q=%s&sf=random&per_page=1";
+
+        int tags = 0b11;
+        if (settings.contains(Pref.DERPIBOORU_TAGS)){
+            tags = settings.getInt(Pref.DERPIBOORU_TAGS, 0b11);
         }
-        else {
-            url = String.format(url, "");
+
+        switch (tags) {
+            case TAG_WALLPAPER | TAG_SAFE:
+                url = String.format(url, "wallpaper,safe");
+                break;
+            case TAG_WALLPAPER:
+                url = String.format(url, "wallpaper");
+                break;
+            case TAG_SAFE:
+                url = String.format(url, "safe");
+                break;
+            default:
+                url = String.format(url, "animated:false"); // almost all images
+                break;
         }
+
         return super.load(url); // api request
     }
     //----------------------------------------------------------------------------------------------

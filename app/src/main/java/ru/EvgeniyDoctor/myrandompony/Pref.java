@@ -11,7 +11,7 @@ public abstract class Pref {
         REFRESH_FREQUENCY   = "refresh_frequency",
         SCREEN_SIZE_SMALL_OR_NORMAL = "screen_size_small_or_normal",
         IMAGE_SOURCES       = "image_sources",
-        DERPIBOORU_SAFE_SEARCH = "derpibooru_safe_search",
+        DERPIBOORU_TAGS     = "derpibooru_tags",
 
         REFRESH_FREQUENCY_CURR_DAY      = "refresh_frequency_curr_day",
         REFRESH_FREQUENCY_CURR_WEEK     = "refresh_frequency_curr_week",

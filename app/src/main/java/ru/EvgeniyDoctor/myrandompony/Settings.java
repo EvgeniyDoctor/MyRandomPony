@@ -23,7 +23,6 @@ import net.grandcentrix.tray.AppPreferences;
 public class Settings extends AppCompatActivity {
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private CheckBox
-        derpibooruSafeSearch,
         checkBoxWifiOnly;
     private TextView
         textScreenImage,
@@ -42,14 +41,13 @@ public class Settings extends AppCompatActivity {
 
         RelativeLayout layout_wifi_only     = findViewById(R.id.layout_wifi_only);
         checkBoxWifiOnly                    = findViewById(R.id.only_wifi);
-        derpibooruSafeSearch                = findViewById(R.id.derpibooru_safe_search);
         RelativeLayout layout_set_screen    = findViewById(R.id.layout_set_screen);
         RelativeLayout layout_screen_size   = findViewById(R.id.layout_screen_size);
         RelativeLayout layout_themes        = findViewById(R.id.layout_themes);
         RelativeLayout layout_image_source  = findViewById(R.id.layout_image_source);
         textScreenImage                     = findViewById(R.id.screen_image);
         textScreenSize                      = findViewById(R.id.screen_size);
-        RelativeLayout layout_derpibooru_safe_search     = findViewById(R.id.layout_derpibooru_safe_search);
+        RelativeLayout layout_derpibooru_safe_search     = findViewById(R.id.layout_derpibooru_tags);
         LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
 
         layout_wifi_only.setOnClickListener(click);
@@ -66,14 +64,6 @@ public class Settings extends AppCompatActivity {
         }
         else {
             settings.put(Pref.WIFI_ONLY, true);
-        }
-
-        // derpibooru safe search
-        if (settings.contains(Pref.DERPIBOORU_SAFE_SEARCH)) {
-            derpibooruSafeSearch.setChecked(settings.getBoolean(Pref.DERPIBOORU_SAFE_SEARCH, true));
-        }
-        else {
-            settings.put(Pref.DERPIBOORU_SAFE_SEARCH, true);
         }
 
         // change image on screen
@@ -149,6 +139,7 @@ public class Settings extends AppCompatActivity {
         int dialogScreenSize;
         int dflt = 0; // default value for alert dialogs with radio buttons
         int defaultImageSource;
+        int defaultDerpTags;
         AlertDialog.Builder builder;
 
         @SuppressLint("NonConstantResourceId")
@@ -164,17 +155,6 @@ public class Settings extends AppCompatActivity {
                         checkBoxWifiOnly.setChecked(true);
                     }
                     settings.put(Pref.WIFI_ONLY, checkBoxWifiOnly.isChecked());
-                    break;
-
-                // derpibooru safe search
-                case R.id.layout_derpibooru_safe_search:
-                    if (derpibooruSafeSearch.isChecked()) {
-                        derpibooruSafeSearch.setChecked(false);
-                    }
-                    else { // checkbox was unchecked
-                        derpibooruSafeSearch.setChecked(true);
-                    }
-                    settings.put(Pref.DERPIBOORU_SAFE_SEARCH, derpibooruSafeSearch.isChecked());
                     break;
 
                 // themes
@@ -302,6 +282,65 @@ public class Settings extends AppCompatActivity {
                                 settings.put(Pref.IMAGE_SOURCES, defaultImageSource);
                             }
 
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                    break;
+
+                // derpibooru tags
+                case R.id.layout_derpibooru_tags:
+                    String[] tags = {"Wallpaper", "Safe"};
+                    boolean[] b = {true, true};
+
+                    defaultDerpTags = 0b11;
+                    if(settings.contains(Pref.DERPIBOORU_TAGS)){
+                        defaultDerpTags = settings.getInt(Pref.DERPIBOORU_TAGS, 0b11);
+                    }
+
+                    switch (defaultDerpTags) {
+                        case 0:
+                            b[0] = false;
+                            b[1] = false;
+                            break;
+                        case Derpibooru.TAG_WALLPAPER:
+                            b[0] = true;
+                            b[1] = false;
+                            break;
+                        case Derpibooru.TAG_SAFE:
+                            b[0] = false;
+                            b[1] = true;
+                            break;
+                    }
+
+                    builder = new AlertDialog.Builder(Settings.this);
+                    builder.setTitle(getResources().getString(R.string.derpibooru_tags_alert_title));
+                    builder.setMultiChoiceItems(
+                            tags,
+                            b,
+                            new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
+                                    switch (which+1) {
+                                        case Derpibooru.TAG_WALLPAPER:
+                                            defaultDerpTags ^= (1 << Derpibooru.TAG_WALLPAPER-1);
+                                            break;
+                                        case Derpibooru.TAG_SAFE:
+                                            defaultDerpTags ^= (1 << Derpibooru.TAG_SAFE-1);
+                                            break;
+                                    }
+                                }
+                            });
+                    builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            settings.put(Pref.DERPIBOORU_TAGS, defaultDerpTags);
                             dialog.dismiss();
                         }
                     });

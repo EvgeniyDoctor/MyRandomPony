@@ -10,8 +10,8 @@ android {
         // add this to set a unique tray authority based on your applicationId
         minSdkVersion 18
         targetSdkVersion 32
-        versionCode 23
-        versionName "1.12"
+        versionCode 24
+        versionName "1.13 test"
     }
     buildTypes {
         release {

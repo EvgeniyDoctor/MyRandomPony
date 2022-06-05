@@ -67,9 +67,6 @@ public class Main extends AppCompatActivity {
 
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-
-    // todo 04.06.2022: add choice settings - mlwp or derpi; add derpi settings - safe, wallpaper, etc
-    // todo 04.06.2022: в тостах встречается указание сайта mlwp - переписать
     // todo 04.06.2022: add min size for download image
     // todo 04.06.2022: add "rate me"
 
@@ -513,8 +510,6 @@ public class Main extends AppCompatActivity {
                     break;
 
                 case R.id.btn_next: // Next button
-                    //new DownloadFile().execute("https://www.mylittlewallpaper.com/images/o_5bbb8e74e84398.86540959.png"); // progress bar todo
-
                     if (Helper.checkInternetConnection(Main.this, settings.getBoolean(Pref.WIFI_ONLY, true))) {
                         progressDialog = new ProgressDialog(Main.this);
                         progressDialog.setTitle(getResources().getString(R.string.settings_progress_title_downloading));
@@ -863,77 +858,3 @@ public class Main extends AppCompatActivity {
     }
     //----------------------------------------------------------------------------------------------
 }
-
-
-
-
-    /* progress bar. todo: server does not send file length. Wait for it.
-    private class DownloadFile extends AsyncTask<String, Integer, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = new ProgressDialog(Main.this);
-            progressDialog.setTitle(getResources().getString(R.string.settings_progress_title));
-            progressDialog.setMessage(getResources().getString(R.string.settings_progress_msg));
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setCancelable(false);
-
-            progressDialog.setIndeterminate(false);
-            progressDialog.setMax(100);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
-            progressDialog.show();
-        }
-        //---
-
-        @Override
-        protected String doInBackground(String... strings) {
-            Helper.d(strings[0]);
-            try {
-                URL url = new URL(strings[0]);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-                connection.connect();
-                int size = connection.getContentLength();
-
-                Helper.d(connection.getResponseCode());
-                Helper.d(connection);
-                Helper.d(size);
-                //Helper.d(Long.parseLong(connection.getHeaderField("Content-Length")));
-
-                InputStream inputStream = new BufferedInputStream(url.openStream());
-                //OutputStream outputStream = getApplicationContext().openFileOutput(Pref.FILE_NAME, Context.MODE_PRIVATE);
-                //new FileOutputStream(mContext.getFilesDir() + "/file.mp4");
-                OutputStream outputStream = new FileOutputStream(getApplicationContext().getFilesDir() + "/" + Pref.FILE_NAME);
-
-                byte data[] = new byte[4096];
-                long total = 0;
-                int count;
-                while((count = inputStream.read(data)) != -1){
-                    total += count;
-                    publishProgress((int) (total * 100 / size));
-                    outputStream.write(data, 0, count);
-                }
-
-                outputStream.flush();
-                outputStream.close();
-                inputStream.close();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-        //---
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            progressDialog.setProgress(values[0]);
-            Helper.d(values[0]);
-        }
-        //---
-    }
-     */
