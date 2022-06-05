@@ -67,8 +67,7 @@ public class Main extends AppCompatActivity {
 
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
-    // todo 04.06.2022: add min size for download image
-    // todo 04.06.2022: add "rate me"
+    // todo 04.06.2022: ? add min size for download image
 
 
 

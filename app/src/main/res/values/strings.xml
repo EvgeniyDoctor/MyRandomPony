@@ -96,7 +96,7 @@
         <h3>Derpibooru: search tags</h3>
         You can select search tags:
         <ul>
-            <li><b>Wallpaper</b>: images with \"Wallpaper\" tag</li>
+            <li><b>Wallpaper</b>: images tagged \"Wallpaper\" are in resolution suitable for desktop or mobile</li>
             <li><b>Safe</b>: when disabled, mature content is allowed</li>
         </ul>
         It is not recommended to disable the <b>Wallpaper</b> tag.

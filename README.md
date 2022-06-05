@@ -77,7 +77,7 @@ You can choose which site you want to get images from:
 
 ### Derpibooru: search tags
 You can select search tags:
-- **Wallpaper**: images with \"Wallpaper\" tag
+- **Wallpaper**: images tagged \"Wallpaper\" are in resolution suitable for desktop or mobile
 - **Safe**: when disabled, mature content is allowed
 It is not recommended to disable the **Wallpaper** tag.
 
