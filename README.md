@@ -103,7 +103,8 @@ The app was released on November 24, 2016.<br>
 This is a third party application for accessing images on the following sites:
 - https://derpibooru.org/
 - http://mylittlewallpaper.com/
-<br>The developer has no control over what images are available.
+
+The developer has no control over what images are available.
 
 My Little Pony © Hasbro<br>
 All wallpapers © to their respective artists<br>

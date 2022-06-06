@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <group android:id="@+id/menu_group_actions">
         <item
             android:id="@+id/menu_item_action_help"
@@ -23,13 +24,16 @@
         <item
             android:id="@+id/menu_item_app_share"
             android:orderInCategory="100"
-            android:title="@string/menu_item_app_share"
+            android:title="@string/menu_item_share"
         />
     </group>
 
 
     <group android:id="@+id/menu_group_image">
-        <item android:title="@string/image">
+        <item
+            android:title="@string/image"
+            android:orderInCategory="999"
+        >
             <menu>
                 <item
                     android:id="@+id/menu_item_image_copy"

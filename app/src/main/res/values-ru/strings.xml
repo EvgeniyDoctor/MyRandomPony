@@ -174,6 +174,5 @@
     <string name="image_source_alert_title">Выберите источники</string>
     <string name="image_source">Источники изображений</string>
     <string name="image_source_no_one_checked">Выбран первый пункт</string>
-    <string name="menu_item_app_share">Поделиться</string>
     <string name="menu_item_app_rate">Оценить</string>
 </resources>

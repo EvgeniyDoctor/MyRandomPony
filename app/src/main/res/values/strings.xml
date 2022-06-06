@@ -143,7 +143,6 @@
     <string name="menu_item_save_success">Saved in gallery</string>
     <string name="menu_item_save_error">No image</string>
     <string name="menu_item_save_perm_error">Provide the permission to save the image in gallery</string>
-    <string name="menu_item_app_share">Share this app</string>
     <string name="menu_item_app_rate">Rate this app</string>
 
     <string name="changing_wallpaper_progress_title">Changing</string>
