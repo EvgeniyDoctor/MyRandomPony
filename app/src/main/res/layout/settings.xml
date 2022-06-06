@@ -92,7 +92,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/layout_screen_size"
+                android:id="@+id/layout_screen_res"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/layout_height"
                 style="?android:attr/buttonBarButtonStyle"

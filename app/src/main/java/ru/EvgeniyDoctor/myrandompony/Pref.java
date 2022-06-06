@@ -31,4 +31,14 @@ public abstract class Pref {
 
         FLAG_MAIN_ACTIVITY_RESTART      = "flag_main_activity_restart"
     ;
+
+    public static final boolean
+        WIFI_ONLY_DEFAULT = false
+    ;
+
+    public static final int
+        SCREEN_IMAGE_DEFAULT        = 0, // both screens
+        SCREEN_RESOLUTION_DEFAULT   = 0, // normal
+        DERPIBOORU_TAGS_DEFAULT     = 0b11 // Wallpaper and Safe
+    ;
 }

@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,22 +45,22 @@ public class Settings extends AppCompatActivity {
 
         setContentView(R.layout.settings);
 
-        RelativeLayout layout_wifi_only     = findViewById(R.id.layout_wifi_only);
         checkBoxWifiOnly                    = findViewById(R.id.only_wifi);
+        LinearLayout layout_root_set_screen = findViewById(R.id.layout_root_set_screen);
+        RelativeLayout layout_wifi_only     = findViewById(R.id.layout_wifi_only);
         RelativeLayout layout_set_screen    = findViewById(R.id.layout_set_screen);
-        RelativeLayout layout_screen_size   = findViewById(R.id.layout_screen_size);
+        RelativeLayout layout_screen_res    = findViewById(R.id.layout_screen_res);
         RelativeLayout layout_themes        = findViewById(R.id.layout_themes);
         RelativeLayout layout_image_sources = findViewById(R.id.layout_image_sources);
+        RelativeLayout layout_derpibooru_safe_search = findViewById(R.id.layout_derpibooru_tags);
         textScreenImage                     = findViewById(R.id.screen_image);
         textImageSources                    = findViewById(R.id.image_sources);
         textScreenSize                      = findViewById(R.id.screen_size);
         textDerpibooruTags                  = findViewById(R.id.derpibooru_tags);
-        RelativeLayout layout_derpibooru_safe_search     = findViewById(R.id.layout_derpibooru_tags);
-        LinearLayout layout_root_set_screen     = findViewById(R.id.layout_root_set_screen);
 
         layout_wifi_only.setOnClickListener(click);
         layout_set_screen.setOnClickListener(click);
-        layout_screen_size.setOnClickListener(click);
+        layout_screen_res.setOnClickListener(click);
         layout_themes.setOnClickListener(click);
         layout_image_sources.setOnClickListener(click);
         layout_image_sources.setOnClickListener(click);
@@ -69,19 +68,19 @@ public class Settings extends AppCompatActivity {
 
         // WiFi only
         if (settings.contains(Pref.WIFI_ONLY)) {
-            checkBoxWifiOnly.setChecked(settings.getBoolean(Pref.WIFI_ONLY, true));
+            checkBoxWifiOnly.setChecked(settings.getBoolean(Pref.WIFI_ONLY, Pref.WIFI_ONLY_DEFAULT));
         }
         else {
-            settings.put(Pref.WIFI_ONLY, true);
+            settings.put(Pref.WIFI_ONLY, Pref.WIFI_ONLY_DEFAULT);
         }
 
         // change image on screen
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
             if (settings.contains(Pref.SCREEN_IMAGE)) {
-                setTextScreenImage(settings.getInt(Pref.SCREEN_IMAGE, 0));
+                setTextScreenImage(settings.getInt(Pref.SCREEN_IMAGE, Pref.SCREEN_IMAGE_DEFAULT));
             }
             else {
-                settings.put(Pref.SCREEN_IMAGE, 0);
+                settings.put(Pref.SCREEN_IMAGE, Pref.SCREEN_IMAGE_DEFAULT);
                 textScreenImage.setText(getResources().getString(R.string.screen_both));
             }
         }
@@ -100,19 +99,19 @@ public class Settings extends AppCompatActivity {
 
         // derp tags
         if (settings.contains(Pref.DERPIBOORU_TAGS)) {
-            setTextDerpibooruTags(settings.getInt(Pref.DERPIBOORU_TAGS, 0b11));
+            setTextDerpibooruTags(settings.getInt(Pref.DERPIBOORU_TAGS, Pref.DERPIBOORU_TAGS_DEFAULT));
         }
         else {
-            settings.put(Pref.DERPIBOORU_TAGS, 0b11);
-            textImageSources.setText(String.format(dd, 2, 2));
+            settings.put(Pref.DERPIBOORU_TAGS, Pref.DERPIBOORU_TAGS_DEFAULT);
+            textDerpibooruTags.setText(String.format(dd, 2, 2));
         }
 
-        // screen size
+        // screen res
         if (settings.contains(Pref.SCREEN_RESOLUTION)) {
-            setTextScreenImageSize(settings.getInt(Pref.SCREEN_RESOLUTION, 0));
+            setTextScreenImageSize(settings.getInt(Pref.SCREEN_RESOLUTION, Pref.SCREEN_RESOLUTION_DEFAULT));
         }
         else {
-            settings.put(Pref.SCREEN_RESOLUTION, 0);
+            settings.put(Pref.SCREEN_RESOLUTION, Pref.SCREEN_RESOLUTION_DEFAULT);
             textScreenSize.setText(getResources().getString(R.string.screen_size_normal));
         }
     }
@@ -239,8 +238,8 @@ public class Settings extends AppCompatActivity {
 
                     break;
                     
-                // screen size
-                case R.id.layout_screen_size:
+                // screen res
+                case R.id.layout_screen_res:
                     String[] sizes = {
                         getResources().getString(R.string.screen_size_normal),
                         getResources().getString(R.string.screen_size_large),
@@ -287,7 +286,7 @@ public class Settings extends AppCompatActivity {
                 // image sources
                 case R.id.layout_image_sources:
                     defaultImageSource = ImageProviders.PROVIDERS_DEFAULT; // 0b11
-                    if(settings.contains(Pref.IMAGE_SOURCES)){
+                    if (settings.contains(Pref.IMAGE_SOURCES)){
                         defaultImageSource = settings.getInt(Pref.IMAGE_SOURCES, ImageProviders.PROVIDERS_DEFAULT);
                     }
 

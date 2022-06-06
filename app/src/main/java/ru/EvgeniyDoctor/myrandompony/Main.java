@@ -176,8 +176,43 @@ public class Main extends AppCompatActivity {
             }
         }
 
+        init();
+
         progressDialog = new ProgressDialog(Main.this);
     } // onCreate
+    //----------------------------------------------------------------------------------------------
+
+
+
+    // init some settings
+    private void init(){
+        // WiFi only
+        if (!settings.contains(Pref.WIFI_ONLY)) {
+            settings.put(Pref.WIFI_ONLY, Pref.WIFI_ONLY_DEFAULT);
+        }
+
+        // change image on screen
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
+            if (!settings.contains(Pref.SCREEN_IMAGE)) {
+                settings.put(Pref.SCREEN_IMAGE, Pref.SCREEN_IMAGE_DEFAULT);
+            }
+        }
+
+        // image sources
+        if (!settings.contains(Pref.IMAGE_SOURCES)) {
+            settings.put(Pref.IMAGE_SOURCES, ImageProviders.PROVIDERS_DEFAULT);
+        }
+
+        // derp tags
+        if (!settings.contains(Pref.DERPIBOORU_TAGS)) {
+            settings.put(Pref.DERPIBOORU_TAGS, Pref.DERPIBOORU_TAGS_DEFAULT);
+        }
+
+        // screen res
+        if (!settings.contains(Pref.SCREEN_RESOLUTION)) {
+            settings.put(Pref.SCREEN_RESOLUTION, Pref.SCREEN_RESOLUTION_DEFAULT);
+        }
+    }
     //----------------------------------------------------------------------------------------------
 
 

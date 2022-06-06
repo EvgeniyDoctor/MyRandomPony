@@ -4,6 +4,7 @@ import android.content.Context;
 
 import net.grandcentrix.tray.AppPreferences;
 
+import java.util.Arrays;
 import java.util.Random;
 
 // class for load new image. Working for BackgroundService, ForegroundService and "Next" button
@@ -29,7 +30,7 @@ public class LoadNewWallpaper {
 
     // load new image
     public DownloadResult load() {
-        int providers = 0; // checkboxes in settings
+        int providers = ImageProviders.PROVIDERS_DEFAULT; // checkboxes in settings
         if (settings.contains(Pref.IMAGE_SOURCES)){
             providers = settings.getInt(Pref.IMAGE_SOURCES, ImageProviders.PROVIDERS_DEFAULT);
         }
