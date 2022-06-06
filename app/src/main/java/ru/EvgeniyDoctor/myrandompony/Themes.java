@@ -6,15 +6,17 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuCompat;
 
 import net.grandcentrix.tray.AppPreferences;
 
@@ -31,7 +33,7 @@ import java.util.ArrayList;
     - RadioButton:
         - android:id
         - android:tag
-    - FrameLayout (ниже RadioButton):
+    - RelativeLayout (ниже RadioButton):
         - android:id
         - android:tag
     - TextView:
@@ -85,7 +87,7 @@ enum eThemes {
 public class Themes extends AppCompatActivity {
     private static AppPreferences settings;
     private RadioGroup radioGroup;
-    private Button btn_theme_apply;
+    private MenuItem themeMenuItemCheck;
     private ArrayList<RadioButton> listOfRadioButtons = new ArrayList<>();
     private String currentTheme; // name of the current theme, "Chrysalis", "Spike", etc.
     private ImageView imageView;
@@ -104,7 +106,6 @@ public class Themes extends AppCompatActivity {
         setTheme(loadTheme());
         setContentView(R.layout.themes);
 
-        btn_theme_apply = findViewById(R.id.btn_theme_apply);
         radioGroup      = findViewById(R.id.radio_group_themes);
         imageView       = findViewById(R.id.preview_theme);
 
@@ -124,6 +125,34 @@ public class Themes extends AppCompatActivity {
         imageView.setImageResource(getThemePreviewByName(currentTheme)); // load preview image
     }
     //-----------------------------------------------------------------------------------------------
+
+
+
+    // creating a 3-dot menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.themes_menu, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true); // for dividers
+
+        themeMenuItemCheck = menu.findItem(R.id.theme_menu_item_check);
+
+        String name = getThemeNameById(getSelectedRadioButton()); // selected theme name
+        themeMenuItemCheck.setEnabled(!currentTheme.equals(name)); // disable/enable Check btn
+
+        return true;
+    }
+    //----------------------------------------------------------------------------------------------
+
+
+
+
+    // 3-dot menu items
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        themeApply();
+        return true;
+    }
+    //----------------------------------------------------------------------------------------------
 
 
 
@@ -148,18 +177,16 @@ public class Themes extends AppCompatActivity {
         String name = getThemeNameById(selected); // selected theme name
 
         imageView.setImageResource(getThemePreviewByName(name)); // load preview image
-        Helper.toggleViewState(Themes.this, btn_theme_apply, !currentTheme.equals(name)); // disable/enable Apply btn
     }
     //-----------------------------------------------------------------------------------------------
 
 
 
     // Save button press
-    public void themeApply(View view) {
-        btn_theme_apply.setEnabled(false);
-        btn_theme_apply.setBackgroundColor(getThemeColorById(Themes.this, R.attr.colorButtonSemitransparent));
+    public void themeApply() {
+        themeMenuItemCheck.setEnabled(false);
 
-        // RadioButton and FrameLayout tags must be equal to the name in eThemes
+        // RadioButton and RelativeLayout tags must be equal to the name in eThemes
         for (RadioButton btn : listOfRadioButtons) {
             if (btn.isChecked()) {
                 changeTheme(
@@ -183,7 +210,7 @@ public class Themes extends AppCompatActivity {
 
 
 
-    // click on FrameLayout near RadioButton
+    // click on RelativeLayout near RadioButton
     public void setCheckedFromLayout(View view) {
         String tag = view.getTag().toString();
 
@@ -193,7 +220,7 @@ public class Themes extends AppCompatActivity {
             return;
         }
 
-        Helper.toggleViewState(Themes.this, btn_theme_apply, !currentTheme.equals(tag)); // disable Apply btn if current theme selected
+        themeMenuItemCheck.setEnabled(!currentTheme.equals(tag));
 
         uncheckAllRadioButtons();
         setRadioButtonCheckedByTag(tag);
@@ -286,9 +313,9 @@ public class Themes extends AppCompatActivity {
         for (int i=0; i<count; ++i) {
             View view1 = radioGroup.getChildAt(i);
 
-            if (view1 instanceof FrameLayout) {
-                for (int index = 0; index < ((FrameLayout) view1).getChildCount(); ++index) {
-                    View nextChild = ((FrameLayout) view1).getChildAt(index);
+            if (view1 instanceof RelativeLayout) {
+                for (int index = 0; index < ((RelativeLayout) view1).getChildCount(); ++index) {
+                    View nextChild = ((RelativeLayout) view1).getChildAt(index);
 
                     try {
                         if (nextChild instanceof RadioButton) {
