@@ -25,7 +25,7 @@ public class Derpibooru extends ImageProviders {
 
     @Override
     public DownloadResult load() {
-        String url = "https://derpibooru.org/api/v1/json/search/images?q=%s&sf=random&per_page=1";
+        String url = "https://derpibooru.org/api/v1/json/search/images?q=%sanimated:false&sf=random&per_page=1";
 
         int tags = 0b11;
         if (settings.contains(Pref.DERPIBOORU_TAGS)){
@@ -34,16 +34,16 @@ public class Derpibooru extends ImageProviders {
 
         switch (tags) {
             case TAG_WALLPAPER | TAG_SAFE:
-                url = String.format(url, "wallpaper,safe");
+                url = String.format(url, "wallpaper,safe,");
                 break;
             case TAG_WALLPAPER:
-                url = String.format(url, "wallpaper");
+                url = String.format(url, "wallpaper,");
                 break;
             case TAG_SAFE:
-                url = String.format(url, "safe");
+                url = String.format(url, "safe,");
                 break;
             default:
-                url = String.format(url, "animated:false"); // almost all images
+                url = String.format(url, ""); // almost all images
                 break;
         }
 

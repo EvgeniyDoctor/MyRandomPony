@@ -50,15 +50,15 @@ import java.util.Calendar;
 
 public class Main extends AppCompatActivity {
     private CheckBox
-            checkBoxEnabled;
+       checkBoxEnabled;
     private ImageView previewWallpaper = null;
     private TextView
-            textFrequency;
+        textFrequency;
     private ProgressDialog progressDialog = null;
     private Button
-            btnCancel,
-            btnEdit,
-            btnNext;
+        btnCancel,
+        btnEdit,
+        btnNext;
     private static AppPreferences settings; // res. - https://github.com/grandcentrix/tray
     private Wallpaper wallpaper;
     private AlertDialog alertDialog = null;
@@ -68,7 +68,6 @@ public class Main extends AppCompatActivity {
 
     // todo 05.08.2021: if press "Enabled" or radio buttons quickly too much times; then will be this error: Context.startForegroundService() did not then call Service.startForeground()
     // todo 04.06.2022: ? add min size for download image
-    // todo 06.06.2022: redesign Themes act
 
 
 
