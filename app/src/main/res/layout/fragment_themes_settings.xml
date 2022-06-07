@@ -18,8 +18,6 @@
                 android:layout_height="wrap_content">
 
 
-
-
                 <!-- Celestia -->
                 <RelativeLayout
                     android:id="@+id/layout_radio_theme_celestia"

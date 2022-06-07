@@ -58,6 +58,8 @@ public class Settings extends AppCompatActivity {
         textScreenSize                      = findViewById(R.id.screen_size);
         textDerpibooruTags                  = findViewById(R.id.derpibooru_tags);
 
+        setTitle(getResources().getString(R.string.settings));
+
         layout_wifi_only.setOnClickListener(click);
         layout_set_screen.setOnClickListener(click);
         layout_screen_res.setOnClickListener(click);

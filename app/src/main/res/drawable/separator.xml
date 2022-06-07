@@ -11,6 +11,8 @@
 <!--    />-->
 
     <gradient
+        android:startColor="?attr/separator"
         android:centerColor="?attr/separator"
+        android:endColor="?attr/separator"
         />
 </shape>

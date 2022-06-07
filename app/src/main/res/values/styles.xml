@@ -25,7 +25,7 @@
         <item name="commonBackground">#2c2c2c</item>
         <item name="colorButton">#4093AF</item> <!-- buttons -->
         <item name="colorButtonSemitransparent">#604d96ad</item> <!-- disabled buttons -->
-        <item name="colorAccent">#89CBEA</item> <!-- links, checkboxes, radios -->
+        <item name="colorAccent">#3089b1</item> <!-- links, checkboxes, radios -->
         <item name="colorText">#fff</item> <!-- text -->
         <item name="colorTextValue">#89CBEA</item> <!-- some text values, e.g. value for "Change image on" -->
         <item name="colorTextElement">#fff</item> <!-- text on elements-->
@@ -42,7 +42,7 @@
         <item name="commonBackground">#38407c</item>
         <item name="colorButton">#8852df</item> <!-- buttons -->
         <item name="colorButtonSemitransparent">#608852df</item> <!-- disabled buttons -->
-        <item name="colorAccent">#BED4FF</item> <!-- links, checkboxes, radios -->
+        <item name="colorAccent">#38407c</item> <!-- links, checkboxes, radios -->
         <item name="colorText">#fff</item> <!-- text -->
         <item name="colorTextValue">#BED4FF</item> <!-- some text values, e.g. value for "Change image on" -->
         <item name="colorTextElement">#fff</item> <!-- text on elements-->
