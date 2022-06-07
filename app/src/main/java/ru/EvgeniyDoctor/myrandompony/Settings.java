@@ -124,11 +124,7 @@ public class Settings extends AppCompatActivity {
     // creating a 3-dot menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-
-        menu.setGroupVisible(R.id.menu_group_image, false); // hide Image group
-        menu.setGroupVisible(R.id.menu_group_app, false);
-
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
         MenuCompat.setGroupDividerEnabled(menu, true); // for dividers
         return true;
     }
@@ -140,26 +136,10 @@ public class Settings extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        // actions
-        if (id == R.id.menu_item_action_help) { // help
-            menuShowActivity(Help.class);
-            return true;
-        }
-        else if (id == R.id.menu_item_action_about) { // about
-            menuShowActivity(About.class);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    //----------------------------------------------------------------------------------------------
-
-
-
-    private void menuShowActivity(Class param){
-        Intent intent = new Intent(this, param);
+        Intent intent = new Intent(this, Help.class);
         startActivity(intent);
+
+        return super.onOptionsItemSelected(item);
     }
     //----------------------------------------------------------------------------------------------
 
