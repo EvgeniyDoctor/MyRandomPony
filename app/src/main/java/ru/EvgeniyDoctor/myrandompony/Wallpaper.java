@@ -43,44 +43,55 @@ public class Wallpaper {
 
 
 
-    public void set(){
-        WallpaperManager myWallpaperManager = WallpaperManager.getInstance(context);
+    public boolean set(){
+        WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
         int screen = 0; // both screens
+        boolean error = false;
 
         if (settings.contains(Pref.SCREEN_IMAGE)) {
             screen = settings.getInt(Pref.SCREEN_IMAGE, 0);
         }
 
+        Bitmap bitmap = load();
+        if (bitmap == null) {
+            return false;
+        }
+
         switch (screen) {
             case 0: // both
                 try {
-                    myWallpaperManager.setBitmap(load());
+                    wallpaperManager.setBitmap(bitmap);
                 }
-                catch (IOException e) {
-                    e.printStackTrace();
+                catch (Exception e) {
+                    error = true;
+                    //e.printStackTrace();
                 }
                 break;
             case 1: // homescreen
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
                     try {
-                        myWallpaperManager.setBitmap(load(), null, true, WallpaperManager.FLAG_SYSTEM);
+                        wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_SYSTEM);
                     }
-                    catch (IOException e) {
-                        e.printStackTrace();
+                    catch (Exception e) {
+                        error = true;
+                        //e.printStackTrace();
                     }
                 }
                 break;
             case 2: // lockscreen
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // 7.0
                     try {
-                        myWallpaperManager.setBitmap(load(), null, true, WallpaperManager.FLAG_LOCK);
+                        wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK);
                     }
-                    catch (IOException e) {
-                        e.printStackTrace();
+                    catch (Exception e) {
+                        error = true;
+                        //e.printStackTrace();
                     }
                 }
                 break;
         }
+
+        return !error;
     }
     //----------------------------------------------------------------------------------------------
 

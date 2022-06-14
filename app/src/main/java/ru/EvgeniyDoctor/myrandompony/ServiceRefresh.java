@@ -273,7 +273,7 @@ public class ServiceRefresh extends Service {
     private void startLoad (int unit) {
         DownloadResult code = loadNewWallpaper.load();
         if (code == DownloadResult.SUCCESS_CHANGE_WALLPAPER) { // res. - http://stackoverflow.com/questions/20053919/programmatically-set-android-phones-background
-            Helper.d("setting new bg!");
+            //Helper.d("setting new bg!");
 
             saveNew(unit);
 

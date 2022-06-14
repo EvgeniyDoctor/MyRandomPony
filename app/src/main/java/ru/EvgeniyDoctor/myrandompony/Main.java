@@ -626,13 +626,19 @@ public class Main extends AppCompatActivity {
                     Thread thread = new Thread() {
                         @Override
                         public void run() {
-                            Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
+                            runOnUiThread(() -> {
+                                Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // screen orientation lock while ProgressDialog is showing, else will be "WindowLeaked" error
 
-                            wallpaper.set();
-                            progressDialog.dismiss();
+                                boolean res = wallpaper.set();
+                                progressDialog.dismiss();
 
-                            Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
-                        }
+                                if (!res) {
+                                    Toast.makeText(Main.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                                }
+
+                                Main.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); // unlock screen orientation
+                            });
+                        } // run
                     };
                     thread.start();
 
